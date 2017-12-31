@@ -33,11 +33,12 @@
 import os
 import ycm_core
 
+local_include = "-I" + os.path.expanduser("~") + "/local/include"
 flags = [
     '-x',
     'c++',
     '-I./include',
-    '-I/Users/olegskoromnik/Documents/Dropbox/work_dropbox/h-ion/libs/include',
+    local_include,
     '-I/usr/local/include',
     '-std=gnu++11',
 ]
