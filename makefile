@@ -29,7 +29,7 @@ SRCDIR = src
 BUILDDIR = build
 HEADERDIR = include
 
-SOURCES = main.cpp grid.cpp integrate_nd.cpp utility.cpp
+SOURCES = main.cpp grid.cpp integrate_nd.cpp utility.cpp spec_func.cpp
 
 HEADERS = 
 

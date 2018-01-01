@@ -2,27 +2,64 @@
 #define SPEC_FUNC_H
 
 #include <complex>
+#include <array>
 
 namespace eff_z {
 
-	std::complex<double> green_coulomb_h_rad(
-			std::complex<double> const E,
-			std::array<double, 2> const &r
+	inline double h_rnl(const int n, const int l, const double r);
+
+	struct h_rnl_params{
+		int n;
+		int l;
+	};
+	inline double h_rnl_gsl(double r, void *h_rnl_params_);
+
+	inline double h_l_rnl(
+			const double z,
+			const int n,
+			const int l,
+			const double r
 			);
-	std::complex<double> green_coulomb_h_rad_gsl(
+
+	struct h_l_rnl_params{
+		double z;
+		int n;
+		int l;
+	};
+	inline double h_l_rnl_gsl(double r, void *h_l_rnl_params_);
+
+	inline std::complex<double> green_coulomb_h_rad(
+			const std::complex<double> E,
+			const int l,
+			const std::array<double, 2> &r
+			);
+
+	struct gf_h_params{
+		std::complex<double> E;
+		int l;
+	};
+	inline std::complex<double> green_coulomb_h_rad_gsl(
 			double *r,
 			size_t dim,
-			void *gf_h_param
+			void *gf_h_params_
 			);
+
 	std::complex<double> green_coulomb_rad(
-			double const Z,
-			std::complex<double> const E,
-			std::array<double, 2> const &r
+			const double z,
+			const std::complex<double> E,
+			const int l,
+			const std::array<double, 2> &r
 			);
-	std::complex<double> green_coulomb_rad_gsl(
+
+	struct gf_h_l_params{
+		double z;
+		std::complex<double> E;
+		int l;
+	};
+	inline std::complex<double> green_coulomb_rad_gsl(
 			double *r,
 			size_t dim,
-			void *gf_param
+			void *gf_h_l_params_
 			);
 
 } /*end namespace eff_z*/
