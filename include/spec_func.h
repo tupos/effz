@@ -5,16 +5,22 @@
 #include <array>
 
 namespace eff_z {
+	/*
+	 *abbreviations 
+	 *    h_*** --- hydrogen_***, i.e. charge = 1
+	 *    h_l_*** --- hydrogen_like_***, i.e. charge != 1
+	 *    ***_gsl function with signature of a gsl one
+	 */
 
-	inline double h_rnl(const int n, const int l, const double r);
+	double h_rnl(const int n, const int l, const double r);
 
 	struct h_rnl_params{
 		int n;
 		int l;
 	};
-	inline double h_rnl_gsl(double r, void *h_rnl_params_);
+	double h_rnl_gsl(double r, void *h_rnl_params_);
 
-	inline double h_l_rnl(
+	double h_l_rnl(
 			const double z,
 			const int n,
 			const int l,
@@ -26,9 +32,9 @@ namespace eff_z {
 		int n;
 		int l;
 	};
-	inline double h_l_rnl_gsl(double r, void *h_l_rnl_params_);
+	double h_l_rnl_gsl(double r, void *h_l_rnl_params_);
 
-	inline std::complex<double> green_coulomb_h_rad(
+	std::complex<double> green_coulomb_h_rad(
 			const std::complex<double> E,
 			const int l,
 			const std::array<double, 2> &r
@@ -38,7 +44,7 @@ namespace eff_z {
 		std::complex<double> E;
 		int l;
 	};
-	inline std::complex<double> green_coulomb_h_rad_gsl(
+	std::complex<double> green_coulomb_h_rad_gsl(
 			double *r,
 			size_t dim,
 			void *gf_h_params_
@@ -56,12 +62,20 @@ namespace eff_z {
 		std::complex<double> E;
 		int l;
 	};
-	inline std::complex<double> green_coulomb_rad_gsl(
+	std::complex<double> green_coulomb_rad_gsl(
 			double *r,
 			size_t dim,
 			void *gf_h_l_params_
 			);
 
+	inline double h_E(int n){
+		double nn = (double)n;
+		return - 1. / (2. * nn * nn);
+	}
+	inline double h_l_E(double z, int n){
+		double nn = (double)n;
+		return - z * z / (2. * nn * nn);
+	}
 } /*end namespace eff_z*/
 
 #endif /* SPEC_FUNC_H */

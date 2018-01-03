@@ -11,16 +11,16 @@
 
 namespace eff_z {
 
-	inline double h_rnl(const int n, const int l, const double r){
+	double h_rnl(const int n, const int l, const double r){
 		return gsl_sf_hydrogenicR(n, l, 1., r);
 	}
 
-	inline double h_rnl_gsl(double r, void *h_rnl_params_){
+	double h_rnl_gsl(double r, void *h_rnl_params_){
 		h_rnl_params *params = (h_rnl_params*)h_rnl_params_;
 		return gsl_sf_hydrogenicR(params->n, params->l, 1., r);
 	}
 
-	inline double h_l_rnl(
+	double h_l_rnl(
 			const double z,
 			const int n,
 			const int l,
@@ -30,12 +30,12 @@ namespace eff_z {
 		return gsl_sf_hydrogenicR(n, l, z, r);
 	}
 
-	inline double h_l_rnl_gsl(double r, void *h_l_rnl_params_){
+	double h_l_rnl_gsl(double r, void *h_l_rnl_params_){
 		h_l_rnl_params *params = (h_l_rnl_params*)h_l_rnl_params_;
 		return gsl_sf_hydrogenicR(params->n, params->l, params->z, r);
 	}
 
-	inline std::complex<double> green_coulomb_h_rad(
+	std::complex<double> green_coulomb_h_rad(
 			const std::complex<double> E,
 			const int l,
 			const std::array<double, 2> &r
@@ -44,7 +44,7 @@ namespace eff_z {
 		return green_coulomb_rad(1., E, l, r);
 	}
 
-	inline std::complex<double> green_coulomb_h_rad_gsl(
+	std::complex<double> green_coulomb_h_rad_gsl(
 			double *r,
 			size_t dim,
 			void *gf_h_params_
@@ -76,7 +76,7 @@ namespace eff_z {
 		return res;
 	}
 
-	inline std::complex<double> green_coulomb_rad_gsl(
+	std::complex<double> green_coulomb_rad_gsl(
 			double *r,
 			size_t dim,
 			void *gf_h_l_params_

@@ -25,6 +25,7 @@
 #include "gsl_monte_complex.h"
 #include "arb_whittaker.h"
 #include "utility.h"
+#include "spec_func.h"
 
 #ifndef IMAG_i
 #define IMAG_i std::complex<double>(0, 1.)
@@ -76,6 +77,8 @@ inline double h_e(int n){
 
 int main(int argc, char *argv[]){
 	std::cout << "Effective Z program\n";
+	std::cout << eff_z::h_rnl(1,0, 3) << "\n";
+	std::cout << eff_z::green_coulomb_h_rad(1., 0, {2.,1.}) << "\n";
 	return 0;
 
 }
