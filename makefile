@@ -9,7 +9,7 @@ LDLIBS = -Wl,-Bstatic -larb -lflint -lmpfr -lgmp -lgslcblas -lsp_func -lgsl \
 	 -Wl,-Bdynamic -lpthread -fopenmp
 
 CXXFLAGS = -I$(LIBDIR)/include \
-	   -I./include -g -c -std=gnu++11 -O2 -fopenmp
+	   -I./include -g -c -std=c++14 -O2 -fopenmp
 endif
 
 ifeq ($(UNAME), Darwin)
@@ -17,9 +17,9 @@ CXX = g++
 CC = gcc
 LIBDIR = $$HOME/local
 LDFLAGS = -L/usr/local/lib -L$(LIBDIR)/lib
-LDLIBS =  -lm -lgsl -lsp_func -lflint -larb 
+LDLIBS =  -lm -lgsl -lsp_func -lflint -larb
 CXXFLAGS = -I/usr/local/include -I$(LIBDIR)/include \
-	   -I./include -g -c -std=gnu++11 -O2
+	   -I./include -g -c -std=c++14 -O2 -MMD -Wall
 endif
 
 
@@ -29,9 +29,10 @@ SRCDIR = src
 BUILDDIR = build
 HEADERDIR = include
 
-SOURCES = main.cpp grid.cpp integrate_nd.cpp utility.cpp spec_func.cpp
+SOURCES = main.cpp grid.cpp integrate_nd.cpp utility.cpp\
+		  effz_spec_func.cpp effz_zeroth_order.cpp
 
-HEADERS = 
+HEADERS =
 
 
 _OBJECTS = $(SOURCES:.cpp=.o)
@@ -59,3 +60,5 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 
 clean:
 	rm $(BUILDDIR)/*.o
+
+-include $(BUILDDIR)/*.d

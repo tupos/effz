@@ -1,7 +1,8 @@
-#include "spec_func.h"
+#include "effz_spec_func.h"
 
 #include <algorithm>
 #include <gsl/gsl_sf_coulomb.h>
+#include <gsl/gsl_sf_coupling.h>
 
 #include <sp_func/whittakerM.h>
 #include <sp_func/whittakerW.h>
@@ -85,6 +86,19 @@ namespace eff_z {
 		const gf_h_l_params *params = (gf_h_l_params *) gf_h_l_params_;
 		const std::array<double, 2> r_a{r[0], r[1]};
 		return green_coulomb_rad(params->z, params->E, params->l, r_a);
+
+	}
+	double three_j_symbol(
+			const std::array<std::array<int,3>,2> &jm){
+		int two_ja = 2 * jm[0][0];
+		int two_jb = 2 * jm[0][1];
+		int two_jc = 2 * jm[0][2];
+		int two_ma = 2 * jm[1][0];
+		int two_mb = 2 * jm[1][1];
+		int two_mc = 2 * jm[1][2];
+		return gsl_sf_coupling_3j(
+				two_ja,two_jb,two_jc,
+				two_ma,two_mb,two_mc);
 
 	}
 } /* end namespace eff_z*/

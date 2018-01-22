@@ -40,7 +40,7 @@ flags = [
     '-I./include',
     local_include,
     '-I/usr/local/include',
-    '-std=gnu++11',
+    '-std=c++14',
 ]
 
 

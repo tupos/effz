@@ -31,7 +31,6 @@ void print_gsl_matrix(gsl_matrix *m){
 	}
 }
 int print_matrix(const gsl_matrix* m, const char* fname) {
-	int size1 = m->size1, size2 = m->size2;
 
 	FILE* file;
 

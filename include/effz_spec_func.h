@@ -1,15 +1,16 @@
-#ifndef SPEC_FUNC_H
-#define SPEC_FUNC_H
+#ifndef EFFZ_SPEC_FUNC_H
+#define EFFZ_SPEC_FUNC_H
 
 #include <complex>
 #include <array>
+
 
 namespace eff_z {
 	/*
 	 *abbreviations 
 	 *    h_*** --- hydrogen_***, i.e. charge = 1
 	 *    h_l_*** --- hydrogen_like_***, i.e. charge != 1
-	 *    ***_gsl function with signature of a gsl one
+	 *    ***_gsl function with a signature of a gsl one
 	 */
 
 	double h_rnl(const int n, const int l, const double r);
@@ -72,10 +73,15 @@ namespace eff_z {
 		double nn = (double)n;
 		return - 1. / (2. * nn * nn);
 	}
+
 	inline double h_l_E(double z, int n){
 		double nn = (double)n;
 		return - z * z / (2. * nn * nn);
 	}
+
+	double three_j_symbol(const std::array<std::array<int,3>,2> &jm);
+
+
 } /*end namespace eff_z*/
 
-#endif /* SPEC_FUNC_H */
+#endif /* EFFZ_SPEC_FUNC_H */
