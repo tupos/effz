@@ -81,7 +81,29 @@ int main(int argc, char *argv[]){
 	std::cout << "Effective Z program\n";
 	//std::cout << eff_z::h_rnl(1,0, 3) << "\n";
 	//std::cout << eff_z::green_coulomb_h_rad(1., 0, {2.,1.}) << "\n";
-	std::cout << eff_z::zeroth_order::i_direct(2,1,1,0,0) << "\n";
+	std::vector<std::array<int,4>> g_He = {{1,0,0,1},{1,0,0,-1}};
+	std::vector<std::array<int,4>> g_Li = {
+		{1,0,0,1},{1,0,0,-1},
+		{2,0,0,1}
+	};
+	std::vector<std::array<int,4>> g_Be = {
+		{1,0,0,1},{1,0,0,-1},
+		{2,0,0,1},{2,0,0,-1}
+	};
+	std::vector<std::array<int,4>> g_Ne = {
+		{1,0,0,1},{1,0,0,-1},
+		{2,0,0,1},{2,0,0,-1},
+		{2,1,-1,1},{2,1,0,1},{2,1,1,1},
+		{2,1,-1,-1},{2,1,0,-1},{2,1,1,-1}
+	};
+	std::cout << eff_z::zeroth_order::z_star_0th(2., g_He) << " "
+		<< eff_z::zeroth_order::e_0th(2., g_He) << "\n";
+	std::cout << eff_z::zeroth_order::z_star_0th(3., g_Li) << " "
+		<< eff_z::zeroth_order::e_0th(3., g_Li) << "\n";
+	std::cout << eff_z::zeroth_order::z_star_0th(4., g_Be) << " "
+		<< eff_z::zeroth_order::e_0th(4., g_Be) << "\n";
+	std::cout << eff_z::zeroth_order::z_star_0th(10., g_Ne) << " "
+		<< eff_z::zeroth_order::e_0th(10., g_Ne) << "\n";
 	return 0;
 
 }

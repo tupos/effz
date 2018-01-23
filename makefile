@@ -19,7 +19,7 @@ LIBDIR = $$HOME/local
 LDFLAGS = -L/usr/local/lib -L$(LIBDIR)/lib
 LDLIBS =  -lm -lgsl -lsp_func -lflint -larb
 CXXFLAGS = -I/usr/local/include -I$(LIBDIR)/include \
-	   -I./include -g -c -std=c++14 -O2 -MMD -Wall
+	   -I./include -g -c -std=c++14 -O2 -MMD #-Wall
 endif
 
 
