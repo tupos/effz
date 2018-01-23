@@ -47,9 +47,9 @@ struct h_rnl_params{
 	int l;
 };
 struct gf_params{
-  double Z;
-  Complex E;
-  int l;
+	double Z;
+	Complex E;
+	int l;
 };
 struct reduced_gf_params{
 	double delta;
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]){
 Complex gf(double *r, int dim, void *params){
 	if(dim!=2){
 		gsl_error("dimesion of coordinates array in green func !=2",
-			   	__FILE__, __LINE__, GSL_EDOM);
+				__FILE__, __LINE__, GSL_EDOM);
 	}
 	double r1 = GSL_MAX_DBL(r[0], r[1]);
 	double r2 = GSL_MIN_DBL(r[0], r[1]);
@@ -123,9 +123,9 @@ Complex gf(double *r, int dim, void *params){
 	Complex res = nu / Z * spF::gamma((double)l + 1. - nu) / spF::factorial(2 * l + 1)
 		* spF::whittakerM(nu, (double)l + 1./2., 2. * Z / nu * r2)
 		* spF::whittakerW(nu, (double)l + 1./2., 2. * Z / nu * r1);
-		//Complex res = nu / Z * spF::gamma((double)l + 1. - nu) / spF::factorial(2 * l + 1)
-		//* arb_whittaker_M(nu, (double)l + 1./2., 2. * Z / nu * r2)
-		//* arb_whittaker_W(nu, (double)l + 1./2., 2. * Z / nu * r1);
+	//Complex res = nu / Z * spF::gamma((double)l + 1. - nu) / spF::factorial(2 * l + 1)
+	//* arb_whittaker_M(nu, (double)l + 1./2., 2. * Z / nu * r2)
+	//* arb_whittaker_W(nu, (double)l + 1./2., 2. * Z / nu * r1);
 
 	return res;
 }
@@ -138,6 +138,6 @@ double h_rnl(double r, void *params){
 		* sqrt(gsl_sf_fact(n + l) / gsl_sf_fact(n - l - 1.) / (2. * n));
 	double x = 2. * r / n;
 
-	return norm * pow(x, l) * exp(-x / 2.) 
-			* spF::hypergeometric1F1(-n + l + 1, 2 * l + 2, x);
-} 
+	return norm * pow(x, l) * exp(-x / 2.)
+		* spF::hypergeometric1F1(-n + l + 1, 2 * l + 2, x);
+}
