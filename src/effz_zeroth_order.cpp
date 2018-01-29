@@ -52,13 +52,13 @@ namespace eff_z{
 			auto inner_r_inf =
 				[n1,l1,k](double r) -> double {
 					return std::pow(r, static_cast<double>(k))
-						* eff_z::integration::quad(
+						* eff_z::integration::int_r_inf(
 								[n1,l1,k](double r1) -> double {
 								double h_rnl =
 								std::abs(eff_z::h_rnl(n1,l1,r1));
 								return h_rnl * h_rnl
 								* std::pow(r1,2-(static_cast<double>(k)+1));
-								}, {r,30.});
+								}, r);
 				};
 
 			auto integral = [n,l,&inner_0_r,&inner_r_inf](double r)
@@ -120,7 +120,7 @@ namespace eff_z{
 			auto inner_r_inf =
 				[n,l,n1,l1,k](double r) -> double {
 					return std::pow(r, static_cast<double>(k))
-						* eff_z::integration::quad(
+						* eff_z::integration::int_r_inf(
 								[n,l,n1,l1,k](double r1) -> double {
 								double h_rnl =
 								eff_z::h_rnl(n,l,r1);
@@ -128,7 +128,7 @@ namespace eff_z{
 								eff_z::h_rnl(n1,l1,r1);
 								return h_rnl * h_rnl1
 								* std::pow(r1,2-(static_cast<double>(k)+1));
-								}, {r,30.});
+								}, r);
 				};
 
 			auto integral =	[n,l,n1,l1,&inner_0_r,&inner_r_inf](double r)

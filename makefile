@@ -30,7 +30,8 @@ BUILDDIR = build
 HEADERDIR = include
 
 SOURCES = main.cpp grid.cpp integrate_nd.cpp utility.cpp\
-		  effz_spec_func.cpp effz_zeroth_order.cpp
+		  effz_spec_func.cpp effz_zeroth_order.cpp\
+		  effz_atomic_data.cpp
 
 HEADERS =
 

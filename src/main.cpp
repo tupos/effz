@@ -91,20 +91,32 @@ int main(int argc, char *argv[]){
 		{1,0,0,1},{1,0,0,-1},
 		{2,0,0,1},{2,0,0,-1}
 	};
+	std::vector<std::array<int,4>> g_Bo = {
+		{1,0,0,1},{1,0,0,-1},
+		{2,0,0,1},{2,0,0,-1},
+		{2,1,-1,1}
+	};
 	std::vector<std::array<int,4>> g_Ne = {
 		{1,0,0,1},{1,0,0,-1},
 		{2,0,0,1},{2,0,0,-1},
 		{2,1,-1,1},{2,1,0,1},{2,1,1,1},
 		{2,1,-1,-1},{2,1,0,-1},{2,1,1,-1}
 	};
-	std::cout << eff_z::zeroth_order::z_star_0th(2., g_He) << " "
-		<< eff_z::zeroth_order::e_0th(2., g_He) << "\n";
-	std::cout << eff_z::zeroth_order::z_star_0th(3., g_Li) << " "
-		<< eff_z::zeroth_order::e_0th(3., g_Li) << "\n";
-	std::cout << eff_z::zeroth_order::z_star_0th(4., g_Be) << " "
-		<< eff_z::zeroth_order::e_0th(4., g_Be) << "\n";
-	std::cout << eff_z::zeroth_order::z_star_0th(10., g_Ne) << " "
-		<< eff_z::zeroth_order::e_0th(10., g_Ne) << "\n";
+	std::cout << eff_z::zeroth_order::z_star_0th(5., g_Bo) << " "
+		<< eff_z::zeroth_order::e_0th(5., g_Bo) << "\n";
+	//std::cout << eff_z::zeroth_order::z_star_0th(2., g_He) << " "
+		//<< eff_z::zeroth_order::e_0th(2., g_He) << "\n";
+	//std::cout << eff_z::zeroth_order::z_star_0th(3., g_Li) << " "
+		//<< eff_z::zeroth_order::e_0th(3., g_Li) << "\n";
+	//std::cout << eff_z::zeroth_order::z_star_0th(4., g_Be) << " "
+		//<< eff_z::zeroth_order::e_0th(4., g_Be) << "\n";
+	//std::cout << eff_z::zeroth_order::z_star_0th(10., g_Ne) << " "
+		//<< eff_z::zeroth_order::e_0th(10., g_Ne) << "\n";
+	std::cout <<
+		eff_z::zeroth_order::z_star_0th
+		(24., eff_z::atomic_data::occ_nums::g[23]) << " "
+		<< eff_z::zeroth_order::e_0th
+		(24., eff_z::atomic_data::occ_nums::g[23]) << "\n";
 	return 0;
 
 }
