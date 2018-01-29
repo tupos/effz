@@ -26,6 +26,7 @@
 #include "arb_whittaker.h"
 #include "utility.h"
 #include "effz_spec_func.h"
+#include "effz_atomic_data.h"
 #include "effz_zeroth_order.h"
 #include "effz_helper_func.h"
 

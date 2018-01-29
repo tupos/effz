@@ -60,13 +60,15 @@ namespace eff_z{
 								* std::pow(r1,2-(static_cast<double>(k)+1));
 								}, {r,30.});
 				};
-			return eff_z::integration::quad(
-					[n,l,&inner_0_r,&inner_r_inf](double r) -> double {
+
+			auto integral = [n,l,&inner_0_r,&inner_r_inf](double r)
+				-> double {
 					double h_rnl = eff_z::h_rnl(n,l,r);
 					return r * r * h_rnl * h_rnl
-					* (inner_0_r(r) + inner_r_inf(r));
-					},{0.,30.}
-					);
+						* (inner_0_r(r) + inner_r_inf(r));
+				};
+
+			return eff_z::integration::int_0_inf(integral);
 		}
 
 		double three_j_prod_exchange(
@@ -114,6 +116,7 @@ namespace eff_z{
 								},
 								{0.,r});
 				};
+
 			auto inner_r_inf =
 				[n,l,n1,l1,k](double r) -> double {
 					return std::pow(r, static_cast<double>(k))
@@ -127,16 +130,16 @@ namespace eff_z{
 								* std::pow(r1,2-(static_cast<double>(k)+1));
 								}, {r,30.});
 				};
-			return eff_z::integration::quad(
-					[n,l,n1,l1,&inner_0_r,&inner_r_inf](double r)
-					-> double {
+
+			auto integral =	[n,l,n1,l1,&inner_0_r,&inner_r_inf](double r)
+				-> double {
 					double h_rnl = eff_z::h_rnl(n,l,r);
 					double h_rnl1 = eff_z::h_rnl(n1,l1,r);
 					return r * r * h_rnl1 * h_rnl
-					* (inner_0_r(r) + inner_r_inf(r));
-					},
-					{0.,30.}
-					);
+						* (inner_0_r(r) + inner_r_inf(r));
+				};
+
+			return eff_z::integration::int_0_inf(integral);
 		}
 
 		double v_direct(
