@@ -7,7 +7,7 @@
 
 namespace eff_z {
 	/*
-	 *abbreviations 
+	 *abbreviations
 	 *    h_*** --- hydrogen_***, i.e. charge = 1
 	 *    h_l_*** --- hydrogen_like_***, i.e. charge != 1
 	 *    ***_gsl function with a signature of a gsl one
@@ -80,6 +80,13 @@ namespace eff_z {
 	}
 
 	double three_j_symbol(const std::array<std::array<int,3>,2> &jm);
+
+	std::complex<double> sph_harm_y(
+			const int l,
+			const int m,
+			const double theta,
+			const double phi
+			);
 
 
 } /*end namespace eff_z*/

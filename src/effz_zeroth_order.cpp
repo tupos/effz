@@ -279,7 +279,8 @@ namespace eff_z{
 			return sum;
 		}
 
-		double z_star_0th(double z,const std::vector<std::array<int,4>> &g){
+		double z_star_0th(double z,
+				const std::vector<std::array<int,4>> &g){
 			return z - v_total(g) / (2. * a(g));
 		}
 
@@ -289,13 +290,35 @@ namespace eff_z{
 		}
 
 		double z_star_0th_par(
-				double z,const std::vector<std::array<int,4>> &g){
+				double z, const std::vector<std::array<int,4>> &g){
 			return z - v_total_par(g) / (2. * a(g));
 		}
 
-		double e_0th_par(double z,const std::vector<std::array<int,4>> &g){
+		double e_0th_par(double z,
+				const std::vector<std::array<int,4>> &g){
 			double z_star = z_star_0th_par(z,g);
 			return -a(g) * z_star * z_star;
 		}
+
+
+		density_0th::density_0th(const double z,
+				const std::vector<std::array<int,4>> &occ_nums)
+			: z(z), occ_nums(occ_nums) {};
+
+		double density_0th::operator()(
+				const double r,
+				const double theta,
+				const double phi) const {
+			double sum = 0.;
+			for(const auto &g_i: occ_nums){
+				double h_rnl = eff_z::h_l_rnl(z,g_i[0],g_i[1], r);
+				double abs_y_lm =
+					std::abs(eff_z::sph_harm_y(
+								g_i[1], g_i[2], theta, phi));
+				sum += h_rnl * h_rnl * abs_y_lm * abs_y_lm;
+			}
+			return sum;
+		}
+
 	}
 }

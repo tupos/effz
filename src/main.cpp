@@ -117,6 +117,12 @@ int main(int argc, char *argv[]){
 		(11., eff_z::atomic_data::occ_nums::g[10]) << " "
 		<< eff_z::zeroth_order::e_0th_par
 		(11., eff_z::atomic_data::occ_nums::g[10]) << "\n";
+	eff_z::zeroth_order::density_0th rho_Ne(10.,g_Ne);
+	double r = 0.5;
+	while(r < 10.){
+		std::cout << rho_Ne(r,0.,0.) << "\n";
+		r += 0.5;
+	}
 	return 0;
 
 }

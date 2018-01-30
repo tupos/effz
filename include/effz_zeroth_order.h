@@ -65,13 +65,28 @@ namespace eff_z{
 
 		double a(const std::vector<std::array<int,4>> &g);
 
-		double z_star_0th(double z,const std::vector<std::array<int,4>> &g);
+		double z_star_0th(double z,
+				const std::vector<std::array<int,4>> &g);
 
 		double e_0th(double z,const std::vector<std::array<int,4>> &g);
 
-		double z_star_0th_par(double z,const std::vector<std::array<int,4>> &g);
+		double z_star_0th_par(double z,
+				const std::vector<std::array<int,4>> &g);
 
 		double e_0th_par(double z,const std::vector<std::array<int,4>> &g);
+
+		class density_0th{
+			private:
+				double z;
+				std::vector<std::array<int,4>> occ_nums;
+			public:
+				density_0th(const double z,
+						const std::vector<std::array<int,4>> &occ_nums);
+				double operator()(
+						const double r,
+						const double theta,
+						const double phi) const;
+		};
 	} /*end namespace zeroth_order*/
 
 } /*end namespace eff_z*/

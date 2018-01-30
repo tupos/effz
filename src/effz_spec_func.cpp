@@ -1,12 +1,14 @@
 #include "effz_spec_func.h"
 
-#include <algorithm>
 #include <gsl/gsl_sf_coulomb.h>
 #include <gsl/gsl_sf_coupling.h>
+#include <gsl/gsl_sf_legendre.h>
 
 #include <sp_func/whittakerM.h>
 #include <sp_func/whittakerW.h>
 #include <sp_func/gamma.h>
+
+#include <cmath>
 
 
 
@@ -100,5 +102,25 @@ namespace eff_z {
 				two_ja,two_jb,two_jc,
 				two_ma,two_mb,two_mc);
 
+	}
+	std::complex<double> sph_harm_y(
+			const int l,
+			const int m,
+			const double theta,
+			const double phi
+			)
+	{
+		using namespace std::complex_literals;
+		const double x = cos(theta);
+		std::complex<double> e = exp(1i * static_cast<double>(m) * phi);
+		const int ll = (l <= -1) ? -(l+1) : l;
+		int mm;
+		int prefactor = 1;
+		if(m < 0){
+			mm = -m;
+			prefactor = ((mm % 2) == 0) ? 1 : -1;
+		}
+		return e * gsl_sf_legendre_sphPlm(ll,mm,x)
+			* static_cast<double>(prefactor);
 	}
 } /* end namespace eff_z*/
