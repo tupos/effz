@@ -5,7 +5,7 @@
 
 namespace eff_z{
 
-	namespace parallel{ 
+	namespace parallel{
 
 		template<typename T, typename Container, typename Function>
 			class parallel_sum_data{
@@ -24,7 +24,8 @@ namespace eff_z{
 						my_sum = sum;
 					}
 
-					parallel_sum_data(parallel_sum_data &s, tbb::split)
+					parallel_sum_data(const parallel_sum_data &s,
+							tbb::split)
 						: cont(s.cont), f(s.f), my_sum(){}
 
 					parallel_sum_data(Container cont, Function f)
@@ -35,22 +36,20 @@ namespace eff_z{
 					}
 			};
 
-		template<
-			typename T,
-			typename Container,
-			typename Function
-						 >
-						 T parallel_sum(
-								 const Container& cont, const Function& f){
-							 parallel_sum_data<T,Container,Function>
-								 ps(cont, f);
-							 typedef typename Container::const_iterator
-								 cont_it;
-							 const tbb::blocked_range<cont_it> cont_range(
-									 cont.cbegin(), cont.cend());
-							 tbb::parallel_reduce(cont_range, ps);
-							 return ps.my_sum;
-						 }
+		template<typename T, typename Container, typename Function>
+			T parallel_sum(
+					const Container& cont, const Function& f){
+				parallel_sum_data<T,Container,Function>
+					ps(cont, f);
+
+				typedef typename Container::const_iterator cont_it;
+				const tbb::blocked_range<cont_it> cont_range(
+						cont.cbegin(), cont.cend());
+
+				tbb::parallel_reduce(cont_range, ps);
+
+				return ps.my_sum;
+			}
 	} /* end namespace parallel */
 
 } /* end namespace eff_z */
