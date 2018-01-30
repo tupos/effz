@@ -68,6 +68,10 @@ namespace eff_z{
 		double z_star_0th(double z,const std::vector<std::array<int,4>> &g);
 
 		double e_0th(double z,const std::vector<std::array<int,4>> &g);
+
+		double z_star_0th_par(double z,const std::vector<std::array<int,4>> &g);
+
+		double e_0th_par(double z,const std::vector<std::array<int,4>> &g);
 	} /*end namespace zeroth_order*/
 
 } /*end namespace eff_z*/

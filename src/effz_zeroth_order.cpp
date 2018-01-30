@@ -3,8 +3,8 @@
 #include "effz_spec_func.h"
 #include "effz_helper_func.h"
 #include "effz_integration.h"
+#include "effz_parallel_func.h"
 #include <iostream>
-#include <tbb/tbb.h>
 
 namespace eff_z{
 	namespace zeroth_order{
@@ -208,39 +208,66 @@ namespace eff_z{
 		double v_direct_total_par(const std::vector<std::array<int,4>> &g){
 			double sum = 0.;
 			std::vector<std::array<int,6>>
-				occ_nums_array(g.size() * g.size());
+				occ_nums_array;
 			for(auto &g_i: g){
 				for(auto &g_j: g){
-					occ_nums_array.push_back({g_i[0], g_i[1], g_i[2],
+					occ_nums_array.push_back({ g_i[0], g_i[1], g_i[2],
 							g_j[0], g_j[1], g_j[2]});
 				}
 			}
-			typedef std::vector<std::array<int,6>>::const_iterator
-				occ_num_iter;
-			const tbb::blocked_range<occ_num_iter> 
-				occ_num_range(
-						occ_nums_array.cbegin(),occ_nums_array.cend());
-			tbb::parallel_for(occ_num_range,
-					[&](const tbb::blocked_range<occ_num_iter>& r){
-					for(occ_num_iter it = r.begin();
-							it != r.end();
-							++it)
-					{ 
-					sum += v_direct(
-							(*it)[0],
-							(*it)[1],
-							(*it)[2],
-							(*it)[3],
-							(*it)[4],
-							(*it)[5]
-							);
-					}
-					});
+			auto lambda = [](const std::array<int,6>& g_i){
+					return v_direct(g_i[0], g_i[1], g_i[2], g_i[3],
+							g_i[4], g_i[5]);
+					};
+			sum = eff_z::parallel::parallel_sum<double>(
+					occ_nums_array, lambda);
+
+			//typedef std::vector<std::array<int,6>>::const_iterator
+				//occ_num_iter;
+
+			//const tbb::blocked_range<occ_num_iter>
+				//occ_num_range(
+						//occ_nums_array.cbegin(),occ_nums_array.cend());
+
+			//tbb::parallel_for(occ_num_range,
+					//[&](const tbb::blocked_range<occ_num_iter>& r){
+					//for(occ_num_iter it = r.begin(); it != r.end(); ++it){
+					//v_direct((*it)[0], (*it)[1], (*it)[2], (*it)[3],
+							//(*it)[4], (*it)[5]);
+					//}
+					//});
+
+			return sum;
+		}
+
+		double v_exchange_total_par(const std::vector<std::array<int,4>> &g){
+			double sum = 0.;
+			std::vector<std::array<int,8>>
+				occ_nums_array;
+			for(auto &g_i: g){
+				for(auto &g_j: g){
+					occ_nums_array.push_back({
+							g_i[0], g_i[1], g_i[2], g_i[3],
+							g_j[0], g_j[1], g_j[2], g_j[3]});
+				}
+			}
+			auto lambda = [](const std::array<int,8>& g_i){
+					return (g_i[3] != g_i[7]) ? 0 :
+						v_exchange(g_i[0], g_i[1], g_i[2], g_i[4],
+							g_i[5], g_i[6]);
+					};
+			sum = eff_z::parallel::parallel_sum<double>(
+					occ_nums_array, lambda);
+
 			return sum;
 		}
 
 		double v_total(const std::vector<std::array<int,4>> &g){
 			return v_direct_total(g) - v_exchange_total(g);
+		}
+
+		double v_total_par(const std::vector<std::array<int,4>> &g){
+			return v_direct_total_par(g) - v_exchange_total_par(g);
 		}
 
 		double a(const std::vector<std::array<int,4>> &g){
@@ -258,6 +285,16 @@ namespace eff_z{
 
 		double e_0th(double z,const std::vector<std::array<int,4>> &g){
 			double z_star = z_star_0th(z,g);
+			return -a(g) * z_star * z_star;
+		}
+
+		double z_star_0th_par(
+				double z,const std::vector<std::array<int,4>> &g){
+			return z - v_total_par(g) / (2. * a(g));
+		}
+
+		double e_0th_par(double z,const std::vector<std::array<int,4>> &g){
+			double z_star = z_star_0th_par(z,g);
 			return -a(g) * z_star * z_star;
 		}
 	}

@@ -113,10 +113,10 @@ int main(int argc, char *argv[]){
 	//std::cout << eff_z::zeroth_order::z_star_0th(10., g_Ne) << " "
 		//<< eff_z::zeroth_order::e_0th(10., g_Ne) << "\n";
 	std::cout <<
-		eff_z::zeroth_order::z_star_0th
-		(51., eff_z::atomic_data::occ_nums::g[50]) << " "
-		<< eff_z::zeroth_order::e_0th
-		(51., eff_z::atomic_data::occ_nums::g[50]) << "\n";
+		eff_z::zeroth_order::z_star_0th_par
+		(11., eff_z::atomic_data::occ_nums::g[10]) << " "
+		<< eff_z::zeroth_order::e_0th_par
+		(11., eff_z::atomic_data::occ_nums::g[10]) << "\n";
 	return 0;
 
 }
