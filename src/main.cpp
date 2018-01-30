@@ -114,9 +114,9 @@ int main(int argc, char *argv[]){
 		//<< eff_z::zeroth_order::e_0th(10., g_Ne) << "\n";
 	std::cout <<
 		eff_z::zeroth_order::z_star_0th
-		(24., eff_z::atomic_data::occ_nums::g[23]) << " "
+		(51., eff_z::atomic_data::occ_nums::g[50]) << " "
 		<< eff_z::zeroth_order::e_0th
-		(24., eff_z::atomic_data::occ_nums::g[23]) << "\n";
+		(51., eff_z::atomic_data::occ_nums::g[50]) << "\n";
 	return 0;
 
 }

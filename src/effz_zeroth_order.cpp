@@ -4,6 +4,7 @@
 #include "effz_helper_func.h"
 #include "effz_integration.h"
 #include <iostream>
+#include <tbb/tbb.h>
 
 namespace eff_z{
 	namespace zeroth_order{
@@ -201,6 +202,40 @@ namespace eff_z{
 								g_j[0], g_j[1], g_j[2]);
 				}
 			}
+			return sum;
+		}
+
+		double v_direct_total_par(const std::vector<std::array<int,4>> &g){
+			double sum = 0.;
+			std::vector<std::array<int,6>>
+				occ_nums_array(g.size() * g.size());
+			for(auto &g_i: g){
+				for(auto &g_j: g){
+					occ_nums_array.push_back({g_i[0], g_i[1], g_i[2],
+							g_j[0], g_j[1], g_j[2]});
+				}
+			}
+			typedef std::vector<std::array<int,6>>::const_iterator
+				occ_num_iter;
+			const tbb::blocked_range<occ_num_iter> 
+				occ_num_range(
+						occ_nums_array.cbegin(),occ_nums_array.cend());
+			tbb::parallel_for(occ_num_range,
+					[&](const tbb::blocked_range<occ_num_iter>& r){
+					for(occ_num_iter it = r.begin();
+							it != r.end();
+							++it)
+					{ 
+					sum += v_direct(
+							(*it)[0],
+							(*it)[1],
+							(*it)[2],
+							(*it)[3],
+							(*it)[4],
+							(*it)[5]
+							);
+					}
+					});
 			return sum;
 		}
 

@@ -55,7 +55,13 @@ namespace eff_z{
 
 		double v_exchange_total(const std::vector<std::array<int,4>> &g);
 
+		double v_direct_total_par(const std::vector<std::array<int,4>> &g);
+
+		double v_exchange_total_par(const std::vector<std::array<int,4>> &g);
+
 		double v_total(const std::vector<std::array<int,4>> &g);
+
+		double v_total_par(const std::vector<std::array<int,4>> &g);
 
 		double a(const std::vector<std::array<int,4>> &g);
 
