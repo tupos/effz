@@ -3,6 +3,7 @@
 #include <cmath>
 #include <vector>
 #include <string>
+#include <tuple>
 
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_gamma.h>
@@ -29,6 +30,7 @@
 #include "effz_atomic_data.h"
 #include "effz_zeroth_order.h"
 #include "effz_helper_func.h"
+#include "effz_parallel_func.h"
 
 #ifndef IMAG_i
 #define IMAG_i std::complex<double>(0, 1.)
@@ -123,6 +125,7 @@ int main(int argc, char *argv[]){
 		std::cout << rho_Ne(r,0.,0.) << "\n";
 		r += 0.5;
 	}
+
 	return 0;
 
 }

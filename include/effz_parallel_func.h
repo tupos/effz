@@ -50,6 +50,7 @@ namespace eff_z{
 
 				return ps.my_sum;
 			}
+
 	} /* end namespace parallel */
 
 } /* end namespace eff_z */
