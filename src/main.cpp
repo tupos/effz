@@ -121,9 +121,22 @@ int main(int argc, char *argv[]){
 		(11., eff_z::atomic_data::occ_nums::g[10]) << "\n";
 	eff_z::zeroth_order::density_0th rho_Ne(10.,g_Ne);
 	double r = 0.5;
-	while(r < 10.){
-		std::cout << rho_Ne(r,0.,0.) << "\n";
-		r += 0.5;
+	//while(r < 10.){
+		//std::cout << rho_Ne(r,0.,0.) << "\n";
+		//r += 0.5;
+	//}
+
+	std::vector<std::array<int,2>> v;
+	for(int i = 1; i < 100; ++i){
+		v.push_back({i,i});
+	}
+	auto lambda = [](const std::array<int,2> &arr) -> int{
+		return arr[0] + arr[1];
+	};
+
+	auto res = eff_z::parallel::parallel_table(v, lambda);
+	for(auto &el: res){
+		std::cout << el << "\n";
 	}
 
 	return 0;

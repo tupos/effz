@@ -51,6 +51,63 @@ namespace eff_z{
 				return ps.my_sum;
 			}
 
+		template<typename T, typename Function>
+			class parallel_table_data{
+				private:
+					std::vector<T> input;
+					Function f;
+				public:
+					typedef typename
+						std::result_of<Function(T)>::type return_type;
+					tbb::concurrent_vector<return_type> output;
+
+					typedef typename std::vector<T>::const_iterator vec_it;
+					void operator()
+						(const tbb::blocked_range<vec_it> &range){
+							tbb::concurrent_vector<return_type> vec
+								= output;
+							for(vec_it it = range.begin();
+									it != range.end();
+									++it){
+								vec.push_back(f(*it));
+							}
+							output = vec;
+					}
+
+					parallel_table_data(parallel_table_data &tab,
+							tbb::split)
+						: input(tab.input), f(tab.f), output() {};
+
+					void join(const parallel_table_data &tab){
+						for(auto &el: tab.output){
+							output.push_back(el);
+						}
+					}
+
+					parallel_table_data(
+							const std::vector<T> &input,
+							Function f
+							) : input(input), f(f), output() {}
+			};
+
+		template<typename T, typename Function>
+			auto parallel_table(const std::vector<T> &input, Function f){
+				typedef typename std::vector<T>::const_iterator vec_it;
+				tbb::blocked_range<vec_it>
+					range(input.cbegin(), input.cend());
+				parallel_table_data<T,Function> tab_dat(input, f);
+				parallel_reduce(range, tab_dat);
+
+				typedef typename
+					std::result_of<Function(T)>::type return_type;
+				std::vector<return_type> output;
+				for(auto &el: tab_dat.output){
+					output.push_back(el);
+				}
+
+				return output;
+			}
+
 	} /* end namespace parallel */
 
 } /* end namespace eff_z */
