@@ -4,7 +4,16 @@
 #include "effz_helper_func.h"
 #include "effz_integration.h"
 #include "effz_parallel_func.h"
+
+#include "cereal/types/vector.hpp"
+#include "cereal/types/array.hpp"
+#include "cereal/types/tuple.hpp"
+#include "cereal/archives/json.hpp"
+
 #include <iostream>
+#include <fstream>
+#include <tuple>
+#include <algorithm>
 
 namespace eff_z{
 	namespace zeroth_order{
@@ -71,6 +80,139 @@ namespace eff_z{
 				};
 
 			return eff_z::integration::int_0_inf(integral);
+		}
+
+
+		void i_direct_database::calculate_database(){
+
+			std::vector<std::array<int,5>> direct_quantum_nums;
+			for(int n = 1; n <= 6; ++n){
+				for(int l = 0; l <= n - 1; ++l){
+					for(int n1 = 1; n1 <= 6; ++n1){
+						for(int l1 = 0; l1 <= n1 - 1; ++l1){
+							for(int k = 0; k <= std::min(l,l1); ++k){
+								direct_quantum_nums
+									.push_back({n,l,n1,l1,2*k});
+							}
+						}
+					}
+				}
+			}
+
+			for(int n = 1; n <= 6; ++n){
+				for(int l = 0; l <= n - 1; ++l){
+					for(int l1 = 0; l1 <= 2; ++l1){
+						for(int k = 0; k <= std::min(l,l1); ++k){
+							direct_quantum_nums
+								.push_back({n,l,7,l1,2*k});
+						}
+					}
+				}
+			}
+
+			for(int n1 = 1; n1 <= 6; ++n1){
+				for(int l1 = 0; l1 <= n1 - 1; ++l1){
+					for(int l = 0; l <= 2; ++l){
+						for(int k = 0; k <= std::min(l,l1); ++k){
+							direct_quantum_nums
+								.push_back({7,l,n1,l1,2*k});
+						}
+					}
+				}
+			}
+
+			for(int l = 0; l <= 2; ++l){
+				for(int l1 = 0; l1 <= 2; ++l1){
+					for(int k = 0; k <= std::min(l,l1); ++k){
+						direct_quantum_nums.push_back({7,l,7,l1,2*k});
+					}
+				}
+			}
+
+			auto f_to_map
+				= [](const std::array<int,5> &arr)
+				-> std::tuple<std::array<int,5>, double>{
+					return std::make_tuple(
+							arr,
+							i_direct(
+								arr[0],
+								arr[1],
+								arr[2],
+								arr[3],
+								arr[4])
+							);
+				};
+
+			database = eff_z::parallel::parallel_table(
+					direct_quantum_nums, f_to_map);
+		}
+
+		void i_direct_database::save_database(){
+			std::fstream s;
+			try{
+				s.open(path_to_data, s.trunc | s.out);
+				cereal::JSONOutputArchive output(s);
+				output(CEREAL_NVP(database));
+			} catch(const std::exception& e){
+				std::cerr << "io error with: " << e.what();
+				throw;
+			}
+		}
+
+		void i_direct_database::load_database(){
+			std::fstream s;
+			try{
+				s.open(path_to_data, s.in);
+				cereal::JSONInputArchive input(s);
+				input(CEREAL_NVP(database));
+			} catch(const std::exception& e){
+				std::cerr << "io error with: " << e.what();
+				throw;
+			}
+		}
+
+
+
+		i_direct_database::i_direct_database(
+				const std::string &path_to_data)
+			: path_to_data(path_to_data) {
+
+			}
+
+		double i_direct_database::get_i_direct(
+				const int n,
+				const int l,
+				const int n1,
+				const int l1,
+				const int k){
+			auto find_i_direct
+				= [n,l,n1,l1,k](
+						const std::tuple<std::array<int,5>, double> &el)
+				-> bool
+				{
+					return std::get<0>(el)
+						== std::array<int,5>({n,l,n1,l1,k});
+				};
+			auto element = std::find_if(
+					database.cbegin(),
+					database.cend(),
+					find_i_direct);
+			if(element != database.cend()){
+				return std::get<1>(*element);
+			} else {
+				return i_direct(n,l,n1,l1,k);
+			}
+		}
+
+		double i_direct_data_test(
+				const int n,
+				const int l,
+				const int n1,
+				const int l1,
+				const int k)
+		{
+			i_direct_database dat;
+			return dat.get_i_direct(n,l,n1,l1,k);
 		}
 
 		double three_j_prod_exchange(
@@ -217,26 +359,26 @@ namespace eff_z{
 				}
 			}
 			auto lambda = [](const std::array<int,6>& g_i){
-					return v_direct(g_i[0], g_i[1], g_i[2], g_i[3],
-							g_i[4], g_i[5]);
-					};
+				return v_direct(g_i[0], g_i[1], g_i[2], g_i[3],
+						g_i[4], g_i[5]);
+			};
 			sum = eff_z::parallel::parallel_sum<double>(
 					occ_nums_array, lambda);
 
 			//typedef std::vector<std::array<int,6>>::const_iterator
-				//occ_num_iter;
+			//occ_num_iter;
 
 			//const tbb::blocked_range<occ_num_iter>
-				//occ_num_range(
-						//occ_nums_array.cbegin(),occ_nums_array.cend());
+			//occ_num_range(
+			//occ_nums_array.cbegin(),occ_nums_array.cend());
 
 			//tbb::parallel_for(occ_num_range,
-					//[&](const tbb::blocked_range<occ_num_iter>& r){
-					//for(occ_num_iter it = r.begin(); it != r.end(); ++it){
-					//v_direct((*it)[0], (*it)[1], (*it)[2], (*it)[3],
-							//(*it)[4], (*it)[5]);
-					//}
-					//});
+			//[&](const tbb::blocked_range<occ_num_iter>& r){
+			//for(occ_num_iter it = r.begin(); it != r.end(); ++it){
+			//v_direct((*it)[0], (*it)[1], (*it)[2], (*it)[3],
+			//(*it)[4], (*it)[5]);
+			//}
+			//});
 
 			return sum;
 		}
@@ -253,10 +395,10 @@ namespace eff_z{
 				}
 			}
 			auto lambda = [](const std::array<int,8>& g_i){
-					return (g_i[3] != g_i[7]) ? 0 :
-						v_exchange(g_i[0], g_i[1], g_i[2], g_i[4],
+				return (g_i[3] != g_i[7]) ? 0 :
+					v_exchange(g_i[0], g_i[1], g_i[2], g_i[4],
 							g_i[5], g_i[6]);
-					};
+			};
 			sum = eff_z::parallel::parallel_sum<double>(
 					occ_nums_array, lambda);
 
@@ -321,5 +463,6 @@ namespace eff_z{
 			return sum;
 		}
 
-	}
-}
+	} /* end namespace zeroth_order */
+
+} /* end namespace eff_z */

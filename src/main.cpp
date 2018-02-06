@@ -80,7 +80,7 @@ inline double h_e(int n){
 
 
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) try {
 	std::cout << "Effective Z program\n";
 	//std::cout << eff_z::h_rnl(1,0, 3) << "\n";
 	//std::cout << eff_z::green_coulomb_h_rad(1., 0, {2.,1.}) << "\n";
@@ -126,21 +126,25 @@ int main(int argc, char *argv[]){
 		//r += 0.5;
 	//}
 
-	std::vector<std::array<int,2>> v;
-	for(int i = 1; i < 100; ++i){
-		v.push_back({i,i});
-	}
-	auto lambda = [](const std::array<int,2> &arr) -> int{
-		return arr[0] + arr[1];
-	};
+	//std::vector<std::array<int,2>> v;
+	//for(int i = 1; i < 100; ++i){
+		//v.push_back({i,i});
+	//}
+	//auto lambda = [](const std::array<int,2> &arr) -> int{
+		//return arr[0] + arr[1];
+	//};
 
-	auto res = eff_z::parallel::parallel_table(v, lambda);
-	for(auto &el: res){
-		std::cout << el << "\n";
-	}
+	//auto res = eff_z::parallel::parallel_table(v, lambda);
+	//for(auto &el: res){
+		//std::cout << el << "\n";
+	//}
 
-	return 0;
+	std::cout << eff_z::zeroth_order::i_direct_data_test(1,0,1,0,0) << "\n";
 
+	return EXIT_SUCCESS;
+
+} catch(const std::exception &e){
+	return EXIT_FAILURE;
 }
 
 Complex gf(double *r, int dim, void *params){

@@ -4,6 +4,7 @@
 #include <gsl/gsl_sf_coupling.h>
 #include <array>
 #include <vector>
+#include <string>
 
 namespace eff_z{
 	namespace zeroth_order{
@@ -20,6 +21,45 @@ namespace eff_z{
 				const int n1,
 				const int l1,
 				const int k);
+
+		class i_direct_database{
+			private:
+				std::string path_to_data;
+
+				typedef std::tuple<std::array<int,5>,double> elem_t;
+				std::vector<elem_t> database;
+
+				friend double i_direct(
+						const int n,
+						const int l,
+						const int n1,
+						const int l1,
+						const int k);
+
+				void calculate_database();
+				void save_database();
+				void load_database();
+
+			public:
+				i_direct_database(const std::string &path_to_data
+						= "./data/i_direct_database.txt");
+
+				double get_i_direct(
+						const int n,
+						const int l,
+						const int n1,
+						const int l1,
+						const int k);
+
+		};
+
+		double i_direct_data_test(
+				const int n,
+				const int l,
+				const int n1,
+				const int l1,
+				const int k
+				);
 
 		double three_j_prod_exchange(
 				const int l,
