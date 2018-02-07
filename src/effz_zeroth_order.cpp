@@ -11,6 +11,7 @@
 #include "cereal/archives/json.hpp"
 
 #include <iostream>
+#include <exception>
 #include <fstream>
 #include <tuple>
 #include <algorithm>
@@ -147,36 +148,35 @@ namespace eff_z{
 					direct_quantum_nums, f_to_map);
 		}
 
-		void i_direct_database::save_database(){
-			std::fstream s;
-			try{
-				s.open(path_to_data, s.trunc | s.out);
+		void i_direct_database::save_database(std::fstream &s){
 				cereal::JSONOutputArchive output(s);
 				output(CEREAL_NVP(database));
-			} catch(const std::exception& e){
-				std::cerr << "io error with: " << e.what();
-				throw;
-			}
 		}
 
-		void i_direct_database::load_database(){
-			std::fstream s;
-			try{
-				s.open(path_to_data, s.in);
+		void i_direct_database::load_database(std::fstream &s){
 				cereal::JSONInputArchive input(s);
 				input(CEREAL_NVP(database));
-			} catch(const std::exception& e){
-				std::cerr << "io error with: " << e.what();
-				throw;
-			}
 		}
-
-
 
 		i_direct_database::i_direct_database(
 				const std::string &path_to_data)
-			: path_to_data(path_to_data) {
-
+			: path_to_data(path_to_data), database() {
+				std::fstream s;
+				try{
+					s.open(path_to_data);
+					if(!s.is_open()){
+						std::cout << "calc" << "\n";
+						calculate_database();
+						save_database(s);
+					} else {
+						std::cout << "load" << "\n";
+						load_database(s);
+					}
+				} catch (const std::exception &e){
+					std::cerr << "error happened" << e.what();
+					throw;
+				}
+				s.close();
 			}
 
 		double i_direct_database::get_i_direct(

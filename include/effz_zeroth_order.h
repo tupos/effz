@@ -37,12 +37,12 @@ namespace eff_z{
 						const int k);
 
 				void calculate_database();
-				void save_database();
-				void load_database();
+				void save_database(std::fstream &s);
+				void load_database(std::fstream &s);
 
 			public:
 				i_direct_database(const std::string &path_to_data
-						= "./data/i_direct_database.txt");
+						= "i_direct_database.txt");
 
 				double get_i_direct(
 						const int n,
