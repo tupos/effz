@@ -117,9 +117,9 @@ int main(int argc, char *argv[]) try {
 		//<< eff_z::zeroth_order::e_0th(10., g_Ne) << "\n";
 	std::cout <<
 		eff_z::zeroth_order::z_star_0th
-		(100., eff_z::atomic_data::occ_nums::g[99]) << " "
+		(20., eff_z::atomic_data::occ_nums::g[19]) << " "
 		<< eff_z::zeroth_order::e_0th
-		(100., eff_z::atomic_data::occ_nums::g[99]) << "\n";
+		(20., eff_z::atomic_data::occ_nums::g[19]) << "\n";
 	//eff_z::zeroth_order::density_0th rho_Ne(10.,g_Ne);
 	//double r = 0.5;
 	//while(r < 10.){
