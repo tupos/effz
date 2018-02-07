@@ -165,11 +165,12 @@ namespace eff_z{
 				try{
 					s.open(path_to_data);
 					if(!s.is_open()){
-						std::cout << "calc" << "\n";
+						s.open(path_to_data, s.out | s.trunc);
+						//std::cout << "calc" << "\n";
 						calculate_database();
 						save_database(s);
 					} else {
-						std::cout << "load" << "\n";
+						//std::cout << "load" << "\n";
 						load_database(s);
 					}
 				} catch (const std::exception &e){
@@ -238,6 +239,7 @@ namespace eff_z{
 			return static_cast<double>(prefactor)
 				* three_j_1 * three_j_2 * three_j_1 * three_j_2;
 		}
+
 		double i_exchange(
 				const int n,
 				const int l,
@@ -286,6 +288,127 @@ namespace eff_z{
 			return eff_z::integration::int_0_inf(integral);
 		}
 
+		void i_exchange_database::calculate_database(){
+
+			std::vector<std::array<int,5>> exchange_quantum_nums;
+			for(int n = 1; n <= 6; ++n){
+				for(int l = 0; l <= n - 1; ++l){
+					for(int n1 = 1; n1 <= 6; ++n1){
+						for(int l1 = 0; l1 <= n1 - 1; ++l1){
+							for(int k = std::abs(l-l1); k <= l+l1; ++k){
+								exchange_quantum_nums
+									.push_back({n,l,n1,l1,k});
+							}
+						}
+					}
+				}
+			}
+
+			for(int n = 1; n <= 6; ++n){
+				for(int l = 0; l <= n - 1; ++l){
+					for(int l1 = 0; l1 <= 1; ++l1){
+						for(int k = std::abs(l-l1); k <= l+l1; ++k){
+							exchange_quantum_nums
+								.push_back({n,l,7,l1,k});
+						}
+					}
+				}
+			}
+
+			for(int n1 = 1; n1 <= 6; ++n1){
+				for(int l1 = 0; l1 <= n1 - 1; ++l1){
+					for(int l = 0; l <= 1; ++l){
+						for(int k = std::abs(l-l1); k <= l+l1; ++k){
+							exchange_quantum_nums
+								.push_back({7,l,n1,l1,k});
+						}
+					}
+				}
+			}
+
+			for(int l = 0; l <= 1; ++l){
+				for(int l1 = 0; l1 <= 1; ++l1){
+					for(int k = std::abs(l-l1); k <= l+l1; ++k){
+						exchange_quantum_nums.push_back({7,l,7,l1,k});
+					}
+				}
+			}
+
+			auto f_to_map
+				= [](const std::array<int,5> &arr)
+				-> std::tuple<std::array<int,5>, double>{
+					return std::make_tuple(
+							arr,
+							i_exchange(
+								arr[0],
+								arr[1],
+								arr[2],
+								arr[3],
+								arr[4])
+							);
+				};
+
+			database = eff_z::parallel::parallel_table(
+					exchange_quantum_nums, f_to_map);
+		}
+
+		void i_exchange_database::save_database(std::fstream &s){
+				cereal::JSONOutputArchive output(s);
+				output(CEREAL_NVP(database));
+		}
+
+		void i_exchange_database::load_database(std::fstream &s){
+				cereal::JSONInputArchive input(s);
+				input(CEREAL_NVP(database));
+		}
+
+		i_exchange_database::i_exchange_database(
+				const std::string &path_to_data)
+			: path_to_data(path_to_data), database() {
+				std::fstream s;
+				try{
+					s.open(path_to_data);
+					if(!s.is_open()){
+						s.open(path_to_data, s.out | s.trunc);
+						//std::cout << "calc" << "\n";
+						calculate_database();
+						save_database(s);
+					} else {
+						//std::cout << "load" << "\n";
+						load_database(s);
+					}
+				} catch (const std::exception &e){
+					std::cerr << "error happened " << e.what();
+					throw;
+				}
+				s.close();
+			}
+
+		double i_exchange_database::get_i_exchange(
+				const int n,
+				const int l,
+				const int n1,
+				const int l1,
+				const int k){
+			auto find_i_exchange
+				= [n,l,n1,l1,k](
+						const std::tuple<std::array<int,5>, double> &el)
+				-> bool
+				{
+					return std::get<0>(el)
+						== std::array<int,5>({n,l,n1,l1,k});
+				};
+			auto element = std::find_if(
+					database.cbegin(),
+					database.cend(),
+					find_i_exchange);
+			if(element != database.cend()){
+				return std::get<1>(*element);
+			} else {
+				return i_exchange(n,l,n1,l1,k);
+			}
+		}
+
 		double v_direct(
 				const int n,
 				const int l,
@@ -322,27 +445,45 @@ namespace eff_z{
 		}
 
 		double v_direct_total(const std::vector<std::array<int,4>> &g){
+			i_direct_database i_d;
 			double sum = 0.;
 			for(auto &g_i: g){
 				for(auto &g_j: g){
-					sum += v_direct(
-							g_i[0], g_i[1], g_i[2],
-							g_j[0], g_j[1], g_j[2]);
+					int n = g_i[0], l = g_i[1], m = g_i[2];
+					int n1 = g_j[0], l1 = g_j[1], m1 = g_j[2];
+
+					int k_boundary = std::min(l,l1);
+					double sum_d = 0.;
+					for(int k = 0; k <= k_boundary; ++k){
+						sum_d += 0.5 * i_d.get_i_direct(n,l,n1,l1,2 * k)
+							* three_j_prod_direct(l,m,l1,m1,2 * k);
+					}
+
+					sum += sum_d;
 				}
 			}
 			return sum;
 		}
 
 		double v_exchange_total(const std::vector<std::array<int,4>> &g){
+			i_exchange_database i_e;
 			double sum = 0.;
 			for(auto &g_i: g){
 				for(auto &g_j: g){
-					sum +=
-						(g_i[3] != g_j[3]) ?
-						0
-						:
-						v_exchange(g_i[0], g_i[1], g_i[2],
-								g_j[0], g_j[1], g_j[2]);
+					if(g_i[3] != g_j[3]){continue;}
+
+					int n = g_i[0], l = g_i[1], m = g_i[2];
+					int n1 = g_j[0], l1 = g_j[1], m1 = g_j[2];
+
+					int k_min = std::abs(l1 - l);
+					int k_max = l1 + l;
+
+					double sum_e = 0.;
+					for(int k = k_min; k <= k_max; ++k){
+						sum_e += 0.5 * i_e.get_i_exchange(n,l,n1,l1,k)
+							* three_j_prod_exchange(l,m,l1,m1,k);
+					}
+					sum += sum_e;
 				}
 			}
 			return sum;
@@ -365,25 +506,11 @@ namespace eff_z{
 			sum = eff_z::parallel::parallel_sum<double>(
 					occ_nums_array, lambda);
 
-			//typedef std::vector<std::array<int,6>>::const_iterator
-			//occ_num_iter;
-
-			//const tbb::blocked_range<occ_num_iter>
-			//occ_num_range(
-			//occ_nums_array.cbegin(),occ_nums_array.cend());
-
-			//tbb::parallel_for(occ_num_range,
-			//[&](const tbb::blocked_range<occ_num_iter>& r){
-			//for(occ_num_iter it = r.begin(); it != r.end(); ++it){
-			//v_direct((*it)[0], (*it)[1], (*it)[2], (*it)[3],
-			//(*it)[4], (*it)[5]);
-			//}
-			//});
-
 			return sum;
 		}
 
-		double v_exchange_total_par(const std::vector<std::array<int,4>> &g){
+		double v_exchange_total_par(
+				const std::vector<std::array<int,4>> &g){
 			double sum = 0.;
 			std::vector<std::array<int,8>>
 				occ_nums_array;

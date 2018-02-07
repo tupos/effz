@@ -103,9 +103,9 @@ namespace eff_z{
 			double int_0_inf(
 					F f,
 					const double r_cutoff = 29.,
-					double r_cutoff_increase = 1.5,
+					double r_cutoff_increase = 20.,
 					const double eps = 1.49e-8,
-					const int max_num_iter = 50)
+					const int max_num_iter = 10)
 			{
 				double res_0_cutoff =
 					eff_z::integration::quad(f, {0.,r_cutoff});
@@ -118,7 +118,7 @@ namespace eff_z{
 						eff_z::integration::
 						quad(f, {r_cutoff_old,r_cutoff_new});
 					res_0_cutoff += residue;
-					r_cutoff_increase *= 2;
+					r_cutoff_increase *= 2.;
 					r_cutoff_old = r_cutoff_new;
 					r_cutoff_new += r_cutoff_increase;
 					num_iter++;
@@ -132,11 +132,11 @@ namespace eff_z{
 					F f,
 					const double r,
 					const double r_cutoff = 29.,
-					double r_cutoff_increase = 1.5,
+					double r_cutoff_increase = 20.,
 					const double eps = 1.49e-8,
-					const int max_num_iter = 50)
+					const int max_num_iter = 10)
 			{
-				double res_0_cutoff =
+				double res_r_cutoff =
 					eff_z::integration::quad(f, {r,r_cutoff});
 				double residue = 0.;
 				double r_cutoff_old = r_cutoff;
@@ -146,15 +146,15 @@ namespace eff_z{
 					residue =
 						eff_z::integration::
 						quad(f, {r_cutoff_old,r_cutoff_new});
-					res_0_cutoff += residue;
-					r_cutoff_increase *= 2;
+					res_r_cutoff += residue;
+					r_cutoff_increase *= 2.;
 					r_cutoff_old = r_cutoff_new;
 					r_cutoff_new += r_cutoff_increase;
 					num_iter++;
 					if(num_iter > max_num_iter){break;}
 				} while (std::abs(residue) > eps);
 
-				return res_0_cutoff;
+				return res_r_cutoff;
 			}
 
 	} /*namespace integration*/

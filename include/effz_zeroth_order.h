@@ -42,7 +42,7 @@ namespace eff_z{
 
 			public:
 				i_direct_database(const std::string &path_to_data
-						= "i_direct_database.txt");
+						= "./data/i_direct_database.txt");
 
 				double get_i_direct(
 						const int n,
@@ -52,14 +52,6 @@ namespace eff_z{
 						const int k);
 
 		};
-
-		double i_direct_data_test(
-				const int n,
-				const int l,
-				const int n1,
-				const int l1,
-				const int k
-				);
 
 		double three_j_prod_exchange(
 				const int l,
@@ -74,6 +66,37 @@ namespace eff_z{
 				const int n1,
 				const int l1,
 				const int k);
+
+		class i_exchange_database{
+			private:
+				std::string path_to_data;
+
+				typedef std::tuple<std::array<int,5>,double> elem_t;
+				std::vector<elem_t> database;
+
+				friend double i_exchange(
+						const int n,
+						const int l,
+						const int n1,
+						const int l1,
+						const int k);
+
+				void calculate_database();
+				void save_database(std::fstream &s);
+				void load_database(std::fstream &s);
+
+			public:
+				i_exchange_database(const std::string &path_to_data
+						= "./data/i_exchange_database.txt");
+
+				double get_i_exchange(
+						const int n,
+						const int l,
+						const int n1,
+						const int l1,
+						const int k);
+
+		};
 
 		double v_direct(
 				const int n,
