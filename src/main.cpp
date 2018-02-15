@@ -4,6 +4,7 @@
 
 #include "effz_atomic_data.h"
 #include "effz_zeroth_order.h"
+#include "effz_zeroth_order_python.h"
 
 
 
@@ -75,6 +76,7 @@ int main(int argc, char *argv[]) try {
 				//g[2],g[3],g[4]) << "\n";
 	//}
 
+	python_test();
 
 
 
