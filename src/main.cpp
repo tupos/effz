@@ -1,9 +1,11 @@
+#include <Python.h>
 #include <iostream>
 #include <vector>
 #include <array>
 
 #include "effz_atomic_data.h"
 #include "effz_zeroth_order.h"
+#include "effz_python_utility.h"
 #include "effz_zeroth_order_python.h"
 
 
@@ -76,12 +78,30 @@ int main(int argc, char *argv[]) try {
 				//g[2],g[3],g[4]) << "\n";
 	//}
 
-	python_test();
+	eff_z::zeroth_order::python_test();
+	Py_Initialize();
+	PyRun_SimpleString("import sys\n" "import os");
+	PyRun_SimpleString("sys.path.append(os.getcwd() + \"/src\")");
+	//PyRun_SimpleString("print(sys.path)");
+	PyObject *tmp
+		= eff_z::occ_nums_to_PyObject(eff_z::atomic_data::occ_nums::g[10]);
+	PyObject *tmp1
+		= eff_z::occ_nums_to_PyObject(g_He);
+	PyObject *tmp2
+		= eff_z::occ_nums_to_PyObject(g_Li);
+	eff_z::print_PyObject(tmp, tmp1, tmp2);
+	eff_z::zeroth_order::print_rho_h_l_4(g_He);
+
+	if(Py_FinalizeEx() < 0){
+		return 120;
+	}
 
 
 
 	return EXIT_SUCCESS;
 
 } catch(const std::exception &e){
+	return EXIT_FAILURE;
+} catch(...){
 	return EXIT_FAILURE;
 }

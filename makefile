@@ -36,8 +36,8 @@ HEADERDIR = include
 SOURCES = main.cpp grid.cpp integrate_nd.cpp utility.cpp\
 		  effz_spec_func.cpp effz_zeroth_order.cpp\
 		  effz_atomic_data.cpp effz_zeroth_order_python.cpp\
-		  monte_complex.cpp
-
+		  monte_complex.cpp effz_exceptions.cpp\
+		  effz_python_utility.cpp
 HEADERS =
 
 
