@@ -3,7 +3,7 @@
 #include "effz_exceptions.h"
 #include "effz_python_utility.h"
 
-#include <cstdlib>
+#include <iostream>
 
 
 namespace eff_z{
@@ -195,22 +195,6 @@ namespace eff_z{
 			}
 		}
 
-		//void print_rho_h_l_4args_latex(std::ostream& os,
-				//const std::vector<std::array<int,4>> &g){
-			//try{
-				//PyObject *rho_evaluated = computed_rho_h_l_4args(g);
-				//if(!rho_evaluated){
-					//throw python_exception("eval error");
-				//}
-
-				//Py_DECREF(rho_evaluated);
-			//} catch(const python_exception &e){
-				//PyErr_Print();
-				//std::cerr << e.what() << "\n";
-			//}
-
-		//}
-
 		PyObject* computed_rho_h_l_fourier
 			(const std::vector<std::array<int,4>> &g){
 				PyObject *g_py = occ_nums_to_PyObject(g);
@@ -337,118 +321,5 @@ namespace eff_z{
 			}
 		}
 
-		int python_test()
-		{
-			putenv((char*)"PYTHONDONTWRITEBYTECODE=1");
-			PyObject *pName, *pModule, *p_my_print;
-			PyObject *p_my_print_args, *p_my_print_args_val;
-			PyObject *p_h_l_rnl, *p_h_l_rnl_args;
-			PyObject *p_h_l_rnl_val;
-			size_t size1 = 2, size2 = 4;
-			int *arr = new int[size1 * size2];
-			if(arr == NULL){
-				fprintf(stderr, "malloc failure");
-				exit(EXIT_FAILURE);
-			}
-			int a[2][4] = {{1,0,0,1},{1,0,0,-1}};
-			for(size_t k = 0; k < size1; ++k){
-				for(size_t l = 0; l < size2; ++l){
-					arr[size2 * k + l] = a[k][l];
-				}
-			}
-
-			const char* m_name = "effz_zeroth_order_symbolic";
-			const char* f_name = "my_print";
-
-			Py_Initialize();
-			PyRun_SimpleString("import sys\n" "import os");
-			PyRun_SimpleString("sys.path.append(os.getcwd() + \"/src\")");
-			//PyRun_SimpleString("print(sys.path)");
-
-			pName = PyUnicode_DecodeFSDefault(m_name);
-			if(pName == NULL){
-				fprintf(stderr, "Error decoding python file name.\n");
-				Py_XDECREF(pName);
-				return 1;
-			}
-
-			pModule = PyImport_Import(pName);
-			Py_DECREF(pName);
-
-			if(pModule != NULL){
-				p_my_print = PyObject_GetAttrString(pModule, f_name);
-				p_h_l_rnl = PyObject_GetAttrString(pModule, "h_l_rnl");
-
-				if(p_my_print && PyCallable_Check(p_my_print)
-						&& p_h_l_rnl && PyCallable_Check(p_h_l_rnl)){
-
-					p_h_l_rnl_args = PyTuple_New(4);
-					PyObject *z = get_sympy_Symbol("z");
-					PyObject *r = get_sympy_Symbol("r");
-					PyObject *n = Py_BuildValue("i", 1);
-					PyObject *l = Py_BuildValue("i", 0);
-					p_my_print_args = PyTuple_New(1);
-					p_my_print_args_val
-						= p_matrix_from_int_array(arr, size1, size2);
-					if(!z || !r || !n || !l || !p_my_print_args_val){
-						Py_DECREF(p_h_l_rnl_args);
-						Py_DECREF(p_my_print_args);
-						Py_DECREF(pModule);
-						fprintf(stderr, "Error while creating arguments\n");
-						return 1;
-					}
-
-					PyTuple_SetItem(p_h_l_rnl_args, 0, z);
-					PyTuple_SetItem(p_h_l_rnl_args, 1, n);
-					PyTuple_SetItem(p_h_l_rnl_args, 2, l);
-					PyTuple_SetItem(p_h_l_rnl_args, 3, r);
-
-					p_h_l_rnl_val
-						= PyObject_CallObject(p_h_l_rnl, p_h_l_rnl_args);
-					PyObject *t
-						= PyObject_CallMethod(p_h_l_rnl_val, "simplify","");
-					Py_DECREF(p_h_l_rnl_val);
-					p_h_l_rnl_val = t;
-
-					if(p_h_l_rnl_val != NULL){
-						PyTuple_SetItem(p_my_print_args, 0, p_h_l_rnl_val);
-						pprint_sympy_Object(p_h_l_rnl_val);
-
-						p_my_print_args_val
-							= PyObject_CallObject(p_my_print, p_my_print_args);
-
-						Py_DECREF(p_my_print_args);
-						Py_DECREF(p_h_l_rnl_args);
-						Py_DECREF(p_my_print_args_val);
-						Py_DECREF(p_h_l_rnl_val);
-					} else {
-						Py_DECREF(p_my_print);
-						Py_DECREF(p_h_l_rnl);
-						Py_DECREF(pModule);
-						PyErr_Print();
-						fprintf(stderr, "Call failed\n");
-						return 1;
-					}
-
-				} else {
-					if(PyErr_Occurred()){
-						PyErr_Print();
-					}
-					fprintf(stderr, "Cannot find function \"%s\"\n", f_name);
-				}
-				Py_XDECREF(p_my_print);
-				Py_XDECREF(p_h_l_rnl);
-				Py_DECREF(pModule);
-			} else {
-				PyErr_Print();
-				fprintf(stderr, "Failed to load \"%s\"\n", m_name);
-				return 1;
-			}
-			if(Py_FinalizeEx() < 0){
-				return 120;
-			}
-			delete [] arr;
-			return 0;
-		}
 	} /* end namespace zeroth_order */
 } /* end namespace eff_z */

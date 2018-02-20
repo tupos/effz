@@ -78,26 +78,23 @@ int main(int argc, char *argv[]) try {
 	//g[2],g[3],g[4]) << "\n";
 	//}
 
-	eff_z::zeroth_order::python_test();
+	putenv((char*)"PYTHONDONTWRITEBYTECODE=1");
 	Py_Initialize();
 	PyRun_SimpleString("import sys\n" "import os");
 	PyRun_SimpleString("sys.path.append(os.getcwd() + \"/src\")");
 	//PyRun_SimpleString("print(sys.path)");
-	//PyObject *tmp
-	//= eff_z::occ_nums_to_PyObject(eff_z::atomic_data::occ_nums::g[10]);
-	//PyObject *tmp1
-	//= eff_z::occ_nums_to_PyObject(g_He);
-	//PyObject *tmp2
-	//= eff_z::occ_nums_to_PyObject(g_Li);
-	//eff_z::print_PyObject(tmp, tmp1, tmp2);
 	zeroth_order::print_rho_h_l(g_He);
 	PyObject *real = get_sympy_Symbol("r", "real", "positive");
 	PyObject *symb = get_sympy_Symbol("symb");
 	print_PyObject(get_assumptions0_sympy_Symbol(real), get_assumptions0_sympy_Symbol(symb));
 	PyObject *rho_he = zeroth_order::computed_rho_h_l(g_He);
 	std::wcout << sympy_Object_to_latex(rho_he) << "\n";
-	auto vec = sympy_Objects_to_latex(rho_he,rho_he);
-	std::wcout << vec[0] << "\n" << vec[1] << "\n";
+	PyObject *rho_be_fourier = zeroth_order::computed_rho_h_l_fourier(g_Be);
+	std::wcout << sympy_Object_to_latex(rho_be_fourier) << "\n";
+	pprint_sympy_Object(rho_be_fourier);
+	PyObject *asf_be = zeroth_order::computed_asf_h_l(g_Be);
+	std::wcout << sympy_Object_to_latex(asf_be) << "\n";
+	pprint_sympy_Object(asf_be);
 
 	if(Py_FinalizeEx() < 0){
 		return 120;

@@ -6,7 +6,6 @@
 
 #include <vector>
 #include <array>
-#include <istream>
 
 
 namespace eff_z{
@@ -37,7 +36,6 @@ namespace eff_z{
 		PyObject* computed_asf_h_l
 			(const std::vector<std::array<int,4>> &g);
 
-		int python_test();
 
 	} /* end namespace zeroth_order */
 } /* end namespace eff_z */
