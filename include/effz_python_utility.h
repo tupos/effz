@@ -3,9 +3,13 @@
 
 #include <Python.h>
 
+#include "effz_exceptions.h"
+#include "effz_utility.h"
+
 #include <vector>
 #include <array>
 #include <iostream>
+#include <string>
 
 namespace eff_z{
 
@@ -23,13 +27,72 @@ namespace eff_z{
 			pprint_sympy_Object(args...);
 		}
 
+	std::wstring sympy_Object_to_latex(PyObject *obj);
+	template<typename... Args>
+		std::vector<std::wstring> sympy_Objects_to_latex(Args&&... args)
+		{
+			return std::vector<std::wstring>{
+					sympy_Object_to_latex(std::forward<Args>(args))...};
+		}
+
 	PyObject *
 		occ_nums_to_PyObject(const std::vector<std::array<int,4>> &g);
 
 	PyObject* p_matrix_from_int_array
 		(int *arr, size_t size1, size_t size2);
 
+	PyObject *get_assumptions0_sympy_Symbol(PyObject *s);
+
 	PyObject *get_sympy_Symbol(const char *s_name);
+
+	template<typename T, typename... Args>
+		PyObject *get_sympy_Symbol(
+				const char *s_name, T val, Args... args)
+		{
+			auto args_array = make_array(val, args...);
+			PyObject *sympy, *symbol, *symbol_instance;
+			try{
+				sympy = PyImport_ImportModule("sympy");
+				if(!sympy){
+					throw python_exception("error finding sympy");
+				}
+
+				symbol = PyObject_GetAttrString(sympy, "Symbol");
+				Py_DECREF(sympy);
+				if(!symbol){
+					throw python_exception("error building symbol");
+				}
+				PyObject *symbol_name = Py_BuildValue("(s)", s_name);
+				if(!symbol_name){
+					throw python_exception("error building py value");
+				}
+
+				PyObject *assumptions = PyDict_New();
+				if(!assumptions){
+					throw python_exception("error building pythod dict");
+				}
+				for(auto &key: args_array){
+					PyDict_SetItemString(assumptions, key, Py_True);
+				}
+
+				symbol_instance = PyObject_Call(
+						symbol, symbol_name, assumptions);
+				Py_DECREF(assumptions);
+				Py_DECREF(symbol_name);
+				Py_DECREF(symbol);
+				if(!symbol_instance){
+					throw python_exception("error building sympy symbol");
+				}
+
+			} catch(const python_exception& e){
+				PyErr_Print();
+				std::cerr << e.what() << "\n";
+				return NULL;
+			}
+
+			return symbol_instance;
+
+		}
 } /* end namespace eff_z */
 
 #endif /* EFFZ_PYTHON_UTILITY_H */

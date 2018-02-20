@@ -7,7 +7,7 @@
 namespace eff_z{
 
 	void print_PyObject(PyObject *obj){
-		PyObject *builtins, *print, *arg;
+		PyObject *builtins, *print, *arg, *result;
 		try{
 			if(!obj){
 				throw python_exception("obj to print is NULL");
@@ -28,22 +28,21 @@ namespace eff_z{
 				throw python_exception("python alloc error");
 			}
 
-			if(!PyObject_CallObject(print, arg)){
-				throw python_exception("python call error");
-			}
+			result = PyObject_CallObject(print, arg);
 			Py_DECREF(arg);
 			Py_DECREF(print);
+
+			if(!result){
+				throw python_exception("python call error");
+			}
 		} catch(const python_exception& e){
-			Py_XDECREF(arg);
-			Py_XDECREF(print);
-			Py_XDECREF(builtins);
 			PyErr_Print();
 			std::cerr << e.what() << "\n";
 		}
 	}
 
 	void pprint_sympy_Object(PyObject *obj){
-		PyObject *sympy, *pprint, *arg;
+		PyObject *sympy, *pprint, *arg, *result;
 		try{
 			if(!obj){
 				throw python_exception("obj to print is NULL");
@@ -64,18 +63,58 @@ namespace eff_z{
 				throw python_exception("python alloc error");
 			}
 
-			if(!PyObject_CallObject(pprint, arg)){
-				throw python_exception("python call error");
-			}
+			result = PyObject_CallObject(pprint, arg);
 			Py_DECREF(arg);
 			Py_DECREF(pprint);
+
+			if(!result){
+				throw python_exception("python call error");
+			}
 		} catch(const python_exception& e){
-			Py_XDECREF(arg);
-			Py_XDECREF(pprint);
-			Py_XDECREF(sympy);
 			PyErr_Print();
 			std::cerr << e.what() << "\n";
 		}
+	}
+
+	std::wstring sympy_Object_to_latex(PyObject *obj){
+		PyObject *sympy, *pprint, *arg, *string;
+		try{
+			if(!obj){
+				throw python_exception("obj to print is NULL");
+			}
+			sympy = PyImport_ImportModule("sympy");
+			if(!sympy){
+				throw python_exception("python alloc error");
+			}
+
+			pprint = PyObject_GetAttrString(sympy, "latex");
+			Py_DECREF(sympy);
+			if(!pprint){
+				throw python_exception("python alloc error");
+			}
+
+			arg = Py_BuildValue("(O)", obj);
+			if(!arg){
+				throw python_exception("python alloc error");
+			}
+
+			string = PyObject_CallObject(pprint, arg);
+			Py_DECREF(arg);
+			Py_DECREF(pprint);
+
+			if(!string){
+				throw python_exception("python call error");
+			}
+
+			Py_UNICODE* c_str = PyUnicode_AS_UNICODE(string);
+			std::wstring res(c_str);
+			return res;
+		} catch(const python_exception& e){
+			PyErr_Print();
+			std::cerr << e.what() << "\n";
+			return std::wstring();
+		}
+
 	}
 
 	PyObject *
@@ -144,6 +183,27 @@ error:
 				return NULL;
 			}
 
+		PyObject *get_assumptions0_sympy_Symbol(PyObject *s){
+			PyObject *assumptions0;
+			try{
+				if(!s){
+					throw python_exception("symbol is NULL");
+				}
+
+				assumptions0 = PyObject_GetAttrString(s, "assumptions0");
+				if(!assumptions0){
+					throw python_exception("error calling assumptions0");
+				}
+
+			} catch(const python_exception& e){
+				PyErr_Print();
+				std::cerr << e.what() << "\n";
+				return NULL;
+			}
+
+			return assumptions0;
+		}
+
 		PyObject *get_sympy_Symbol(const char *s_name){
 			PyObject *sympy, *symbol, *symbol_instance;
 			try{
@@ -173,4 +233,5 @@ error:
 
 			return symbol_instance;
 		}
+
 } /* end namespace eff_z */

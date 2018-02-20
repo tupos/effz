@@ -9,7 +9,7 @@
 #include "effz_zeroth_order_python.h"
 
 
-
+using namespace eff_z;
 
 
 int main(int argc, char *argv[]) try {
@@ -39,13 +39,13 @@ int main(int argc, char *argv[]) try {
 	std::cout << eff_z::zeroth_order::z_star_0th(5., g_Bo) << " "
 		<< eff_z::zeroth_order::e_0th(5., g_Bo) << "\n";
 	//std::cout << eff_z::zeroth_order::z_star_0th(2., g_He) << " "
-		//<< eff_z::zeroth_order::e_0th(2., g_He) << "\n";
+	//<< eff_z::zeroth_order::e_0th(2., g_He) << "\n";
 	//std::cout << eff_z::zeroth_order::z_star_0th(3., g_Li) << " "
-		//<< eff_z::zeroth_order::e_0th(3., g_Li) << "\n";
+	//<< eff_z::zeroth_order::e_0th(3., g_Li) << "\n";
 	//std::cout << eff_z::zeroth_order::z_star_0th(4., g_Be) << " "
-		//<< eff_z::zeroth_order::e_0th(4., g_Be) << "\n";
+	//<< eff_z::zeroth_order::e_0th(4., g_Be) << "\n";
 	//std::cout << eff_z::zeroth_order::z_star_0th(10., g_Ne) << " "
-		//<< eff_z::zeroth_order::e_0th(10., g_Ne) << "\n";
+	//<< eff_z::zeroth_order::e_0th(10., g_Ne) << "\n";
 	std::cout <<
 		eff_z::zeroth_order::z_star_0th
 		(20., eff_z::atomic_data::occ_nums::g[19]) << " "
@@ -60,22 +60,22 @@ int main(int argc, char *argv[]) try {
 
 	//std::vector<std::array<int,5>> exchange_quantum_nums;
 	//for(int n = 1; n <= 6; ++n){
-		//for(int l = 0; l <= n - 1; ++l){
-			//for(int n1 = 1; n1 <= 6; ++n1){
-				//for(int l1 = 0; l1 <= n1 - 1; ++l1){
-					//for(int k = std::abs(l-l1); k <= l+l1; ++k){
-						//exchange_quantum_nums
-							//.push_back({n,l,n1,l1,k});
-					//}
-				//}
-			//}
-		//}
+	//for(int l = 0; l <= n - 1; ++l){
+	//for(int n1 = 1; n1 <= 6; ++n1){
+	//for(int l1 = 0; l1 <= n1 - 1; ++l1){
+	//for(int k = std::abs(l-l1); k <= l+l1; ++k){
+	//exchange_quantum_nums
+	//.push_back({n,l,n1,l1,k});
+	//}
+	//}
+	//}
+	//}
 	//}
 	//for(auto &g: exchange_quantum_nums){
-		//std::cout << "{" << g[0] << "," << g[1] << "," << g[2]
-			//<< "," << g[3] << "," << g[4] << "} ";
-		//std::cout << eff_z::zeroth_order::i_exchange(g[0],g[1],
-				//g[2],g[3],g[4]) << "\n";
+	//std::cout << "{" << g[0] << "," << g[1] << "," << g[2]
+	//<< "," << g[3] << "," << g[4] << "} ";
+	//std::cout << eff_z::zeroth_order::i_exchange(g[0],g[1],
+	//g[2],g[3],g[4]) << "\n";
 	//}
 
 	eff_z::zeroth_order::python_test();
@@ -83,14 +83,21 @@ int main(int argc, char *argv[]) try {
 	PyRun_SimpleString("import sys\n" "import os");
 	PyRun_SimpleString("sys.path.append(os.getcwd() + \"/src\")");
 	//PyRun_SimpleString("print(sys.path)");
-	PyObject *tmp
-		= eff_z::occ_nums_to_PyObject(eff_z::atomic_data::occ_nums::g[10]);
-	PyObject *tmp1
-		= eff_z::occ_nums_to_PyObject(g_He);
-	PyObject *tmp2
-		= eff_z::occ_nums_to_PyObject(g_Li);
-	eff_z::print_PyObject(tmp, tmp1, tmp2);
-	eff_z::zeroth_order::print_rho_h_l_4(g_He);
+	//PyObject *tmp
+	//= eff_z::occ_nums_to_PyObject(eff_z::atomic_data::occ_nums::g[10]);
+	//PyObject *tmp1
+	//= eff_z::occ_nums_to_PyObject(g_He);
+	//PyObject *tmp2
+	//= eff_z::occ_nums_to_PyObject(g_Li);
+	//eff_z::print_PyObject(tmp, tmp1, tmp2);
+	zeroth_order::print_rho_h_l(g_He);
+	PyObject *real = get_sympy_Symbol("r", "real", "positive");
+	PyObject *symb = get_sympy_Symbol("symb");
+	print_PyObject(get_assumptions0_sympy_Symbol(real), get_assumptions0_sympy_Symbol(symb));
+	PyObject *rho_he = zeroth_order::computed_rho_h_l(g_He);
+	std::wcout << sympy_Object_to_latex(rho_he) << "\n";
+	auto vec = sympy_Objects_to_latex(rho_he,rho_he);
+	std::wcout << vec[0] << "\n" << vec[1] << "\n";
 
 	if(Py_FinalizeEx() < 0){
 		return 120;

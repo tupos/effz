@@ -6,3 +6,4 @@ eff_z
 ._.DS_Store
 *.swp
 /**.txt*/
+.ipynb_checkpoints

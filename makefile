@@ -33,7 +33,7 @@ SRCDIR = src
 BUILDDIR = build
 HEADERDIR = include
 
-SOURCES = main.cpp grid.cpp integrate_nd.cpp utility.cpp\
+SOURCES = main.cpp grid.cpp integrate_nd.cpp effz_utility.cpp\
 		  effz_spec_func.cpp effz_zeroth_order.cpp\
 		  effz_atomic_data.cpp effz_zeroth_order_python.cpp\
 		  monte_complex.cpp effz_exceptions.cpp\
