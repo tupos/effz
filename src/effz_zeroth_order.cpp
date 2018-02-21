@@ -572,7 +572,7 @@ namespace eff_z{
 
 
 		density_0th::density_0th(const double z,
-				const std::vector<std::array<int,4>> &occ_nums)
+				const occ_nums_array &occ_nums)
 			: z(z), occ_nums(occ_nums) {};
 
 		double density_0th::operator()(

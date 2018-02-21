@@ -10,63 +10,73 @@
 
 
 using namespace eff_z;
+using namespace zeroth_order;
+using namespace atomic_data;
 
 
 int main(int argc, char *argv[]) try {
 
 	std::cout << "Effective Z program\n";
 
-	std::vector<std::array<int,4>> g_He = {{1,0,0,1},{1,0,0,-1}};
-	std::vector<std::array<int,4>> g_Li = {
-		{1,0,0,1},{1,0,0,-1},
-		{2,0,0,1}
-	};
-	std::vector<std::array<int,4>> g_Be = {
-		{1,0,0,1},{1,0,0,-1},
-		{2,0,0,1},{2,0,0,-1}
-	};
-	std::vector<std::array<int,4>> g_Bo = {
-		{1,0,0,1},{1,0,0,-1},
-		{2,0,0,1},{2,0,0,-1},
-		{2,1,-1,1}
-	};
-	std::vector<std::array<int,4>> g_Ne = {
-		{1,0,0,1},{1,0,0,-1},
-		{2,0,0,1},{2,0,0,-1},
-		{2,1,-1,1},{2,1,0,1},{2,1,1,1},
-		{2,1,-1,-1},{2,1,0,-1},{2,1,1,-1}
-	};
-	std::cout << eff_z::zeroth_order::z_star_0th(5., g_Bo) << " "
-		<< eff_z::zeroth_order::e_0th(5., g_Bo) << "\n";
-	std::cout << eff_z::zeroth_order::z_star_0th(2., g_He) << " "
-	<< eff_z::zeroth_order::e_0th(2., g_He) << "\n";
-	std::cout << eff_z::zeroth_order::z_star_0th(3., g_Li) << " "
-	<< eff_z::zeroth_order::e_0th(3., g_Li) << "\n";
-	std::cout << eff_z::zeroth_order::z_star_0th(4., g_Be) << " "
-	<< eff_z::zeroth_order::e_0th(4., g_Be) << "\n";
-	std::cout << eff_z::zeroth_order::z_star_0th(10., g_Ne) << " "
-	<< eff_z::zeroth_order::e_0th(10., g_Ne) << "\n";
+	std::cout << eff_z::zeroth_order::z_star_0th(2., occ_nums_data::g_He)
+		<< " "
+		<< eff_z::zeroth_order::e_0th(2., occ_nums_data::g_He) << "\n";
+
+	std::cout << eff_z::zeroth_order::z_star_0th(3., occ_nums_data::g_Li)
+		<< " "
+		<< eff_z::zeroth_order::e_0th(3., occ_nums_data::g_Li) << "\n";
+
+	std::cout << eff_z::zeroth_order::z_star_0th(4., occ_nums_data::g_Be)
+		<< " "
+		<< eff_z::zeroth_order::e_0th(4., occ_nums_data::g_Be) << "\n";
+
+	std::cout << eff_z::zeroth_order::z_star_0th(5., occ_nums_data::g_B)
+		<< " "
+		<< eff_z::zeroth_order::e_0th(5., occ_nums_data::g_B) << "\n";
+
+	std::cout << eff_z::zeroth_order::z_star_0th(6., occ_nums_data::g_C)
+		<< " "
+		<< eff_z::zeroth_order::e_0th(6., occ_nums_data::g_C) << "\n";
+
+	std::cout << eff_z::zeroth_order::z_star_0th(7., occ_nums_data::g_N)
+		<< " "
+		<< eff_z::zeroth_order::e_0th(7., occ_nums_data::g_N) << "\n";
+
+	std::cout << eff_z::zeroth_order::z_star_0th(8., occ_nums_data::g_O)
+		<< " "
+		<< eff_z::zeroth_order::e_0th(8., occ_nums_data::g_O) << "\n";
+
+	std::cout << eff_z::zeroth_order::z_star_0th(9., occ_nums_data::g_F)
+		<< " "
+		<< eff_z::zeroth_order::e_0th(9., occ_nums_data::g_F) << "\n";
+
+	std::cout << eff_z::zeroth_order::z_star_0th(10., occ_nums_data::g_Ne)
+		<< " "
+		<< eff_z::zeroth_order::e_0th(10., occ_nums_data::g_Ne) << "\n";
+
 	std::cout <<
 		eff_z::zeroth_order::z_star_0th
-		(20., eff_z::atomic_data::occ_nums::g[19]) << " "
+		(20., atomic_data::occ_nums_data::g[19]) << " "
 		<< eff_z::zeroth_order::e_0th
-		(20., eff_z::atomic_data::occ_nums::g[19]) << "\n";
+		(20., atomic_data::occ_nums_data::g[19]) << "\n";
 
 	putenv((char*)"PYTHONDONTWRITEBYTECODE=1");
 	Py_Initialize();
 	PyRun_SimpleString("import sys\n" "import os");
 	PyRun_SimpleString("sys.path.append(os.getcwd() + \"/src\")");
 	//PyRun_SimpleString("print(sys.path)");
-	zeroth_order::print_rho_h_l(g_He);
+	zeroth_order::print_rho_h_l(occ_nums_data::g_He);
 	PyObject *real = get_sympy_Symbol("r", "real", "positive");
 	PyObject *symb = get_sympy_Symbol("symb");
 	print_PyObject(get_assumptions0_sympy_Symbol(real), get_assumptions0_sympy_Symbol(symb));
-	PyObject *rho_he = zeroth_order::computed_rho_h_l(g_He);
+	PyObject *rho_he = zeroth_order::computed_rho_h_l(occ_nums_data::g_He);
 	std::wcout << sympy_Object_to_latex(rho_he) << "\n";
-	PyObject *rho_be_fourier = zeroth_order::computed_rho_h_l_fourier(g_Be);
+	PyObject *rho_be_fourier
+		= zeroth_order::computed_rho_h_l_fourier(occ_nums_data::g_Be);
 	std::wcout << sympy_Object_to_latex(rho_be_fourier) << "\n";
 	pprint_sympy_Object(rho_be_fourier);
-	PyObject *asf_be = zeroth_order::computed_asf_h_l(g_Be);
+	PyObject *asf_be
+		= zeroth_order::computed_asf_h_l(occ_nums_data::g_Be);
 	std::wcout << sympy_Object_to_latex(asf_be) << "\n";
 	pprint_sympy_Object(asf_be);
 

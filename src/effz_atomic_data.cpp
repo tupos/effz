@@ -4,8 +4,8 @@ namespace eff_z {
 
 	namespace atomic_data {
 
-		const std::vector<std::vector<std::array<int,4>>>
-			occ_nums::g = {
+		const std::vector<occ_nums_array>
+			occ_nums_data::g = {
 				{
 					{1,0,0,1}
 				},
@@ -1665,6 +1665,32 @@ namespace eff_z {
 				}
 			};
 
+		const occ_nums_array occ_nums_data::g_He
+			= {{1,0,0,1},{1,0,0,-1}};
+		const occ_nums_array occ_nums_data::g_Li
+			= {{1,0,0,1},{1,0,0,-1},{2,0,0,1}};
+		const occ_nums_array occ_nums_data::g_Be
+			= {{1,0,0,1},{1,0,0,-1},{2,0,0,1},{2,0,0,-1}};
+		const occ_nums_array occ_nums_data::g_B
+			= {{1,0,0,1},{1,0,0,-1},{2,0,0,1},{2,0,0,-1},
+				{2,1,-1,1}};
+		const occ_nums_array occ_nums_data::g_C
+			= {{1,0,0,1},{1,0,0,-1},{2,0,0,1},{2,0,0,-1},
+				{2,1,-1,1},{2,1,0,1}};
+		const occ_nums_array occ_nums_data::g_N
+			= {{1,0,0,1},{1,0,0,-1},{2,0,0,1},{2,0,0,-1},
+				{2,1,-1,1},{2,1,0,1},{2,1,1,1}};
+		const occ_nums_array occ_nums_data::g_O
+			= {{1,0,0,1},{1,0,0,-1},{2,0,0,1},{2,0,0,-1},
+				{2,1,-1,1},{2,1,0,1},{2,1,1,1},{2,1,-1,-1}};
+		const occ_nums_array occ_nums_data::g_F
+			= {{1,0,0,1},{1,0,0,-1},{2,0,0,1},{2,0,0,-1},
+				{2,1,-1,1},{2,1,0,1},{2,1,1,1},{2,1,-1,-1},
+				{2,1,0,-1}};
+		const occ_nums_array occ_nums_data::g_Ne
+			= {{1,0,0,1},{1,0,0,-1},{2,0,0,1},{2,0,0,-1},
+				{2,1,-1,1},{2,1,0,1},{2,1,1,1},{2,1,-1,-1},
+				{2,1,0,-1},{2,1,1,-1}};
 
 
 	} /*end namespace eff_z*/

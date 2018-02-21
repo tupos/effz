@@ -1,6 +1,8 @@
 #ifndef EFFZ_ZEROTH_ORDER_H
 #define EFFZ_ZEROTH_ORDER_H
 
+#include "effz_typedefs.h"
+
 #include <gsl/gsl_sf_coupling.h>
 #include <array>
 #include <vector>
@@ -141,10 +143,10 @@ namespace eff_z{
 		class density_0th{
 			private:
 				double z;
-				std::vector<std::array<int,4>> occ_nums;
+				occ_nums_array occ_nums;
 			public:
 				density_0th(const double z,
-						const std::vector<std::array<int,4>> &occ_nums);
+						const occ_nums_array &occ_nums);
 				double operator()(
 						const double r,
 						const double theta,
