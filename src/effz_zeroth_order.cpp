@@ -1,7 +1,7 @@
 #include "effz_zeroth_order.h"
 
 #include "effz_spec_func.h"
-#include "effz_helper_func.h"
+#include "effz_utility.h"
 #include "effz_integration.h"
 #include "effz_parallel_func.h"
 
@@ -225,7 +225,7 @@ namespace eff_z{
 		{
 			const int q = m1 - m;
 			const bool is_q_between =
-				eff_z::helper_func::in_range<int>(-k,k,q);
+				eff_z::in_range<int>(-k,k,q);
 			if(!is_q_between){
 				return 0.;
 			}

@@ -65,6 +65,6 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 .PHONY: clean all
 
 clean:
-	rm $(BUILDDIR)/*.o
+	rm $(BUILDDIR)/*.o $(BUILDDIR)/*.d
 
 -include $(BUILDDIR)/*.d

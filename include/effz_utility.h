@@ -3,10 +3,22 @@
 
 #include <array>
 #include <type_traits>
+#include <vector>
+#include <numeric>
+#include <algorithm>
+#include <utility>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_math.h>
 
 namespace eff_z{
+	template <typename T>
+		bool in_range(T begin, T end, T num){
+			std::vector<T> range(std::abs(end - begin) + 1);
+			std::iota(range.begin(), range.end(), begin);
+			return std::any_of(range.cbegin(), range.cend(),
+					[num](T n){return n == num;}
+					);
+		}
 	template<typename... Ts>
 		constexpr auto make_array(Ts&&... ts)
 		-> std::array<std::common_type_t<Ts...>,sizeof...(ts)>
