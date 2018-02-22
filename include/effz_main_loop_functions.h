@@ -10,6 +10,8 @@ namespace eff_z{
 
 	void print_occ_nums_format_help();
 
+	void print_parameters_format_string_help();
+
 	int main_menu(char user_input);
 
 	int zeroth_order_energy_loop();

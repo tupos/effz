@@ -2,12 +2,14 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <string>
 
 #include "effz_main_loop_functions.h"
 #include "effz_atomic_data.h"
 #include "effz_zeroth_order.h"
 #include "effz_python_utility.h"
 #include "effz_zeroth_order_python.h"
+#include "effz_user_input.h"
 
 
 using namespace eff_z;
@@ -17,15 +19,15 @@ using namespace atomic_data;
 
 int main(int argc, char *argv[]) try {
 
-	char user_input;
-	while(1){
-		print_main_menu();
-		std::cin >> user_input;
-		//std::cout << user_input << "\n";
-		if(!main_menu(user_input))
-			break;
-	}
-
+	//char user_input;
+	//while(1){
+		//print_main_menu();
+		//std::cin >> user_input;
+		////std::cout << user_input << "\n";
+		//if(!main_menu(user_input))
+			//break;
+	//}
+	parse_occ_nums_o_format("");
 	//std::cout << eff_z::zeroth_order::z_star_0th(2., occ_nums_data::g_He)
 		//<< " "
 		//<< eff_z::zeroth_order::e_0th(2., occ_nums_data::g_He) << "\n";
@@ -98,6 +100,7 @@ int main(int argc, char *argv[]) try {
 	return EXIT_SUCCESS;
 
 } catch(const std::exception &e){
+	std::cerr << e.what() << "\n";
 	return EXIT_FAILURE;
 } catch(...){
 	return EXIT_FAILURE;

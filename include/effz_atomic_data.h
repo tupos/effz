@@ -5,6 +5,8 @@
 
 #include <vector>
 #include <array>
+#include <unordered_map>
+#include <string>
 
 namespace eff_z {
 
@@ -23,6 +25,12 @@ namespace eff_z {
 				static const occ_nums_array g_F;
 				static const occ_nums_array g_Ne;
 		};
+
+		struct element_data{
+			static const std::unordered_map<std::string, int>
+				element_names;
+		};
+
 
 	} /*end namespace eff_z*/
 } /*end namespace eff_z*/

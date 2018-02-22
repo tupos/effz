@@ -5,109 +5,119 @@
 namespace eff_z{
 
 	void print_main_menu(){
-		std::cout << "*****Effective charge program.*****\n";
-		std::cout << "\n";
-		std::cout << "1. Numerically calculate energies.\n";
-		std::cout << "2. Analytically calculate densities.\n";
-		std::cout
-			<< "3. Analytically calculate atomic scattering factors.\n";
-		std::cout << "0. Exit the effective charge program.\n";
-		std::cout << "\n";
-		std::cout << "Please enter your choice...\n";
-		std::cout << "\n";
+		std::cout << "*****Effective charge program.*****\n\n"
+			"1. Numerically calculate energies.\n"
+			"2. Analytically calculate densities.\n"
+			"3. Analytically calculate atomic scattering factors.\n"
+			"0. Exit the effective charge program.\n\n"
+			"Please enter your choice...\n";
 	}
+
 	void print_select_order_menu(){
-		std::cout << "Please select the accuracy of the calculations.\n";
-		std::cout << "\n";
-		std::cout << "1. Zeroth-order. Fast. "
-			"Provides 6\% accuracy with respect to HF.\n";
-		std::cout << "0. Go back to the previous menu.\n";
-		std::cout << "\n";
-		std::cout << "Please enter your choice...\n";
-		std::cout << "\n";
+		std::cout << "Please select the accuracy of the calculations.\n\n"
+			"1. Zeroth-order. Fast. Provides 6\% accuracy with "
+			"respect to HF.\n"
+			"0. Go back to the previous menu.\n\n"
+			"Please enter your choice...\n";
 	}
+
 	void print_zeroth_order_energy_menu(){
-		std::cout <<"\n";
-		std::cout << "Calculation of the energies "
+		std::cout <<"\n*****Calculation of the energies "
 			"in the zeroth-order from a set of occupation "
-			"numbers and a charge.\n";
-		std::cout <<"\n";
-		std::cout << "1. Enter parameters.\n";
-		std::cout <<"\n";
-		std::cout << "2. Print information about input parameters.\n";
-		std::cout <<"\n";
-		std::cout << "0. Go back to the previous menu.\n";
-		std::cout << "Please enter your parameters...\n";
-		std::cout <<"\n";
+			"numbers and a charge.*****\n\n"
+			"1. Enter parameters.\n"
+			"2. Print information about input parameters string.\n"
+			"3. Print information about occupation numbers format.\n"
+			"0. Go back to the previous menu.\n\n"
+			"Please enter your choice...\n";
 	}
 
 	void print_occ_nums_format_help(){
-		std::cout << "Occupation numbers are specified in one of "
-			"the following formats:\n";
-
-		std::cout <<"\n";
-		std::cout << "A) Element name. e.g. \" He \".\n";
-		std::cout << "\n";
-
-		std::cout << "B) Element name + roman number. e.g. \" Ne I\".\n";
-		std::cout << " This means occupation numbers "
-			"for Ne minus 1 electron.\n";
-		std::cout << "\n";
-
-		std::cout <<"C) Element name + {n,l,m,ms}, "
-			"e.g. \" B {2,1,0,1} \".\n";
-		std::cout << "or ";
-		std::cout << "\" B {{2,1,0,1},{2,1,1,-1}} \".\n Note: more than "
-			"two internal brackets are possible.\n";
-		std::cout << " In this case we take Boron occupation numbers "
+		std::cout << "*****OCC_NUMS_FORMAT help*****\n"
+			"Occupation numbers are specified in one of "
+			"the following formats:\n\n"
+			"\"n\" --- numerical format, e.g., \"5\" "
+			"using occupation numbers of the B element.\n\n"
+			"\"N\" --- named format, e.g. \"He\""
+			"using occupation numbers of the He element.\n\n"
+			"\"i\" --- ionization format, i.e., "
+			"element name + roman number. e.g. \"Ne I\".\n"
+			" This means occupation numbers for Ne minus 1 electron.\n\n"
+			"\"O\" --- occupation numbers and an element name format "
+			"i.e., element name + {{n,l,m,ms}}, e.g. \"B {{2,1,0,1}}\" "
+			"or \"B {{2,1,0,1},{2,1,1,-1}}\". Note: more than "
+			"two internal brackets are possible. "
+			"In this case we take Boron occupation numbers "
 			"and append the corresponding occupation "
-			"numbers in brackets.\n";
-		std::cout << "\n";
+			"numbers in brackets.\n\n"
+			"\"o\" --- a set of occupation numbers format "
+			"e.g. \"{{1,0,0,1},{1,0,0,-1}}\"\n\n"
+			" IMPORTANT: If there are identical "
+			"occupation numbers present the energy is equal to zero.\n\n"
+			" IMPORTANT: The occupation numbers are sorted "
+			"in the order of increasing n, l, m, ms. "
+			"This means that we fill m form -l to l "
+			"and ms from -1 to 1\n";
+	}
 
-		std::cout << "D) Set of occupation numbers. "
-			"e.g. \" {{1,0,0,1},{1,0,0,-1}} \"\n";
-		std::cout << "\n";
-
-		std::cout << " IMPORTANT: If there are identical "
-			"occupation numbers present the energy is equal to zero.\n";
-		std::cout <<"\n";
-		std::cout << " IMPORTANT: The occupation numbers are sorted "
-			"in the order of increasing n, l, m, ms. ";
-		std::cout << "This means that we fill m form -l to l "
-			"and ms from -1 to 1";
-		std::cout <<"\n";
+	void print_parameters_format_string_help(){
+		std::cout << "*****FORMAT_STRING_HELP*****\n"
+			"In order to perform computation the "
+			"parameters should be given in a form of a format string.\n"
+			"The format string can be specified in the file or "
+			"in the standard input, i.e., terminal window or in "
+			"the interactive mode of a program.\n"
+			"The format string looks like:\n\n"
+			"   -z Z1, Z2, ... -f OCC_NUMS_FORMAT "
+			"-v OCC_NUMS1, OCC_NUMS2, ...; REPEAT_FORMAT_STRING\n\n"
+			"EXPLANATION.\n \"-z\" specifies the charges "
+			"all arguments except of Z1 are optional. "
+			"Z1, Z2, ... are numbers.\n"
+			"\"-f\" specifies the format of the occupation numbers "
+			"and can be one of the following "
+			"\"n\", \"N\", \"i\", \"O\", \"o\" "
+			"for more information read OCC_NUMS_FORMAT help.\n"
+			"\"-v\" specifies the occupation numbers in the format "
+			"OCC_NUMS_FORMAT. All arguments except of OCC_NUMS1 "
+			"are optional.\n"
+			"The semicolon at the end separates format strings, "
+			"since multiple strings can be provided. All format strings "
+			"except of the first one are optional.\n\n"
+			"RESULTS OF THE COMPUTATION.\n"
+			"Provided the format string above, the program computes "
+			"for all charges Z1,Z2,... corresponding characteristics. "
+			"thus yielding num_charges * num_occ_nums values, "
+			"by default the values are output to the screen. "
+			"If to the format string before the \";\" the flag "
+			"\"-o\" is provided with a file path, i.e., \n\n"
+			"    -z Z1, Z2, ... -f OCC_NUMS_FORMAT "
+			"-v OCC_NUMS1, OCC_NUMS2, ... -o PATH_TO_OUTPUT_FILE;\n\n"
+			"the results will be stored in the file on the disk.\n";
 	}
 
 	int main_menu(char user_input){
 		switch (user_input) {
 			case '1': {
-						  std::cout << "1\n";
 						  if(!zeroth_order_energy_loop()){
 							  return -1;
 						  }
 						  break;
 					  }
 			case '2': {
-						  std::cout << "2\n";
 						  if(!density_symbolic_loop()){
 							  return 0;
 						  }
 						  break;
 					  }
 			case '3': {
-						  std::cout << "3\n";
 						  if(!asf_symbolic_loop()){
 							  return 0;
 						  }
 						  break;
 					  }
-			case '0': {
-						  std::cout << "0\n";
-						  return 0; break;
-					  }
+			case '0': { return 0; break; }
 			default: {
 						 std::cout << "Wrong input. Please repeat.\n";
-						 std::cout << "default\n";
 						 break;
 					 }
 		}
@@ -120,7 +130,7 @@ namespace eff_z{
 			std::cin >> user_input;
 			if(!zeroth_order_energy_menu(user_input))
 				break;
-		} 
+		}
 		return 0;
 	}
 	int density_symbolic_loop(){
@@ -137,6 +147,10 @@ namespace eff_z{
 						  break;
 					  }
 			case '2': {
+						  print_parameters_format_string_help();
+						  break;
+					  }
+			case '3': {
 						  print_occ_nums_format_help();
 						  break;
 					  }
