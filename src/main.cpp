@@ -27,15 +27,31 @@ int main(int argc, char *argv[]) try {
 		//if(!main_menu(user_input))
 			//break;
 	//}
+	//parse_occ_nums_O_format("{{1,0,0,1},1, 0, 0, -1}},{{1,0,0,1}}");
+	//std::vector<occ_nums_array> arr
+		//= parse_occ_nums_o_format("{{1,0,0,1},{1, 0, 0, -1}},{{1,0,0,1}}"
+				//",{{1,0,0,1}},{{1,0,0,1}},{{1,0,0,1},{1,0,0,-1},{1,0,0,1}}");
+
+	//for(auto &occ_nums: arr){
+		//std::cout << "{";
+		//for(auto &g_i: occ_nums){
+			//std::cout << "{";
+			//for(auto &g_ij: g_i){
+				//std::cout << g_ij << ",";
+			//}
+			//std::cout << "},";
+		//}
+		//std::cout << "}\n";
+	//}
 	std::vector<occ_nums_array> arr
-		= parse_occ_nums_o_format("{{1,0,0,1},1, 0, 0, -1}},{{1,0,0,1}}");
-	
+		= parse_occ_nums_N_format("H, He, B");
+
 	for(auto &occ_nums: arr){
 		std::cout << "{";
 		for(auto &g_i: occ_nums){
 			std::cout << "{";
 			for(auto &g_ij: g_i){
-				std::cout << g_ij << ","; 
+				std::cout << g_ij << ",";
 			}
 			std::cout << "},";
 		}
