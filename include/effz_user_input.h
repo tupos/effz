@@ -9,7 +9,12 @@
 
 namespace eff_z{
 
-	std::vector<occ_nums_array> parse_occ_nums_o_format(const std::string &s);
+	occ_nums_array string_to_occ_nums_array(const std::string &s);
+
+	bool is_cor_num_braces_occ_nums(const std::string &s);
+
+	std::vector<occ_nums_array>
+		parse_occ_nums_o_format(const std::string &s);
 
 } /* end namespace eff_z */
 

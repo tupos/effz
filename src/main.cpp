@@ -27,7 +27,20 @@ int main(int argc, char *argv[]) try {
 		//if(!main_menu(user_input))
 			//break;
 	//}
-	parse_occ_nums_o_format("");
+	std::vector<occ_nums_array> arr
+		= parse_occ_nums_o_format("{{1,0,0,1},1, 0, 0, -1}},{{1,0,0,1}}");
+	
+	for(auto &occ_nums: arr){
+		std::cout << "{";
+		for(auto &g_i: occ_nums){
+			std::cout << "{";
+			for(auto &g_ij: g_i){
+				std::cout << g_ij << ","; 
+			}
+			std::cout << "},";
+		}
+		std::cout << "}\n";
+	}
 	//std::cout << eff_z::zeroth_order::z_star_0th(2., occ_nums_data::g_He)
 		//<< " "
 		//<< eff_z::zeroth_order::e_0th(2., occ_nums_data::g_He) << "\n";
