@@ -6,6 +6,7 @@
 
 #include <regex>
 #include <tuple>
+#include <unordered_map>
 #include <iterator>
 #include <iostream>
 #include <sstream>
@@ -13,7 +14,7 @@
 namespace eff_z{
 
 	occ_nums_array string_to_occ_nums_array(const std::string &s);
-	int roman_into_arabic(const std::string &s);
+	int roman_to_arabic(const std::string &s);
 	bool is_cor_num_braces_occ_nums(const std::string &s);
 	bool are_wrong_symbols(const std::string &s, const std::string &pattern);
 	std::tuple<std::sregex_iterator,std::sregex_iterator>
@@ -82,8 +83,37 @@ namespace eff_z{
 		return occ_nums;
 	}
 
-	int roman_into_arabic(const std::string &s){
-		return 0;
+	int roman_to_arabic(const std::string &s){
+		if(s.empty()){
+			return 0;
+		}
+		std::regex not_roman_regex("[^IVXLCDM]*$");
+		auto it_begin
+			= std::sregex_iterator(s.begin(), s.end(), not_roman_regex);
+		auto it_end = std::sregex_iterator();
+		if(it_begin != it_end){
+			throw parsing_exception("Non Roman digits occured.");
+		}
+		std::unordered_map<char,int> conv_map
+			= {{'I',1},{'V',5},{'X',10},{'L',50},
+				{'C',100},{'D',500},{'M',1000}};
+		typedef std::unordered_map<char,int>::key_type Key;
+		auto convert = [&conv_map]
+			(const std::string::const_reverse_iterator &it){
+			return conv_map.at(*it);
+		};
+		int total = 0;
+		char prev = '*';
+		for(auto it = s.rbegin(); it != s.rend(); ++it){
+			if(convert(it) < total && *it != prev){
+				total -= convert(it);
+				prev = *it;
+			} else {
+				total += convert(it);
+				prev = *it;
+			}
+		}
+		return total;
 	}
 
 	bool is_cor_num_braces_occ_nums(const std::string &s){
@@ -154,7 +184,7 @@ namespace eff_z{
 
 			std::size_t num_found_patterns
 				= std::distance(it_pat_regex_begin, it_pat_regex_end);
-			std::cout << num_found_patterns << " " << num_occ_nums  << "\n";
+			//std::cout << num_found_patterns << " " << num_occ_nums  << "\n";
 
 			if((num_found_patterns - 1) != num_occ_nums){
 				throw parsing_exception("Error in the input of occ_nums");
