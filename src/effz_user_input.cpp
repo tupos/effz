@@ -147,7 +147,7 @@ namespace eff_z{
 	std::vector<occ_nums_array>
 		parse_occ_nums_N_format(const std::string &s){
 			std::string N_pattern
-				= "[A-Z][a-z]?";
+				= "\\b[A-Z][a-z]?\\b";
 			std::regex N_pattern_regex(N_pattern);
 
 			std::string num_occ_nums_pattern
@@ -241,14 +241,13 @@ namespace eff_z{
 		}
 
 	std::vector<occ_nums_array>
-		parse_occ_nums_O_format(const std::string &s1){
-			std::string s = "B {{2,1,0,1}}, He {{3,0,0,1},{4,0,0,5}}";
+		parse_occ_nums_O_format(const std::string &s){
 			if(!is_cor_num_braces_occ_nums(s)){
 				throw parsing_exception("Error in the input of occ_nums");
 			}
 
 			std::string O_pattern
-				= "[A-Z][a-z]?\\s*\\{\\s*"
+				= "\\b[A-Z][a-z]?\\b\\s*\\{\\s*"
 				"\\{\\s*\\d\\s*,\\s*\\d\\s*,\\s*\\d\\s*,\\s*-?\\d\\s*\\}"
 				"(\\s*,\\s*"
 				"\\{\\s*\\d\\s*,\\s*\\d\\s*,\\s*\\d\\s*,\\s*-?\\d\\s*\\})*"
@@ -256,7 +255,7 @@ namespace eff_z{
 			std::regex O_pattern_regex(O_pattern);
 
 			std::string num_of_occ_nums_pattern
-				= "\\}\\s*\\}\\s*,\\s*[A-Z][a-z]?\\s*\\{\\s*\\{";
+				= "\\}\\s*\\}\\s*,\\s*\\b[A-Z][a-z]?\\b\\s*\\{\\s*\\{";
 			std::regex num_occ_nums_regex(num_of_occ_nums_pattern);
 
 			std::tuple<std::sregex_iterator,std::sregex_iterator>
@@ -267,30 +266,46 @@ namespace eff_z{
 			auto it_O_pat_regex_end = std::get<1>(its);
 
 			std::size_t counter = 0;
-			occ_nums_array occ_nums;
+			std::vector<occ_nums_array> element_occ_nums;
+			std::vector<occ_nums_array> occ_nums_to_append;
 			std::vector<occ_nums_array> occ_nums_a;
+			occ_nums_array tmp_occ_nums;
 
 			for (std::sregex_iterator i = it_O_pat_regex_begin;
 					i != it_O_pat_regex_end; ++i) {
 				std::smatch match = *i;
 				std::string match_str = match.str();
 				std::cout << " " << match_str << '\n';
-				//try{
-					//occ_nums = string_to_occ_nums_array(match_str);
-				//} catch (const parsing_exception& e){
-					//std::cerr << "Error in the input of occ_nums #"
-						//<< counter << "\n";
-					//std::cerr << e.what();
-					//std::cerr << " " << match_str << '\n';
-					//throw parsing_exception
-						//("Error in the input of occ_nums");
-				//}
-				//occ_nums_a.push_back(occ_nums);
+				try{
+					element_occ_nums
+						= parse_occ_nums_N_format(match_str);
+					occ_nums_to_append
+						= parse_occ_nums_o_format(match_str);
+					if(element_occ_nums.size() > 1
+							|| occ_nums_to_append.size() > 1){
+						throw parsing_exception(
+								"Error in the input of occ_nums.");
+					}
+					for(auto &g_i: element_occ_nums.at(0)){
+						tmp_occ_nums.push_back(g_i);
+					}
+					for(auto &g_i: occ_nums_to_append.at(0)){
+						tmp_occ_nums.push_back(g_i);
+					}
+				} catch (const parsing_exception& e){
+					std::cerr << "Error in the input of occ_nums #"
+						<< counter << "\n";
+					std::cerr << e.what();
+					std::cerr << " " << match_str << '\n';
+					throw parsing_exception
+						("Error in the input of occ_nums");
+				}
+				occ_nums_a.push_back(tmp_occ_nums);
+				tmp_occ_nums.clear();
 				++counter;
 			}
 
 			return occ_nums_a;
-
 	}
 
 } /* end namespace eff_z */

@@ -44,7 +44,8 @@ int main(int argc, char *argv[]) try {
 		//std::cout << "}\n";
 	//}
 	std::vector<occ_nums_array> arr
-		= parse_occ_nums_N_format("H, He, B");
+		= parse_occ_nums_O_format("H {{1,0,0,-1}}, Be {{1,0,0,1},{1,0,0,1}}"
+				", Li {{2,0,0,1},{2,0,0,-1},{3,0,0,1}}");
 
 	for(auto &occ_nums: arr){
 		std::cout << "{";
