@@ -9,6 +9,7 @@
 
 namespace eff_z{
 
+	std::vector<int> parse_z_format(const std::string &s);
 
 	std::vector<occ_nums_array>
 		parse_occ_nums_n_format(const std::string &s);

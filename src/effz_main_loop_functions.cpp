@@ -41,7 +41,7 @@ namespace eff_z{
 			"\"N\" --- named format, e.g. \"He\""
 			"using occupation numbers of the He element.\n\n"
 			"\"i\" --- ionization format, i.e., "
-			"element name + roman number. e.g. \"Ne I\".\n"
+			"element name + roman number. e.g. \"Ne II\".\n"
 			" This means occupation numbers for Ne minus 1 electron.\n\n"
 			"\"O\" --- occupation numbers and an element name format "
 			"i.e., element name + {{n,l,m,ms}}, e.g. \"B {{2,1,0,1}}\" "
