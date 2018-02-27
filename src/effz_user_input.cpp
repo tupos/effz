@@ -7,6 +7,7 @@
 #include <regex>
 #include <tuple>
 #include <unordered_map>
+#include <unordered_set>
 #include <iterator>
 #include <iostream>
 #include <sstream>
@@ -480,5 +481,17 @@ namespace eff_z{
 
 			return occ_nums_a;
 	}
+
+	std::tuple<std::vector<int>,std::vector<occ_nums_array>>
+		parse_format_string(const std::string &s){
+			std::unordered_set<std::string> flags
+				= {"-z", "-f", "-v", "-o"};
+			std::string strings_pattern
+				= "^(-[zfvo]\\s*[^zvfo;-]+){3,4}"
+				"(\\s*;\\s*(-[zfvo]\\s*[^zvfo;-]+){3,4})*$";
+			std::string format_string
+				= "^(-[zfvo]\\s*[^zvfo;-]+){3,4}";
+
+		}
 
 } /* end namespace eff_z */
