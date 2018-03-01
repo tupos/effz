@@ -16,7 +16,6 @@ namespace eff_z{
 
 	occ_nums_array string_to_occ_nums_array(const std::string &s);
 	std::size_t roman_to_arabic(const std::string &s);
-	bool is_cor_num_braces_occ_nums(const std::string &s);
 	bool is_wrong_pattern(const std::string &s, const std::string &pattern);
 
 	occ_nums_array string_to_occ_nums_array(const std::string &s){
@@ -117,35 +116,6 @@ namespace eff_z{
 			}
 		}
 		return total;
-	}
-
-	bool is_cor_num_braces_occ_nums(const std::string &s){
-			std::regex num_of_2opened_brackets_regex("\\{\\s*\\{");
-			std::regex num_of_2closed_brackets_regex("\\}\\s*\\}");
-
-			auto it_2opened_brackets_begin =
-				std::sregex_iterator(s.begin(), s.end(),
-						num_of_2opened_brackets_regex);
-			auto it_2opened_brackets_end = std::sregex_iterator();
-
-			auto it_2closed_brackets_begin =
-				std::sregex_iterator(s.begin(), s.end(),
-						num_of_2closed_brackets_regex);
-			auto it_2closed_brackets_end = std::sregex_iterator();
-
-			std::size_t num_2opened_brackets
-				= std::distance(it_2opened_brackets_begin,
-						it_2opened_brackets_end);
-
-			std::size_t num_2closed_brackets
-				= std::distance(it_2closed_brackets_begin,
-						it_2closed_brackets_end);
-
-			if(num_2opened_brackets != num_2closed_brackets){
-				return false;
-			}
-
-			return true;
 	}
 
 	bool is_wrong_pattern(const std::string &s, const std::string &pattern){
