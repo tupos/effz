@@ -19,19 +19,22 @@ using namespace atomic_data;
 
 int main(int argc, char *argv[]) try {
 
-	char user_input;
-	while(1){
-		print_main_menu();
-		std::cin >> user_input;
-		//std::cout << user_input << "\n";
-		if(!main_menu(user_input))
-			break;
-	}
+	//char user_input;
+	//while(1){
+		//print_main_menu();
+		//std::cin >> user_input;
+		////std::cout << user_input << "\n";
+		//if(!main_menu(user_input))
+			//break;
+	//}
 	std::vector<int> nums = parse_z_format("1,2,3,4,5");
 	for(auto &num: nums){
 		std::cout << num << " ";
 	}
 	std::cout << "\n";
+
+	char r = parse_f_format("i");
+	std::cout << r << "\n";
 
 	//std::vector<occ_nums_array> arr
 		//= parse_occ_nums_i_format("He II");
