@@ -19,6 +19,11 @@ namespace eff_z{
 	std::vector<occ_nums_array> parse_v_format(const std::string &s,
 			char format);
 
+	std::vector<
+		std::tuple<
+		std::vector<int>,std::vector<occ_nums_array>,std::string>>
+		parse_format_string(const std::string &s);
+
 } /* end namespace eff_z */
 
 #endif /* EFFZ_USER_INPUT_H */

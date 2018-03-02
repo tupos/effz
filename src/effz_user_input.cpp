@@ -28,6 +28,7 @@ namespace eff_z{
 			parse_occ_nums_o_format(const std::string &s);
 		std::vector<occ_nums_array>
 			parse_occ_nums_O_format(const std::string &s);
+		bool are_bad_flags(const std::string &s);
 		std::tuple<
 			std::vector<int>, std::vector<occ_nums_array>, std::string>
 			parse_single_format_string(const std::string &s);
@@ -138,6 +139,7 @@ namespace eff_z{
 			auto it_pat_regex_begin = std::sregex_iterator(s.begin(),
 					s.end(), pat_regex);
 			auto it_pat_regex_end = std::sregex_iterator();
+			//std::cout << std::distance(it_pat_regex_begin,it_pat_regex_end);
 
 			if(it_pat_regex_begin != it_pat_regex_end){
 				return true;
@@ -153,7 +155,8 @@ namespace eff_z{
 					el_nums = parse_z_format(s);
 				} catch (const parsing_exception &e){
 					std::cerr << e.what() << "\n";
-					throw parsing_exception("Error in the input string");
+					throw parsing_exception(
+							"Error in the input string n format");
 				}
 
 				std::vector<occ_nums_array> occ_nums_a;
@@ -179,8 +182,8 @@ namespace eff_z{
 		std::vector<occ_nums_array>
 			parse_occ_nums_N_format(const std::string &s){
 				if(!is_valid_pattern(s,
-							"^[A-Z][a-z]?"
-							"\\b(\\s*,\\s*\\b[A-Z][a-z]?\\b)*$")){
+							"^\\s*[A-Z][a-z]?"
+							"\\b(\\s*,\\s*\\b[A-Z][a-z]?\\b)*\\s*$")){
 					throw parsing_exception(
 							"Error in the input string N format.");
 				}
@@ -224,12 +227,13 @@ namespace eff_z{
 		std::vector<occ_nums_array>
 			parse_occ_nums_i_format(const std::string &s){
 				if(!is_valid_pattern(s,
-							"^[A-Z][a-z]?\\b\\s*\\b(XC|XL|L?X{0,3})"
+							"^\\s*[A-Z][a-z]?\\b\\s*\\b(XC|XL|L?X{0,3})"
 							"(IX|IV|V?I{1,3})\\b"
 							"(\\s*,\\s*\\b[A-Z][a-z]?"
 							"\\b\\s*\\b(XC|XL|L?X{0,3})"
-							"(IX|IV|V?I{1,3})\\b)*$")){
-					throw parsing_exception("Error in the input string.");
+							"(IX|IV|V?I{1,3})\\b)*\\s*$")){
+					throw parsing_exception(
+							"Error in the input string i format");
 				}
 
 				std::string i_pattern
@@ -300,7 +304,7 @@ namespace eff_z{
 		std::vector<occ_nums_array>
 			parse_occ_nums_o_format(const std::string &s){
 				if(!is_valid_pattern(s,
-							"^\\{\\s*"
+							"^\\s*\\{\\s*"
 							"\\{\\s*\\d\\s*,\\s*\\d\\s*,\\s*\\d\\s*,"
 							"\\s*-?\\d\\s*\\}"
 							"(\\s*,\\s*"
@@ -313,9 +317,9 @@ namespace eff_z{
 							"(\\s*,\\s*"
 							"\\{\\s*\\d\\s*,\\s*\\d\\s*,\\s*\\d\\s*,"
 							"\\s*-?\\d\\s*\\})*"
-							"\\s*\\})*$")){
+							"\\s*\\})*\\s*$")){
 					throw parsing_exception(
-							"Error in the input of occ_nums");
+							"Error in the input o format");
 				}
 
 				std::string o_pattern
@@ -360,7 +364,7 @@ namespace eff_z{
 		std::vector<occ_nums_array>
 			parse_occ_nums_O_format(const std::string &s){
 				if(!is_valid_pattern(s,
-							"^[A-Z][a-z]?\\b\\s*\\{\\s*"
+							"^\\s*[A-Z][a-z]?\\b\\s*\\{\\s*"
 							"\\{\\s*\\d\\s*,\\s*\\d\\s*,\\s*\\d\\s*,"
 							"\\s*-?\\d\\s*\\}"
 							"(\\s*,\\s*"
@@ -373,9 +377,9 @@ namespace eff_z{
 							"(\\s*,\\s*"
 							"\\{\\s*\\d\\s*,\\s*\\d\\s*,\\s*\\d\\s*,"
 							"\\s*-?\\d\\s*\\})*"
-							"\\s*\\})*$")){
+							"\\s*\\})*\\s*$")){
 					throw parsing_exception(
-							"Error in the input of occ_nums");
+							"Error in the input of O");
 				}
 
 				std::string O_pattern
@@ -444,9 +448,40 @@ namespace eff_z{
 				return occ_nums_a;
 			}
 
+		bool are_bad_flags(const std::string &s){
+			std::string flags[] = {"-z", "-f", "-v","-o"};
+			std::unordered_map<std::string,int> flags_num;
+			for(const auto &f: flags){
+				flags_num.insert({f,0});
+			}
+			std::regex flags_regex("-[zfvo]");
+			auto flags_begin = std::sregex_iterator(s.begin(),
+					s.end(), flags_regex);
+			auto flags_end = std::sregex_iterator();
+			for(auto it = flags_begin; it != flags_end; ++it){
+				std::smatch match = *it;
+				std::string match_str = match.str();
+				//std::cout << match_str << "\n";
+				flags_num.at(match_str)++;
+			}
+			for(auto it = flags_num.cbegin(); it != flags_num.cend(); ++it){
+				if((*it).second > 1){
+					return true;
+				}
+				if((*it).first != "-o" && (*it).second != 1){
+					return true;
+				}
+			}
+			return false;
+		}
+
 		std::tuple<
 			std::vector<int>, std::vector<occ_nums_array>, std::string>
 			parse_single_format_string(const std::string &s){
+				if(are_bad_flags(s)){
+					throw parsing_exception("Error wrong flags");
+				}
+
 				auto extract_flag_and_rest = [](const std::string &s){
 					std::regex flag_regex("^-[zfvo]");
 					std::smatch match;
@@ -457,7 +492,7 @@ namespace eff_z{
 				};
 
 				std::string flag_stm
-					= "-[zfvo]\\s*[^zvfo;-]+(?=-[zfvo]\\s|;|$)";
+					= "-[zfvo]\\s*[^;]+?(?=-[zfvo]\\s*|;|$)";
 				std::regex flag_stm_regex(flag_stm);
 
 				auto it_f_stm_begin = std::sregex_iterator(
@@ -471,8 +506,11 @@ namespace eff_z{
 				std::string occ_nums_s;
 				for(auto i = it_f_stm_begin; i != it_f_stm_end; ++i){
 					std::smatch match = *i;
+					//std::cout << "     " << match.str() << "\n";
 					auto flag_rest = extract_flag_and_rest(match.str());
 					std::string flag = std::get<0>(flag_rest);
+					//std::cout << flag << "\n";
+					//std::cout << std::get<1>(flag_rest) << "\n";
 					if(flag == "-z"){
 						Zs = parse_z_format(std::get<1>(flag_rest));
 					} else if (flag == "-f"){
@@ -491,10 +529,10 @@ namespace eff_z{
 	} /* end anonymous namespace */
 
 	std::vector<int> parse_z_format(const std::string &s){
-		if(!is_valid_pattern(s, "^([1-9][0-9]?|100)\\b"
-					"(\\s*,\\s*\\b([1-9][0-9]?|100)\\b)*$")){
+		if(!is_valid_pattern(s, "^\\s*([1-9][0-9]?|100)\\b"
+					"(\\s*,\\s*\\b([1-9][0-9]?|100)\\b)*\\s*$")){
 			throw
-				parsing_exception("Error in the input string.");
+				parsing_exception("Error in the z input string.");
 		}
 		std::string z_pattern
 			= "\\b([1-9][0-9]?|100)\\b";
@@ -531,7 +569,7 @@ namespace eff_z{
 					"Error in the occ_nums format.");
 		}
 		std::string f_pattern
-			= "\\b[nNiOo]\\b";
+			= "[nNiOo]";
 		std::regex f_pattern_regex(f_pattern);
 
 		auto it_f_pat_begin = std::sregex_iterator(s.begin(),
@@ -552,7 +590,7 @@ namespace eff_z{
 		typedef std::function<
 			std::vector<occ_nums_array>(const std::string&)
 			> parse_occ_nums_f;
-		std::unordered_map<char,parse_occ_nums_f> occ_nums_f_map
+		const std::unordered_map<char,parse_occ_nums_f> occ_nums_f_map
 			= {
 				{'n',parse_occ_nums_n_format},
 				{'N',parse_occ_nums_N_format},
@@ -563,31 +601,38 @@ namespace eff_z{
 		return occ_nums_f_map.at(format)(s);
 	}
 
-	std::tuple<std::vector<int>,std::vector<occ_nums_array>>
+	std::vector<
+		std::tuple<
+		std::vector<int>,std::vector<occ_nums_array>,std::string>>
 		parse_format_string(const std::string &s){
 			std::string validation_pattern
-				= "^(-[zfvo]\\s*[^zvfo;-]+){3,4}"
-				"(\\s*;\\s*(-[zfvo]\\s*[^zvfo;-]+){3,4})*$";
+				= "^\\s*(-[zfvo]\\s*[^;]+?){3,4}"
+				"(\\s*;\\s*(-[zfvo]\\s*[^;]+?){3,4})*\\s*;?$";
 			if(!is_valid_pattern(s, validation_pattern)){
 				throw parsing_exception("Error in the input string");
 			}
 
 			std::string format_strings
-				= "(-[zfvo]\\s*[^zvfo;-]+){3,4}(?=;|$)";
+				= "(-[zfvo]\\s*[^;]+?){3,4}(?=;|$)";
 			std::regex format_strings_regex(format_strings);
 			auto it_f_strings_begin = std::sregex_iterator(s.begin(),
 					s.end(),format_strings_regex);
 			auto it_f_strings_end = std::sregex_iterator();
 
-			std::unordered_map<std::string,int> flags_map
-				= {{"-z",0}, {"-f",1}, {"-v",3}, {"-o",4}};
-
-
+			std::vector<
+				std::tuple<
+				std::vector<int>,
+				std::vector<occ_nums_array>,
+				std::string>> parsed_data;
 			for(auto i = it_f_strings_begin; i != it_f_strings_end; ++i){
 				std::smatch match = *i;
 				std::string f_string = match.str();
+				//std::cout << "  " << f_string <<"\n";
+				auto parsed_string = parse_single_format_string(f_string);
+				parsed_data.push_back(parsed_string);
 			}
 
+			return parsed_data;
 		}
 
 } /* end namespace eff_z */

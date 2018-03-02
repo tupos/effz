@@ -3,6 +3,7 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <tuple>
 
 #include "effz_main_loop_functions.h"
 #include "effz_atomic_data.h"
@@ -27,14 +28,14 @@ int main(int argc, char *argv[]) try {
 		//if(!main_menu(user_input))
 			//break;
 	//}
-	std::vector<int> nums = parse_z_format("1,2,3,4,5");
-	for(auto &num: nums){
-		std::cout << num << " ";
-	}
-	std::cout << "\n";
+	//std::vector<int> nums = parse_z_format("1,2,3,4,5");
+	//for(auto &num: nums){
+		//std::cout << num << " ";
+	//}
+	//std::cout << "\n";
 
-	char r = parse_f_format("i");
-	std::cout << r << "\n";
+	//char r = parse_f_format("i");
+	//std::cout << r << "\n";
 
 	//std::vector<occ_nums_array> arr
 		//= parse_occ_nums_i_format("He II");
@@ -42,20 +43,35 @@ int main(int argc, char *argv[]) try {
 		//= parse_occ_nums_N_format("He, Li, F");
 	//std::vector<occ_nums_array> arr
 		//= parse_occ_nums_o_format("{{1,0,0,1},{1,0,0,1}},{{1,0,0,1}}}");
-	std::vector<occ_nums_array> arr
-		= parse_v_format("H {{1,0,0,-1}}, Be {{1,0,0,1},{1,0,0,1}}"
-				", Li {{2,0,0,1},{2,0,0,-1},{3,0,0,1}}",'O');
+	//std::vector<occ_nums_array> arr
+		//= parse_v_format("H {{1,0,0,-1}}, Be {{1,0,0,1},{1,0,0,1}}"
+				//", Li {{2,0,0,1},{2,0,0,-1},{3,0,0,1}}",'O');
+	std::string format_string
+		= "-f N -z 1,2,3,4 -v He, Li, F;"
+		"-f o -z 1 -v {{1,0,0,1}};"
+		"-f i -z 4 -v Li II;";
+	std::cout << format_string << "\n";
+	auto data = parse_format_string(format_string);
+	for(const auto &dat:data){
+		auto charges = std::get<0>(dat);
+		auto nums = std::get<1>(dat);
 
-	for(auto &occ_nums: arr){
-		std::cout << "{";
-		for(auto &g_i: occ_nums){
-			std::cout << "{";
-			for(auto &g_ij: g_i){
-				std::cout << g_ij << ",";
-			}
-			std::cout << "},";
+		for(auto &num: charges){
+			std::cout << num << " ";
 		}
-		std::cout << "}\n";
+		std::cout << "\n";
+		for(auto &occ_nums: nums){
+			std::cout << "{";
+			for(auto &g_i: occ_nums){
+				std::cout << "{";
+				for(auto &g_ij: g_i){
+					std::cout << g_ij << ",";
+				}
+				std::cout << "},";
+			}
+			std::cout << "}\n";
+		}
+
 	}
 	//std::cout << eff_z::zeroth_order::z_star_0th(2., occ_nums_data::g_He)
 		//<< " "
