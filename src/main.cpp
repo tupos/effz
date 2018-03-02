@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) try {
 	//std::vector<occ_nums_array> arr
 		//= parse_occ_nums_o_format("{{1,0,0,1},{1,0,0,1}},{{1,0,0,1}}}");
 	std::vector<occ_nums_array> arr
-		= parse_occ_nums_O_format("H {{1,0,0,-1}}, Be {{1,0,0,1},{1,0,0,1}}"
-				", Li {{2,0,0,1},{2,0,0,-1},{3,0,0,1}}");
+		= parse_v_format("H {{1,0,0,-1}}, Be {{1,0,0,1},{1,0,0,1}}"
+				", Li {{2,0,0,1},{2,0,0,-1},{3,0,0,1}}",'O');
 
 	for(auto &occ_nums: arr){
 		std::cout << "{";

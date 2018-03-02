@@ -14,20 +14,7 @@ namespace eff_z{
 
 	char parse_f_format(const std::string &s);
 
-	std::vector<occ_nums_array>
-		parse_occ_nums_n_format(const std::string &s);
-
-	std::vector<occ_nums_array>
-		parse_occ_nums_N_format(const std::string &s);
-
-	std::vector<occ_nums_array>
-		parse_occ_nums_i_format(const std::string &s);
-
-	std::vector<occ_nums_array>
-		parse_occ_nums_o_format(const std::string &s);
-
-	std::vector<occ_nums_array>
-		parse_occ_nums_O_format(const std::string &s);
+	std::string parse_o_format(const std::string &s);
 
 	std::vector<occ_nums_array> parse_v_format(const std::string &s,
 			char format);
