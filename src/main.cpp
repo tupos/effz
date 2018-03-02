@@ -61,8 +61,9 @@ int main(int argc, char *argv[]) try {
 		}
 		std::cout << "\n";
 		for(auto &occ_nums: nums){
+			std::cout << "\"" << std::get<0>(occ_nums) << "\" ";
 			std::cout << "{";
-			for(auto &g_i: occ_nums){
+			for(auto &g_i: std::get<1>(occ_nums)){
 				std::cout << "{";
 				for(auto &g_ij: g_i){
 					std::cout << g_ij << ",";

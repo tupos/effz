@@ -16,13 +16,16 @@ namespace eff_z{
 
 	std::string parse_o_format(const std::string &s);
 
-	std::vector<occ_nums_array> parse_v_format(const std::string &s,
-			char format);
+	std::vector<std::tuple<std::string,occ_nums_array>>
+		parse_v_format(const std::string &s,
+				char format);
 
 	std::vector<
 		std::tuple<
-		std::vector<int>,std::vector<occ_nums_array>,std::string>>
-		parse_format_string(const std::string &s);
+		std::vector<int>,
+		std::vector<std::tuple<std::string,occ_nums_array>>,
+		std::string>>
+			parse_format_string(const std::string &s);
 
 } /* end namespace eff_z */
 
