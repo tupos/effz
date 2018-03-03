@@ -15,7 +15,7 @@ endif
 ifeq ($(UNAME), Darwin)
 CXX = g++
 CC = gcc
-PYTHONCFLAGS = -I/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions/3.6/include/python3.6m \
+PYTHONCFLAGS = -I/usr/local/Cellar/python3/3.6.4_3/Frameworks/Python.framework/Versions/3.6/include/python3.6m \
 			   -fno-common -dynamic -DNDEBUG -g -fwrapv
 PYTHONLDFLAGS = -L/usr/local/opt/python3/Frameworks/Python.framework/Versions/3.6/lib/python3.6/config-3.6m-darwin \
 				-lpython3.6m -ldl -framework CoreFoundation
