@@ -31,11 +31,13 @@ namespace eff_z{
 	struct occ_nums_ast{
 		std::vector<occ_nums_array> parsed_occ_nums;
 		std::vector<std::string> parsed_names;
+		void push_back(const std::string &s, const occ_nums_array &a);
 		typedef std::tuple<std::string,occ_nums_array> named_occ_nums_t;
 	};
 	class occ_nums_parser{
 		public:
 			occ_nums_parser(const std::string &s, char format);
+			occ_nums_ast get_ast();
 		private:
 			static const std::unordered_map<char,std::string>
 				occ_nums_formats;
@@ -48,11 +50,32 @@ namespace eff_z{
 					const std::string &s);
 			friend bool is_valid_pattern(const std::string &s,
 					const std::string &pattern);
-			void parse_n_format(const std::string &s);
-			void parse_N_format(const std::string &s);
-			void parse_i_format(const std::string &s);
-			void parse_o_format(const std::string &s);
-			void parse_O_format(const std::string &s);
+			occ_nums_ast parse_n_format(const std::string &s);
+			occ_nums_ast parse_N_format(const std::string &s);
+			occ_nums_ast parse_i_format(const std::string &s);
+			occ_nums_ast parse_o_format(const std::string &s);
+			occ_nums_ast parse_O_format(const std::string &s);
+			occ_nums_ast parse();
+			typedef
+				occ_nums_ast(occ_nums_parser::*parse_f)(const std::string&);
+			const std::unordered_map<char,parse_f> occ_nums_f_map
+				= {
+					{'n', &occ_nums_parser::parse_n_format},
+					{'N', &occ_nums_parser::parse_N_format},
+					{'i', &occ_nums_parser::parse_i_format},
+					{'O', &occ_nums_parser::parse_O_format},
+					{'o', &occ_nums_parser::parse_o_format}
+				};
+			//typedef std::unique_ptr<occ_nums_ast(occ_nums_parser::*)(const std::string&)>
+				//parse_f;
+			//const std::unordered_map<char,parse_f> occ_nums_f_map
+				//= {
+					//{'n', std::make_unique<parse_f>(occ_nums_parser::parse_n_format)},
+					//{'N', std::make_unique<parse_f>(occ_nums_parser::parse_N_format)},
+					//{'i', std::make_unique<parse_f>(occ_nums_parser::parse_i_format)},
+					//{'O', std::make_unique<parse_f>(occ_nums_parser::parse_O_format)},
+					//{'o', std::make_unique<parse_f>(occ_nums_parser::parse_o_format)}
+				//};
 	};
 } /* end namespace eff_z */
 

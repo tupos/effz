@@ -36,6 +36,16 @@ namespace eff_z{
 				parse_single_format_string(const std::string &s);
 	} /* end unnamed namespace */
 
+	void occ_nums_ast::push_back(
+			const std::string &s, const occ_nums_array &a){
+		parsed_names.push_back(s);
+		parsed_occ_nums.push_back(a);
+	}
+
+	occ_nums_ast occ_nums_parser::get_ast(){
+		return ast;
+	}
+
 	const std::unordered_map<char,std::string>
 		occ_nums_parser::occ_nums_formats = {
 			{'n',"^\\s*([1-9][0-9]?|100)\\b"
@@ -107,10 +117,10 @@ namespace eff_z{
 				what += format;
 				throw parsing_exception(what.c_str());
 			}
-
+			parse();
 		}
 
-	void occ_nums_parser::parse_n_format(const std::string &s){
+	occ_nums_ast occ_nums_parser::parse_n_format(const std::string &s){
 		std::vector<int> el_nums;
 		try{
 			el_nums = parse_z_format(s);
@@ -133,13 +143,13 @@ namespace eff_z{
 				throw parsing_exception
 					("Error in the input of occ_nums");
 			}
-			ast.parsed_names.push_back(std::to_string(el_num));
-			ast.parsed_occ_nums.push_back(occ_nums);
+			ast.push_back(std::to_string(el_num), occ_nums);
 			++counter;
 		}
+		return ast;
 	}
 
-	void occ_nums_parser::parse_N_format(const std::string &s){
+	occ_nums_ast occ_nums_parser::parse_N_format(const std::string &s){
 		std::regex N_pattern_regex(occ_nums_tokens.at('N'));
 
 		auto it_N_pat_regex_begin = std::sregex_iterator(s.begin(),
@@ -166,13 +176,22 @@ namespace eff_z{
 				throw parsing_exception
 					("Error in the input of occ_nums");
 			}
-			ast.parsed_names.push_back(match_str);
-			ast.parsed_occ_nums.push_back(occ_nums);
+			ast.push_back(match_str, occ_nums);
 			++counter;
 		}
+		return ast;
 	}
 
-	void occ_nums_parser::parse_i_format(const std::string &s){
+	occ_nums_ast occ_nums_parser::parse_i_format(const std::string &s){
+		auto extract_roman_n = [](const std::string& s){
+			std::regex
+				roman_regex("\\b(XC|XL|L?X{0,3})"
+						"(IX|IV|V?I{1,3})\\s*$");
+			std::smatch match;
+			std::regex_search(s,match,roman_regex);
+			std::string match_str = match.str();
+			return roman_to_arabic(match_str);
+		};
 
 		std::regex i_pattern_regex(occ_nums_tokens.at('i'));
 
@@ -180,32 +199,9 @@ namespace eff_z{
 				s.end(), i_pattern_regex);
 		auto it_i_pat_regex_end = std::sregex_iterator();
 
-		auto extract_el = [](const std::string& s){
-			std::regex el_regex("^[A-Z][a-z]?\\b");
-			auto it_begin = std::sregex_iterator(s.begin(),
-					s.end(), el_regex);
-			auto it_end = std::sregex_iterator();
-			std::smatch match = *it_begin;
-			std::string match_str = match.str();
-			return std::get<1>(
-					parse_occ_nums_N_format(match_str).at(0));
-		};
-		auto extract_roman_n = [](const std::string& s){
-			std::regex
-				el_regex("\\b(XC|XL|L?X{0,3})"
-						"(IX|IV|V?I{1,3})\\s*$");
-			auto it_begin = std::sregex_iterator(s.begin(),
-					s.end(), el_regex);
-			auto it_end = std::sregex_iterator();
-			std::smatch match = *it_begin;
-			std::string match_str = match.str();
-			return roman_to_arabic(match_str);
-		};
-
 		occ_nums_array occ_nums;
 		std::size_t roman_n = 0;
-		std::vector<std::tuple<std::string,occ_nums_array>>
-			res;
+		occ_nums_ast res;
 
 		std::size_t counter = 0;
 		for (std::sregex_iterator i = it_i_pat_regex_begin;
@@ -214,7 +210,7 @@ namespace eff_z{
 			std::string match_str = match.str();
 			//std::cout << " " << match_str << '\n';
 			try{
-				occ_nums = extract_el(match_str);
+				occ_nums = parse_N_format(match_str).parsed_occ_nums.at(0);
 				roman_n = extract_roman_n(match_str);
 				if(occ_nums.size() <= roman_n - 1){
 					throw parsing_exception(
@@ -231,12 +227,16 @@ namespace eff_z{
 				throw parsing_exception
 					("Error in the input of occ_nums i format.");
 			}
-			res.push_back(std::make_tuple(match_str,occ_nums));
+			res.push_back(match_str,occ_nums);
+			ast.parsed_names.clear();
+			ast.parsed_occ_nums.clear();
 			++counter;
 		}
+		ast = res;
+		return ast;
 	}
 
-	void occ_nums_parser::parse_o_format(const std::string &s){
+	occ_nums_ast occ_nums_parser::parse_o_format(const std::string &s){
 
 		std::regex o_pattern_regex(occ_nums_tokens.at('o'));
 
@@ -246,8 +246,6 @@ namespace eff_z{
 
 		std::size_t counter = 0;
 		occ_nums_array occ_nums;
-		std::vector<std::tuple<std::string,occ_nums_array>>
-			res;
 
 		for (std::sregex_iterator i = it_o_pat_regex_begin;
 				i != it_o_pat_regex_end; ++i) {
@@ -263,14 +261,13 @@ namespace eff_z{
 				throw parsing_exception
 					("Error in the input of occ_nums");
 			}
-			res.push_back(std::make_tuple(match_str,occ_nums));
+			ast.push_back(match_str,occ_nums);
 			++counter;
 		}
-
-		return res;
+		return ast;
 	}
 
-	void occ_nums_parser::parse_O_format(const std::string &s){
+	occ_nums_ast occ_nums_parser::parse_O_format(const std::string &s){
 
 		std::regex O_pattern_regex(occ_nums_tokens.at('O'));
 
@@ -278,34 +275,10 @@ namespace eff_z{
 				s.end(), O_pattern_regex);
 		auto it_O_pat_regex_end = std::sregex_iterator();
 
-		auto extract_el = [](const std::string &s){
-			std::regex el_name_regex("\\b[A-Z][a-z]?\\b");
-			auto it_begin = std::sregex_iterator(s.begin(),
-					s.end(),el_name_regex);
-			std::smatch match = *it_begin;
-			return std::get<1>(
-					parse_occ_nums_N_format(match.str()).at(0));
-		};
-		auto extract_occ_nums = [](const std::string &s){
-			std::regex el_occ_nums_regex("\\{\\s*"
-					"\\{\\s*\\d\\s*,\\s*\\d\\s*,\\s*\\d\\s*,"
-					"\\s*-?\\d\\s*\\}"
-					"(\\s*,\\s*"
-					"\\{\\s*\\d\\s*,\\s*\\d\\s*,\\s*\\d\\s*,"
-					"\\s*-?\\d\\s*\\})*"
-					"\\s*\\}");
-			auto it_begin = std::sregex_iterator(s.begin(),
-					s.end(), el_occ_nums_regex);
-			std::smatch match = *it_begin;
-			return std::get<1>(
-					parse_occ_nums_o_format(match.str()).at(0));
-		};
-
 		std::size_t counter = 0;
 		occ_nums_array element_occ_nums;
 		occ_nums_array occ_nums_to_append;
-		std::vector<std::tuple<std::string,occ_nums_array>>
-			res;
+		occ_nums_ast res;
 
 		for (std::sregex_iterator i = it_O_pat_regex_begin;
 				i != it_O_pat_regex_end; ++i) {
@@ -313,8 +286,10 @@ namespace eff_z{
 			std::string match_str = match.str();
 			//std::cout << " " << match_str << '\n';
 			try{
-				element_occ_nums = extract_el(match_str);
-				occ_nums_to_append = extract_occ_nums(match_str);
+				element_occ_nums
+					= parse_N_format(match_str).parsed_occ_nums.at(0);
+				occ_nums_to_append
+					= parse_o_format(match_str).parsed_occ_nums.at(0);
 				for(auto &g_i: occ_nums_to_append){
 					element_occ_nums.push_back(g_i);
 				}
@@ -326,13 +301,20 @@ namespace eff_z{
 				throw parsing_exception
 					("Error in the input of occ_nums");
 			}
-			res.push_back(
-					std::make_tuple(match_str,element_occ_nums));
+			res.push_back(match_str,element_occ_nums);
+			ast.parsed_names.clear();
+			ast.parsed_occ_nums.clear();
 			++counter;
 		}
+		ast = res;
 
-		return res;
+		return ast;
 	}
+
+	occ_nums_ast occ_nums_parser::parse(){
+			return (this->*occ_nums_f_map.at(format))(s);
+		}
+
 	namespace{
 
 		occ_nums_array string_to_occ_nums_array(const std::string &s){
@@ -916,7 +898,16 @@ namespace eff_z{
 					{'O',parse_occ_nums_O_format},
 					{'o',parse_occ_nums_o_format}
 				};
-			return occ_nums_f_map.at(format)(s);
+			occ_nums_parser p(s,format);
+			//return occ_nums_f_map.at(format)(s);
+			occ_nums_ast ast = p.get_ast();
+			std::vector<std::tuple<std::string,occ_nums_array>> v;
+			for(std::size_t i = 0; i < ast.parsed_names.size(); ++i){
+				v.push_back(std::make_tuple(ast.parsed_names.at(i),
+							ast.parsed_occ_nums.at(i)));
+			}
+
+			return  v;
 		}
 
 	std::vector<std::tuple<
