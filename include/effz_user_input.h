@@ -66,16 +66,6 @@ namespace eff_z{
 					{'O', &occ_nums_parser::parse_O_format},
 					{'o', &occ_nums_parser::parse_o_format}
 				};
-			//typedef std::unique_ptr<occ_nums_ast(occ_nums_parser::*)(const std::string&)>
-				//parse_f;
-			//const std::unordered_map<char,parse_f> occ_nums_f_map
-				//= {
-					//{'n', std::make_unique<parse_f>(occ_nums_parser::parse_n_format)},
-					//{'N', std::make_unique<parse_f>(occ_nums_parser::parse_N_format)},
-					//{'i', std::make_unique<parse_f>(occ_nums_parser::parse_i_format)},
-					//{'O', std::make_unique<parse_f>(occ_nums_parser::parse_O_format)},
-					//{'o', std::make_unique<parse_f>(occ_nums_parser::parse_o_format)}
-				//};
 	};
 } /* end namespace eff_z */
 
