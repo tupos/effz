@@ -56,8 +56,20 @@ namespace eff_z{
 			occ_nums_ast parse_o_format(const std::string &s);
 			occ_nums_ast parse_O_format(const std::string &s);
 			occ_nums_ast parse();
+			//typedef
+				//occ_nums_ast(occ_nums_parser::*parse_f)(const std::string&);
+			//const std::unordered_map<char,parse_f> occ_nums_f_map
+				//= {
+					//{'n', &occ_nums_parser::parse_n_format},
+					//{'N', &occ_nums_parser::parse_N_format},
+					//{'i', &occ_nums_parser::parse_i_format},
+					//{'O', &occ_nums_parser::parse_O_format},
+					//{'o', &occ_nums_parser::parse_o_format}
+				//};
 			typedef
-				occ_nums_ast(occ_nums_parser::*parse_f)(const std::string&);
+				std::function<
+				occ_nums_ast(occ_nums_parser*,const std::string&)
+				> parse_f;
 			const std::unordered_map<char,parse_f> occ_nums_f_map
 				= {
 					{'n', &occ_nums_parser::parse_n_format},
@@ -66,6 +78,53 @@ namespace eff_z{
 					{'O', &occ_nums_parser::parse_O_format},
 					{'o', &occ_nums_parser::parse_o_format}
 				};
+	};
+	struct f_string_ast{
+
+	};
+	class f_string_parser{
+		public:
+			f_string_parser(const std::string &s);
+		private:
+			std::string s;
+
+			char format;
+			std::vector<int> z;
+			std::string output;
+			occ_nums_ast ast;
+
+			friend class occ_nums_parser;
+
+			static const std::string flags[];
+			static const std::string s_validation_pattern;
+			static const std::unordered_map<std::string,std::string>
+				f_validation_pattern;
+			static const std::string flag_stm_token;
+			static const std::unordered_map<std::string,std::string>
+				flag_s_token;
+			static const std::string flag_token;
+
+			bool are_bad_flags();
+
+			void parse_f(const std::string &s);
+			void parse_z(const std::string &s);
+			void parse_o(const std::string &s);
+			void parse_v(const std::string &s);
+			typedef
+				std::function<
+				void(f_string_parser*,const std::string&)
+				> parse_pointer;
+			const std::unordered_map<std::string,parse_pointer>
+				parse_map
+				= {
+					{"-f", &f_string_parser::parse_f},
+					{"-z", &f_string_parser::parse_z},
+					{"-o", &f_string_parser::parse_o},
+					{"-v", &f_string_parser::parse_v},
+				};
+			void parse();
+
+
 	};
 } /* end namespace eff_z */
 

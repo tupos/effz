@@ -90,7 +90,7 @@ namespace eff_z{
 
 	const std::unordered_map<char,std::string>
 		occ_nums_parser::occ_nums_tokens = {
-			{'n',""},
+			{'n',"\\b([1-9][0-9]?|100)\\b"},
 			{'N',"\\b[A-Z][a-z]?\\b"},
 			{'i',"\\b[A-Z][a-z]?\\b\\s*\\b(XC|XL|L?X{0,3})"
 				"(IX|IV|V?I{1,3})\\b"},
@@ -121,13 +121,29 @@ namespace eff_z{
 		}
 
 	occ_nums_ast occ_nums_parser::parse_n_format(const std::string &s){
+		std::regex z_pattern_regex(occ_nums_tokens.at('n'));
+
+		auto it_z_pat_regex_begin = std::sregex_iterator(s.begin(),
+				s.end(), z_pattern_regex);
+		auto it_z_pat_regex_end = std::sregex_iterator();
+
 		std::vector<int> el_nums;
-		try{
-			el_nums = parse_z_format(s);
-		} catch (const parsing_exception &e){
-			std::cerr << e.what() << "\n";
-			throw parsing_exception(
-					"Error in the input string n format");
+		for (std::sregex_iterator i = it_z_pat_regex_begin;
+				i != it_z_pat_regex_end; ++i) {
+			std::smatch match = *i;
+			std::string match_str = match.str();
+			try{
+				int num = std::stoi(match_str);
+				el_nums.push_back(num);
+			} catch (const std::out_of_range &e){
+				std::cerr << "Error in the input string n format.\n";
+				throw parsing_exception
+					("Error in the input string n format.");
+			} catch (const std::invalid_argument &e){
+				std::cerr << e.what() << "\n";
+				throw parsing_exception
+					("Error in the input string n format.");
+			}
 		}
 
 		occ_nums_array occ_nums;
@@ -312,9 +328,155 @@ namespace eff_z{
 	}
 
 	occ_nums_ast occ_nums_parser::parse(){
-			return (this->*occ_nums_f_map.at(format))(s);
+			return occ_nums_f_map.at(format)(this,s);
 		}
 
+
+	f_string_parser::f_string_parser(const std::string &s){
+		if(!is_valid_pattern(s, s_validation_pattern)){
+			throw parsing_exception("Error in the input string");
+		}
+		if(are_bad_flags()){
+			throw parsing_exception("Error wrong flags");
+		}
+	}
+
+	const std::string f_string_parser::flags[] = {"-z", "-f", "-v","-o"};
+
+	const std::string f_string_parser::s_validation_pattern
+		= "^\\s*(-[zfvo]\\s*[^;]+?){3,4}"
+		"(\\s*;\\s*(-[zfvo]\\s*[^;]+?){3,4})*\\s*;?$";
+
+	const std::unordered_map<std::string,std::string>
+		f_string_parser::f_validation_pattern = {
+			{"-z","^\\s*([1-9][0-9]?|100)\\b"
+					"(\\s*,\\s*\\b([1-9][0-9]?|100)\\b)*\\s*$"},
+			{"-f","^\\s*[nNiOo]\\s*$"},
+			{"-v",""},
+			{"-o",""}
+		};
+
+	const std::string f_string_parser::flag_stm_token
+		= "(-[zfvo]\\s*[^;]+?){3,4}(?=;|$)";
+
+	const std::string f_string_parser::flag_token = "-[zvfo]";
+
+	const std::unordered_map<std::string,std::string>
+		f_string_parser::flag_s_token = {
+			{"-f","[nNiOo]"},
+			{"-z","\\b([1-9][0-9]?|100)\\b"}
+		};
+
+	bool f_string_parser::are_bad_flags(){
+		std::unordered_map<std::string,int> flags_num;
+		for(const auto &f: flags){
+			flags_num.insert({f,0});
+		}
+		std::regex flags_regex(flag_token);
+		auto flags_begin = std::sregex_iterator(s.begin(),
+				s.end(), flags_regex);
+		auto flags_end = std::sregex_iterator();
+		for(auto it = flags_begin; it != flags_end; ++it){
+			std::smatch match = *it;
+			std::string match_str = match.str();
+			//std::cout << match_str << "\n";
+			flags_num.at(match_str)++;
+		}
+		for(auto it = flags_num.cbegin(); it != flags_num.cend(); ++it){
+			if((*it).second > 1){
+				return true;
+			}
+			if((*it).first != "-o" && (*it).second != 1){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	void f_string_parser::parse_f(const std::string &s){
+		if(!is_valid_pattern(s, f_validation_pattern.at("-f"))){
+			throw parsing_exception(
+					"Error in the -f part of the string.");
+		}
+
+		std::regex f_pattern_regex(flag_s_token.at("-f"));
+		std::smatch match;
+		std::regex_search(s,match,f_pattern_regex);
+
+		format = match.str().at(0);
+	}
+
+	void f_string_parser::parse_z(const std::string &s){
+		if(!is_valid_pattern(s, f_validation_pattern.at("-z"))){
+			throw parsing_exception(
+					"Error in the -z part of the string.");
+		}
+		std::regex z_pattern_regex(flag_s_token.at("-z"));
+
+		auto it_z_pat_regex_begin = std::sregex_iterator(s.begin(),
+				s.end(), z_pattern_regex);
+		auto it_z_pat_regex_end = std::sregex_iterator();
+
+		for (std::sregex_iterator i = it_z_pat_regex_begin;
+				i != it_z_pat_regex_end; ++i) {
+			std::smatch match = *i;
+			std::string match_str = match.str();
+			try{
+				int num = std::stoi(match_str);
+				z.push_back(num);
+			} catch (const std::out_of_range &e){
+				std::cerr << "Error in the input -z.\n";
+				throw parsing_exception
+					("Error in the input -z.");
+			} catch (const std::invalid_argument &e){
+				std::cerr << e.what() << "\n";
+				throw parsing_exception
+					("Error in the input -z.");
+			}
+		}
+	}
+
+	void f_string_parser::parse_o(const std::string &s){
+		output = "";
+	}
+
+	void f_string_parser::parse_v(const std::string &s){
+		ast = occ_nums_parser(s,format).get_ast();
+	}
+
+	void f_string_parser::parse(){
+		auto extract_flag_and_rest = [](const std::string &s){
+			std::regex flag_regex("^-[zfvo]");
+			std::smatch match;
+			std::regex_search(s,match,flag_regex);
+			std::string flag = match.str();
+			std::string rest = match.suffix().str();
+			return std::make_tuple(flag,rest);
+		};
+
+		std::regex flag_stm_regex(flag_stm_token);
+
+		auto it_f_stm_begin = std::sregex_iterator(s.begin(),
+				s.end(), flag_stm_regex);
+		auto it_f_stm_end = std::sregex_iterator();
+
+		std::string occ_nums_s;
+		for(auto i = it_f_stm_begin; i != it_f_stm_end; ++i){
+			std::smatch match = *i;
+			//std::cout << "     " << match.str() << "\n";
+			auto flag_rest = extract_flag_and_rest(match.str());
+			std::string flag = std::get<0>(flag_rest);
+			std::string rest = std::get<1>(flag_rest);
+			//std::cout << flag << "\n";
+			//std::cout << std::get<1>(flag_rest) << "\n";
+			if(flag != "-v"){
+				parse_map.at(flag)(this,rest);
+			} else if(flag == "-f"){
+				occ_nums_s = rest;
+			}
+			parse_map.at("-v")(this,occ_nums_s);
+		}
+	}
 	namespace{
 
 		occ_nums_array string_to_occ_nums_array(const std::string &s){
