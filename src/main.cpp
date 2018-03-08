@@ -22,12 +22,20 @@ int main(int argc, char *argv[]) try {
 
 	//char user_input;
 	//while(1){
-		//print_main_menu();
+		//menus().print_main();
 		//std::cin >> user_input;
 		////std::cout << user_input << "\n";
-		//if(!main_menu(user_input))
+		//if(!main_menu1(user_input))
 			//break;
 	//}
+	char user_input;
+	base_menu_ptr current_menu = std::make_unique<main_menu>();
+	while(!current_menu->is_quit_selected()){
+		current_menu->print_menu();
+		std::cin >> user_input;
+		base_menu_ptr new_menu = current_menu->get_next_menu(user_input);
+		current_menu.swap(new_menu);
+	}
 	//std::vector<int> nums = parse_z_format("1,2,3,4,5");
 	//for(auto &num: nums){
 		//std::cout << num << " ";

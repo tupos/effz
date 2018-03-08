@@ -4,25 +4,89 @@
 
 namespace eff_z{
 
-	void print_main_menu(){
-		std::cout << "*****Effective charge program.*****\n\n"
+	main_menu::main_menu() {
+		menu_text = "*****Effective charge program.*****\n\n"
 			"1. Numerically calculate energies.\n"
 			"2. Analytically calculate densities.\n"
 			"3. Analytically calculate atomic scattering factors.\n"
 			"0. Exit the effective charge program.\n\n"
 			"Please enter your choice...\n";
+	};
+
+	base_menu_ptr main_menu::get_next_menu(char choice){
+		base_menu_ptr new_menu;
+		switch(choice){
+			case '1':{
+						 new_menu = std::make_unique<
+							 zeroth_order_energy_menu>();
+						 break;
+					 }
+			case '2':{
+						 new_menu = std::make_unique<
+							 zeroth_order_density_menu>();
+						 break;
+					 }
+			case '3':{
+						 new_menu = std::make_unique<
+							 zeroth_order_asf_menu>();
+						 break;
+					 }
+			case '0':{
+						 new_menu = std::make_unique<main_menu>();
+						 new_menu->quit();
+						 break;
+					 }
+			default:{
+						std::cout << "Wrong input. Please repeat.\n";
+						new_menu = std::make_unique<main_menu>();
+						break;
+					}
+		}
+		return new_menu;
 	}
 
-	void print_select_order_menu(){
-		std::cout << "Please select the accuracy of the calculations.\n\n"
-			"1. Zeroth-order. Fast. Provides 6\% accuracy with "
-			"respect to HF.\n"
+	zeroth_order_energy_menu::zeroth_order_energy_menu() {
+		menu_text = "\n*****Calculation of the energies "
+			"in the zeroth-order from a set of occupation "
+			"numbers and a charge.*****\n\n"
+			"1. Enter parameters.\n"
+			"2. Print information about input parameters string.\n"
+			"3. Print information about occupation numbers format.\n"
 			"0. Go back to the previous menu.\n\n"
 			"Please enter your choice...\n";
+	};
+
+	base_menu_ptr zeroth_order_energy_menu::get_next_menu(char choice){
+		base_menu_ptr new_menu;
+		switch(choice){
+			case '1':{
+						 new_menu = std::make_unique<
+							 zeroth_order_energy_menu>();
+						 break;
+					 }
+			case '2':{
+						 if(!density_symbolic_loop()){
+							 return 0;
+						 }
+						 break;
+					 }
+			case '3':{
+						 if(!asf_symbolic_loop()){
+							 return 0;
+						 }
+						 break;
+					 }
+			case '0':{ return 0; break; }
+			default:{
+						std::cout << "Wrong input. Please repeat.\n";
+						break;
+					}
+		}
+		return new_menu;
 	}
 
-	void print_zeroth_order_energy_menu(){
-		std::cout <<"\n*****Calculation of the energies "
+	zeroth_order_density_menu::zeroth_order_density_menu(){
+		menu_text = "\n*****Calculation of the densities "
 			"in the zeroth-order from a set of occupation "
 			"numbers and a charge.*****\n\n"
 			"1. Enter parameters.\n"
@@ -32,8 +96,121 @@ namespace eff_z{
 			"Please enter your choice...\n";
 	}
 
-	void print_occ_nums_format_help(){
-		std::cout << "*****OCC_NUMS_FORMAT help*****\n"
+	base_menu_ptr zeroth_order_density_menu::get_next_menu(char choice){
+		base_menu_ptr new_menu;
+		switch(choice){
+			case '1':{
+						 new_menu = std::make_unique<
+							 zeroth_order_energy_menu>();
+						 break;
+					 }
+			case '2':{
+						 if(!density_symbolic_loop()){
+							 return 0;
+						 }
+						 break;
+					 }
+			case '3':{
+						 if(!asf_symbolic_loop()){
+							 return 0;
+						 }
+						 break;
+					 }
+			case '0':{ return 0; break; }
+			default:{
+						std::cout << "Wrong input. Please repeat.\n";
+						break;
+					}
+		}
+		return new_menu;
+	}
+
+	zeroth_order_asf_menu::zeroth_order_asf_menu(){
+		menu_text = "\n*****Calculation of the ASF "
+			"in the zeroth-order from a set of occupation "
+			"numbers and a charge.*****\n\n"
+			"1. Enter parameters.\n"
+			"2. Print information about input parameters string.\n"
+			"3. Print information about occupation numbers format.\n"
+			"0. Go back to the previous menu.\n\n"
+			"Please enter your choice...\n";
+	}
+
+	base_menu_ptr zeroth_order_asf_menu::get_next_menu(char choice){
+		base_menu_ptr new_menu;
+		switch(choice){
+			case '1':{
+						 new_menu = std::make_unique<
+							 zeroth_order_energy_menu>();
+						 break;
+					 }
+			case '2':{
+						 if(!density_symbolic_loop()){
+							 return 0;
+						 }
+						 break;
+					 }
+			case '3':{
+						 if(!asf_symbolic_loop()){
+							 return 0;
+						 }
+						 break;
+					 }
+			case '0':{ return 0; break; }
+			default:{
+						std::cout << "Wrong input. Please repeat.\n";
+						break;
+					}
+		}
+		return new_menu;
+	}
+
+	void menus::print_main() const{
+		std::cout << main;
+	}
+
+	void menus::print_select_order() const{
+		std::cout << select_order;
+	}
+
+	void menus::print_zeroth_order_energy() const{
+		std::cout << zeroth_order_energy;
+	}
+	const std::string menus::main
+		= "*****Effective charge program.*****\n\n"
+			"1. Numerically calculate energies.\n"
+			"2. Analytically calculate densities.\n"
+			"3. Analytically calculate atomic scattering factors.\n"
+			"0. Exit the effective charge program.\n\n"
+			"Please enter your choice...\n";
+
+	const std::string menus::select_order
+		= "Please select the accuracy of the calculations.\n\n"
+			"1. Zeroth-order. Fast. Provides 6\% accuracy with "
+			"respect to HF.\n"
+			"0. Go back to the previous menu.\n\n"
+			"Please enter your choice...\n";
+
+	const std::string menus::zeroth_order_energy
+		= "\n*****Calculation of the energies "
+			"in the zeroth-order from a set of occupation "
+			"numbers and a charge.*****\n\n"
+			"1. Enter parameters.\n"
+			"2. Print information about input parameters string.\n"
+			"3. Print information about occupation numbers format.\n"
+			"0. Go back to the previous menu.\n\n"
+			"Please enter your choice...\n";
+
+	void help::print_format_occ_nums() const{
+		std::cout << format_occ_nums;
+	}
+
+	void help::print_format_string() const{
+		std::cout << format_string;
+	}
+
+	const std::string help::format_occ_nums
+		= "*****OCC_NUMS_FORMAT help*****\n"
 			"Occupation numbers are specified in one of "
 			"the following formats:\n\n"
 			"\"n\" --- numerical format, e.g., \"5\" "
@@ -58,10 +235,9 @@ namespace eff_z{
 			"in the order of increasing n, l, m, ms. "
 			"This means that we fill m form -l to l "
 			"and ms from -1 to 1\n";
-	}
 
-	void print_parameters_format_string_help(){
-		std::cout << "*****FORMAT_STRING_HELP*****\n"
+	const std::string help::format_string
+		= "*****FORMAT_STRING_HELP*****\n"
 			"In order to perform computation the "
 			"parameters should be given in a form of a format string.\n"
 			"The format string can be specified in the file or "
@@ -93,9 +269,8 @@ namespace eff_z{
 			"    -z Z1, Z2, ... -f OCC_NUMS_FORMAT "
 			"-v OCC_NUMS1, OCC_NUMS2, ... -o PATH_TO_OUTPUT_FILE;\n\n"
 			"the results will be stored in the file on the disk.\n";
-	}
 
-	int main_menu(char user_input){
+	int main_menu1(char user_input){
 		switch (user_input) {
 			case '1': {
 						  if(!zeroth_order_energy_loop()){
@@ -126,9 +301,9 @@ namespace eff_z{
 	int zeroth_order_energy_loop(){
 		char user_input;
 		while(1){
-			print_zeroth_order_energy_menu();
+			menus().print_zeroth_order_energy();
 			std::cin >> user_input;
-			if(!zeroth_order_energy_menu(user_input))
+			if(!zeroth_order_energy_menu1(user_input))
 				break;
 		}
 		return 0;
@@ -139,7 +314,7 @@ namespace eff_z{
 	int asf_symbolic_loop(){
 		return 0;
 	}
-	int zeroth_order_energy_menu(char user_input){
+	int zeroth_order_energy_menu1(char user_input){
 		switch(user_input){
 			case '1': {
 						  if(!zeroth_order_energy_enter_parameters_loop())
@@ -147,11 +322,11 @@ namespace eff_z{
 						  break;
 					  }
 			case '2': {
-						  print_parameters_format_string_help();
+						  help().print_format_string();
 						  break;
 					  }
 			case '3': {
-						  print_occ_nums_format_help();
+						  help().print_format_occ_nums();
 						  break;
 					  }
 			case '0': { return 0; }
