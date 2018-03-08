@@ -51,16 +51,18 @@ int main(int argc, char *argv[]) try {
 		"-f o -z 1 -v {{1,0,0,1}};"
 		"-f i -z 4 -v Li II;";
 	std::cout << format_string << "\n";
-	auto data = parse_format_string(format_string);
+	f_strings_parser parser(format_string);
+	auto data = parser.get_parsed_data();
+
 	for(const auto &dat:data){
-		auto charges = std::get<0>(dat);
-		auto nums = std::get<1>(dat);
+		auto charges = dat.z;
+		auto nums = dat.on_ast;
 
 		for(auto &num: charges){
 			std::cout << num << " ";
 		}
 		std::cout << "\n";
-		for(auto &occ_nums: nums){
+		for(auto &occ_nums: nums.named_occ_nums){
 			std::cout << "\"" << std::get<0>(occ_nums) << "\" ";
 			std::cout << "{";
 			for(auto &g_i: std::get<1>(occ_nums)){

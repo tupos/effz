@@ -11,33 +11,18 @@
 
 namespace eff_z{
 
-	std::vector<int> parse_z_format(const std::string &s);
-
-	char parse_f_format(const std::string &s);
-
-	std::string parse_o_format(const std::string &s);
-
-	std::vector<std::tuple<std::string,occ_nums_array>>
-		parse_v_format(const std::string &s,
-				char format);
-
-	std::vector<
-		std::tuple<
-		std::vector<int>,
-		std::vector<std::tuple<std::string,occ_nums_array>>,
-		std::string>>
-			parse_format_string(const std::string &s);
-
 	struct occ_nums_ast{
-		std::vector<occ_nums_array> parsed_occ_nums;
-		std::vector<std::string> parsed_names;
-		void push_back(const std::string &s, const occ_nums_array &a);
 		typedef std::tuple<std::string,occ_nums_array> named_occ_nums_t;
+		std::vector<named_occ_nums_t> named_occ_nums;
+
+		void push_back(const std::string &s, const occ_nums_array &a);
+		void clear();
+		const occ_nums_array& get_nums(std::size_t i) const;
 	};
 	class occ_nums_parser{
 		public:
 			occ_nums_parser(const std::string &s, char format);
-			occ_nums_ast get_ast();
+			occ_nums_ast get_ast() const;
 		private:
 			static const std::unordered_map<char,std::string>
 				occ_nums_formats;
@@ -59,8 +44,8 @@ namespace eff_z{
 			typedef
 				std::function<
 				occ_nums_ast(occ_nums_parser*,const std::string&)
-				> parse_f;
-			const std::unordered_map<char,parse_f> occ_nums_f_map
+				> parse_f_pointer;
+			const std::unordered_map<char,parse_f_pointer> occ_nums_f_map
 				= {
 					{'n', &occ_nums_parser::parse_n_format},
 					{'N', &occ_nums_parser::parse_N_format},
@@ -69,31 +54,32 @@ namespace eff_z{
 					{'o', &occ_nums_parser::parse_o_format}
 				};
 	};
-	struct f_string_ast{
 
+	struct f_string_ast{
+		char format;
+		std::vector<int> z;
+		std::string output_file_path;
+		occ_nums_ast on_ast;
 	};
 	class f_string_parser{
 		public:
 			f_string_parser(const std::string &s);
+			f_string_ast get_ast() const;
 		private:
-			std::string s;
+			std::string format_s;
 
-			char format;
-			std::vector<int> z;
-			std::string output;
-			occ_nums_ast ast;
+			f_string_ast ast;
 
 			friend class occ_nums_parser;
 
 			static const std::string flags[];
-			static const std::string s_validation_pattern;
 			static const std::unordered_map<std::string,std::string>
-				f_validation_pattern;
-			static const std::string flag_stm_token;
+				validation_patterns;
 			static const std::unordered_map<std::string,std::string>
-				flag_s_token;
-			static const std::string flag_token;
+				tokens;
 
+			friend bool is_valid_pattern(const std::string &s,
+					const std::string &pattern);
 			bool are_bad_flags();
 
 			void parse_f(const std::string &s);
@@ -112,7 +98,22 @@ namespace eff_z{
 					{"-o", &f_string_parser::parse_o},
 					{"-v", &f_string_parser::parse_v},
 				};
-			void parse();
+			void parse_single_string();
+	};
+
+	class f_strings_parser{
+		public:
+			f_strings_parser(const std::string &format_strings);
+			std::vector<f_string_ast> get_parsed_data() const;
+		private:
+			std::vector<f_string_ast> parsed_data;
+			std::string format_strings;
+			friend class f_string_parser;
+			friend bool is_valid_pattern(const std::string &s,
+					const std::string &pattern);
+			static const std::string validation_pattern;
+			static const std::string format_string_token;
+			void parse_strings();
 	};
 } /* end namespace eff_z */
 
