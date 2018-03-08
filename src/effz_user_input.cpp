@@ -468,7 +468,7 @@ namespace eff_z{
 			std::string flag = std::get<0>(flag_rest);
 			std::string rest = std::get<1>(flag_rest);
 			//std::cout << flag << "\n";
-			//std::cout << std::get<1>(flag_rest) << "\n";
+			//std::cout << rest << "\n";
 			if(flag != "-v"){
 				parse_map.at(flag)(this,rest);
 			} else if(flag == "-f"){

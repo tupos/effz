@@ -56,16 +56,6 @@ namespace eff_z{
 			occ_nums_ast parse_o_format(const std::string &s);
 			occ_nums_ast parse_O_format(const std::string &s);
 			occ_nums_ast parse();
-			//typedef
-				//occ_nums_ast(occ_nums_parser::*parse_f)(const std::string&);
-			//const std::unordered_map<char,parse_f> occ_nums_f_map
-				//= {
-					//{'n', &occ_nums_parser::parse_n_format},
-					//{'N', &occ_nums_parser::parse_N_format},
-					//{'i', &occ_nums_parser::parse_i_format},
-					//{'O', &occ_nums_parser::parse_O_format},
-					//{'o', &occ_nums_parser::parse_o_format}
-				//};
 			typedef
 				std::function<
 				occ_nums_ast(occ_nums_parser*,const std::string&)
@@ -123,8 +113,6 @@ namespace eff_z{
 					{"-v", &f_string_parser::parse_v},
 				};
 			void parse();
-
-
 	};
 } /* end namespace eff_z */
 
