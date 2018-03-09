@@ -29,12 +29,16 @@ int main(int argc, char *argv[]) try {
 			//break;
 	//}
 	char user_input;
-	base_menu_ptr current_menu = std::make_unique<main_menu>();
+	base_menu_ptr current_menu = std::make_shared<main_menu>();
 	while(!current_menu->is_quit_selected()){
-		current_menu->print_menu();
+		if(current_menu->is_show_menu()){
+			current_menu->print_menu();
+		}
 		std::cin >> user_input;
 		base_menu_ptr new_menu = current_menu->get_next_menu(user_input);
-		current_menu.swap(new_menu);
+		if(new_menu){
+			current_menu.swap(new_menu);
+		}
 	}
 	//std::vector<int> nums = parse_z_format("1,2,3,4,5");
 	//for(auto &num: nums){
