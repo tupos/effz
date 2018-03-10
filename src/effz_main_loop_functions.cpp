@@ -127,7 +127,7 @@ namespace eff_z{
 			"*****Effective charge program.*****\n\n"
 			"1. Numerically calculate energies.\n"
 			"2. Analytically calculate densities.\n"
-			"3. Analytically calculate atomic scattering factors.\n";
+			"3. Analytically calculate atomic scattering factors (asf).\n";
 		main_text += menu_text;
 		menu_text.swap(main_text);
 	};
@@ -136,22 +136,27 @@ namespace eff_z{
 		base_menu_ptr new_menu;
 		switch(choice){
 			case '1':{
-						 std::shared_ptr<main_menu> ptr
-							 = std::make_shared<main_menu>();
-						 std::shared_ptr<base_menu> ptr1
+						 new_menu = std::make_shared<main_menu>();
+						 std::shared_ptr<base_menu> ptr
 							 = std::make_shared<zeroth_order_energy_menu>(
-									 ptr);
-						 new_menu = ptr1;
+									 new_menu);
+						 new_menu.swap(ptr);
 						 break;
 					 }
 			case '2':{
-						 //new_menu = std::make_unique<
-							 //zeroth_order_density_menu>();
+						 new_menu = std::make_shared<main_menu>();
+						 std::shared_ptr<base_menu> ptr
+							 = std::make_shared<zeroth_order_density_menu>(
+									 new_menu);
+						 new_menu.swap(ptr);
 						 break;
 					 }
 			case '3':{
-						 //new_menu = std::make_unique<
-							 //zeroth_order_asf_menu>();
+						 new_menu = std::make_shared<main_menu>();
+						 std::shared_ptr<base_menu> ptr
+							 = std::make_shared<zeroth_order_asf_menu>(
+									 new_menu);
+						 new_menu.swap(ptr);
 						 break;
 					 }
 			default:{
@@ -182,92 +187,69 @@ namespace eff_z{
 						 break;
 					 }
 			default:{
-						help_action_handler(choice);
+						if(!(new_menu = prev_action_handler(choice)))
+							help_action_handler(choice);
 						break;
 					}
 		}
 		return new_menu;
 	}
 
-	//zeroth_order_density_menu::zeroth_order_density_menu(){
-		//menu_text = "\n*****Calculation of the densities "
-			//"in the zeroth-order from a set of occupation "
-			//"numbers and a charge.*****\n\n"
-			//"1. Enter parameters.\n"
-			//"2. Print information about input parameters string.\n"
-			//"3. Print information about occupation numbers format.\n"
-			//"0. Go back to the previous menu.\n\n"
-			//"Please enter your choice...\n";
-	//}
+	zeroth_order_density_menu::zeroth_order_density_menu(
+			base_menu_ptr prev_menu) : base_menu_with_previous(prev_menu) {
+		std::string zeroth_order_density_str
+			= "\n*****Calculation of the densities "
+			"in the zeroth-order from a set of occupation "
+			"numbers and a charge.*****\n\n"
+			"1. Enter parameters.\n";
+		zeroth_order_density_str += menu_text;
+		menu_text.swap(zeroth_order_density_str);
+	};
 
-	//base_menu_ptr zeroth_order_density_menu::get_next_menu(char choice){
-		//base_menu_ptr new_menu;
-		//switch(choice){
-			//case '1':{
+	base_menu_ptr zeroth_order_density_menu::get_next_menu(char choice){
+		base_menu_ptr new_menu;
+		switch(choice){
+			case '1':{
 						 //new_menu = std::make_unique<
 							 //zeroth_order_energy_menu>();
-						 //break;
-					 //}
-			//case '2':{
-						 //if(!density_symbolic_loop()){
-							 //return 0;
-						 //}
-						 //break;
-					 //}
-			//case '3':{
-						 //if(!asf_symbolic_loop()){
-							 //return 0;
-						 //}
-						 //break;
-					 //}
-			//case '0':{ return 0; break; }
-			//default:{
-						//std::cout << "Wrong input. Please repeat.\n";
-						//break;
-					//}
-		//}
-		//return new_menu;
-	//}
+						 break;
+					 }
+			default:{
+						if(!(new_menu = prev_action_handler(choice)))
+							help_action_handler(choice);
+						break;
+					}
+		}
+		return new_menu;
+	}
 
-	//zeroth_order_asf_menu::zeroth_order_asf_menu(){
-		//menu_text = "\n*****Calculation of the ASF "
-			//"in the zeroth-order from a set of occupation "
-			//"numbers and a charge.*****\n\n"
-			//"1. Enter parameters.\n"
-			//"2. Print information about input parameters string.\n"
-			//"3. Print information about occupation numbers format.\n"
-			//"0. Go back to the previous menu.\n\n"
-			//"Please enter your choice...\n";
-	//}
+	zeroth_order_asf_menu::zeroth_order_asf_menu(
+			base_menu_ptr prev_menu) : base_menu_with_previous(prev_menu) {
+		std::string zeroth_order_asf_str
+			= "\n*****Calculation of the energies "
+			"in the zeroth-order from a set of occupation "
+			"numbers and a charge.*****\n\n"
+			"1. Enter parameters.\n";
+		zeroth_order_asf_str += menu_text;
+		menu_text.swap(zeroth_order_asf_str);
+	};
 
-	//base_menu_ptr zeroth_order_asf_menu::get_next_menu(char choice){
-		//base_menu_ptr new_menu;
-		//switch(choice){
-			//case '1':{
+	base_menu_ptr zeroth_order_asf_menu::get_next_menu(char choice){
+		base_menu_ptr new_menu;
+		switch(choice){
+			case '1':{
 						 //new_menu = std::make_unique<
 							 //zeroth_order_energy_menu>();
-						 //break;
-					 //}
-			//case '2':{
-						 //if(!density_symbolic_loop()){
-							 //return 0;
-						 //}
-						 //break;
-					 //}
-			//case '3':{
-						 //if(!asf_symbolic_loop()){
-							 //return 0;
-						 //}
-						 //break;
-					 //}
-			//case '0':{ return 0; break; }
-			//default:{
-						//std::cout << "Wrong input. Please repeat.\n";
-						//break;
-					//}
-		//}
-		//return new_menu;
-	//}
+						 break;
+					 }
+			default:{
+						new_menu = prev_action_handler(choice);
+						help_action_handler(choice);
+						break;
+					}
+		}
+		return new_menu;
+	}
 
 	void menus::print_main() const{
 		std::cout << main;

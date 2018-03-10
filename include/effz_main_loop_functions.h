@@ -65,29 +65,26 @@ namespace eff_z{
 			base_menu_ptr get_next_menu(char choice) final;
 	};
 
-	//class zeroth_order_energy_menu : public base_menu_with_help{
-		//public:
-			//zeroth_order_energy_menu();
-			//base_menu_ptr get_next_menu(char choice) final;
-	//};
-
 	class zeroth_order_energy_menu :
-		public base_menu_with_help, public base_menu_with_previous{
+		public base_menu_with_previous, public base_menu_with_help{
 		public:
 			explicit zeroth_order_energy_menu(base_menu_ptr prev_menu);
 			base_menu_ptr get_next_menu(char choice) final;
 	};
 
-	//class zeroth_order_density_menu : public base_menu{
-		//public:
-			//zeroth_order_density_menu();
-			//base_menu_ptr get_next_menu(char choice) final;
-	//};
-	//class zeroth_order_asf_menu : public base_menu{
-		//public:
-			//zeroth_order_asf_menu();
-			//base_menu_ptr get_next_menu(char choice) final;
-	//};
+	class zeroth_order_density_menu :
+		public base_menu_with_previous, public base_menu_with_help{
+		public:
+			explicit zeroth_order_density_menu(base_menu_ptr prev_menu);
+			base_menu_ptr get_next_menu(char choice) final;
+	};
+
+	class zeroth_order_asf_menu :
+		public base_menu_with_previous, public base_menu_with_help{
+		public:
+			explicit zeroth_order_asf_menu(base_menu_ptr prev_menu);
+			base_menu_ptr get_next_menu(char choice) final;
+	};
 
 	class menus{
 		public:
