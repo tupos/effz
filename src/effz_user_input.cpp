@@ -589,7 +589,6 @@ namespace eff_z{
 			std::unordered_map<char,int> conv_map
 				= {{'I',1},{'V',5},{'X',10},{'L',50},
 					{'C',100},{'D',500},{'M',1000}};
-			typedef std::unordered_map<char,int>::key_type Key;
 			auto convert = [&conv_map]
 				(const std::string::const_reverse_iterator &it){
 					return conv_map.at(*it);

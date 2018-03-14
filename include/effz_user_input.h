@@ -106,8 +106,8 @@ namespace eff_z{
 			f_strings_parser(const std::string &format_strings);
 			std::vector<f_string_ast> get_parsed_data() const;
 		private:
-			std::vector<f_string_ast> parsed_data;
 			std::string format_strings;
+			std::vector<f_string_ast> parsed_data;
 			friend class f_string_parser;
 			friend bool is_valid_pattern(const std::string &s,
 					const std::string &pattern);
