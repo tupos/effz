@@ -567,6 +567,12 @@ namespace eff_z{
 			return -a(g) * z_star * z_star;
 		}
 
+		std::tuple<double,double> z_star_and_e_0th_par(double z,
+				const occ_nums_array &g){
+			double z_star = z_star_0th_par(z,g); 
+			return std::make_tuple(z_star, -a(g) * z_star * z_star);
+		}
+
 
 		density_0th::density_0th(const double z,
 				const occ_nums_array &occ_nums)
