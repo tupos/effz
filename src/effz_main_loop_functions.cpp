@@ -194,7 +194,7 @@ namespace eff_z{
 									 "Please enter parameter string:\n";
 								 std::string parameter_str;
 								 std::getline(std::cin,parameter_str);
-								 //std::cout << parameter_str << "\n";
+
 								 f_strings_parser parser(parameter_str);
 								 auto data = parser.get_parsed_data();
 
@@ -303,7 +303,7 @@ namespace eff_z{
 	}
 
 	base_menu_ptr result_menu_with_prev::get_next_menu(char choice)
-	{ 
+	{
 		base_menu_ptr next_menu;
 		if(!(next_menu = prev_action_handler(choice)))
 			base_action_handler(choice);
