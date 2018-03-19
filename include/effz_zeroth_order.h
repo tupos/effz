@@ -116,29 +116,33 @@ namespace eff_z{
 				const int l1,
 				const int m1);
 
-		double v_direct_total(const std::vector<std::array<int,4>> &g);
+		double v_direct_total(const occ_nums_array &g);
 
-		double v_exchange_total(const std::vector<std::array<int,4>> &g);
+		double v_exchange_total(const occ_nums_array &g);
 
-		double v_direct_total_par(const std::vector<std::array<int,4>> &g);
+		double v_direct_total_par(const occ_nums_array &g);
 
-		double v_exchange_total_par(const std::vector<std::array<int,4>> &g);
+		double v_exchange_total_par(const occ_nums_array &g);
 
-		double v_total(const std::vector<std::array<int,4>> &g);
+		double v_total(const occ_nums_array &g);
 
-		double v_total_par(const std::vector<std::array<int,4>> &g);
+		double v_total_par(const occ_nums_array &g);
 
-		double a(const std::vector<std::array<int,4>> &g);
+		double a(const occ_nums_array &g);
 
 		double z_star_0th(double z,
-				const std::vector<std::array<int,4>> &g);
+				const occ_nums_array &g);
 
-		double e_0th(double z,const std::vector<std::array<int,4>> &g);
+		double e_0th(double z,const occ_nums_array &g);
 
-		double z_star_0th_par(double z,
-				const std::vector<std::array<int,4>> &g);
+		double z_star_0th_par(double z, const occ_nums_array &g);
 
-		double e_0th_par(double z,const std::vector<std::array<int,4>> &g);
+		double e_0th_par(double z,const occ_nums_array &g);
+
+		std::tuple<double,double> z_star_and_e_0th_par(double z,
+				const occ_nums_array &g);
+
+
 
 		class density_0th{
 			private:

@@ -130,29 +130,29 @@ int main(int argc, char *argv[]) try {
 		//<< eff_z::zeroth_order::e_0th
 		//(20., atomic_data::occ_nums_data::g[19]) << "\n";
 
-	//putenv((char*)"PYTHONDONTWRITEBYTECODE=1");
-	//Py_Initialize();
-	//PyRun_SimpleString("import sys\n" "import os");
-	//PyRun_SimpleString("sys.path.append(os.getcwd() + \"/src\")");
-	////PyRun_SimpleString("print(sys.path)");
-	//zeroth_order::print_rho_h_l(occ_nums_data::g_He);
-	//PyObject *real = get_sympy_Symbol("r", "real", "positive");
-	//PyObject *symb = get_sympy_Symbol("symb");
-	//print_PyObject(get_assumptions0_sympy_Symbol(real), get_assumptions0_sympy_Symbol(symb));
-	//PyObject *rho_he = zeroth_order::computed_rho_h_l(occ_nums_data::g_He);
-	//std::wcout << sympy_Object_to_latex(rho_he) << "\n";
-	//PyObject *rho_be_fourier
-		//= zeroth_order::computed_rho_h_l_fourier(occ_nums_data::g_Be);
-	//std::wcout << sympy_Object_to_latex(rho_be_fourier) << "\n";
-	//pprint_sympy_Object(rho_be_fourier);
-	//PyObject *asf_be
-		//= zeroth_order::computed_asf_h_l(occ_nums_data::g_Be);
-	//std::wcout << sympy_Object_to_latex(asf_be) << "\n";
-	//pprint_sympy_Object(asf_be);
+	putenv((char*)"PYTHONDONTWRITEBYTECODE=1");
+	Py_Initialize();
+	PyRun_SimpleString("import sys\n" "import os");
+	PyRun_SimpleString("sys.path.append(os.getcwd() + \"/src\")");
+	//PyRun_SimpleString("print(sys.path)");
+	zeroth_order::print_rho_h_l(occ_nums_data::g_He);
+	PyObject *real = get_sympy_Symbol("r", "real", "positive");
+	PyObject *symb = get_sympy_Symbol("symb");
+	print_PyObject(get_assumptions0_sympy_Symbol(real), get_assumptions0_sympy_Symbol(symb));
+	PyObject *rho_he = zeroth_order::computed_rho_h_l(occ_nums_data::g_He);
+	std::wcout << sympy_Object_to_latex(rho_he) << "\n";
+	PyObject *rho_be_fourier
+		= zeroth_order::computed_rho_h_l_fourier(occ_nums_data::g_Be);
+	std::wcout << sympy_Object_to_latex(rho_be_fourier) << "\n";
+	pprint_sympy_Object(rho_be_fourier);
+	PyObject *asf_be
+		= zeroth_order::computed_asf_h_l(occ_nums_data::g_Be);
+	std::wcout << sympy_Object_to_latex(asf_be) << "\n";
+	pprint_sympy_Object(asf_be);
 
-	//if(Py_FinalizeEx() < 0){
-		//return 120;
-	//}
+	if(Py_FinalizeEx() < 0){
+		return 120;
+	}
 
 
 

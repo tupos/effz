@@ -3,38 +3,32 @@
 
 #include <Python.h>
 
+#include "effz_typedefs.h"
 
 #include <vector>
 #include <array>
+#include <string>
+#include <memory>
 
 
 namespace eff_z{
 	namespace zeroth_order{
-		PyObject* get_effz_py_module();
 
-		PyObject* get_h_l_rnl();
+		PyObject* computed_rho_h_l(const occ_nums_array &g);
+		PyObject* computed_rho_h_l_fourier(const occ_nums_array &g);
+		PyObject* computed_asf_h_l(const occ_nums_array &g);
+		void print_rho_h_l(const occ_nums_array &g);
+		void print_rho_h_l_fourier(const occ_nums_array &g);
+		void print_asf_h_l(const occ_nums_array &g);
 
-		PyObject* get_rho_h_l_p();
+		class symbolic_density{
+			public:
+				symbolic_density(const occ_nums_array &g);
+			private:
+				std::string density_latex;
+				std::shared_ptr<PyObject> density_ptr;
 
-		PyObject* get_rho_h_l();
-
-		PyObject* get_rho_h_l_fourier();
-
-		PyObject* get_asf_h_l();
-
-		PyObject*
-			computed_rho_h_l(const std::vector<std::array<int,4>> &g);
-
-		void print_rho_h_l(const std::vector<std::array<int,4>> &g);
-
-		PyObject* computed_rho_h_l_fourier
-			(const std::vector<std::array<int,4>> &g);
-
-		void print_rho_h_l_fourier(
-				const std::vector<std::array<int,4>> &g);
-
-		PyObject* computed_asf_h_l
-			(const std::vector<std::array<int,4>> &g);
+		};
 
 
 	} /* end namespace zeroth_order */

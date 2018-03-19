@@ -444,7 +444,7 @@ namespace eff_z{
 			return sum;
 		}
 
-		double v_direct_total(const std::vector<std::array<int,4>> &g){
+		double v_direct_total(const occ_nums_array &g){
 			i_direct_database i_d;
 			double sum = 0.;
 			for(auto &g_i: g){
@@ -465,7 +465,7 @@ namespace eff_z{
 			return sum;
 		}
 
-		double v_exchange_total(const std::vector<std::array<int,4>> &g){
+		double v_exchange_total(const occ_nums_array &g){
 			i_exchange_database i_e;
 			double sum = 0.;
 			for(auto &g_i: g){
@@ -489,7 +489,7 @@ namespace eff_z{
 			return sum;
 		}
 
-		double v_direct_total_par(const std::vector<std::array<int,4>> &g){
+		double v_direct_total_par(const occ_nums_array &g){
 			double sum = 0.;
 			std::vector<std::array<int,6>>
 				occ_nums_array;
@@ -510,7 +510,7 @@ namespace eff_z{
 		}
 
 		double v_exchange_total_par(
-				const std::vector<std::array<int,4>> &g){
+				const occ_nums_array &g){
 			double sum = 0.;
 			std::vector<std::array<int,8>>
 				occ_nums_array;
@@ -532,15 +532,15 @@ namespace eff_z{
 			return sum;
 		}
 
-		double v_total(const std::vector<std::array<int,4>> &g){
+		double v_total(const occ_nums_array &g){
 			return v_direct_total(g) - v_exchange_total(g);
 		}
 
-		double v_total_par(const std::vector<std::array<int,4>> &g){
+		double v_total_par(const occ_nums_array &g){
 			return v_direct_total_par(g) - v_exchange_total_par(g);
 		}
 
-		double a(const std::vector<std::array<int,4>> &g){
+		double a(const occ_nums_array &g){
 			double sum = 0.;
 			for(auto &g_i: g){
 				double n = static_cast<double>(g_i[0]);
@@ -549,23 +549,20 @@ namespace eff_z{
 			return sum;
 		}
 
-		double z_star_0th(double z,
-				const std::vector<std::array<int,4>> &g){
+		double z_star_0th(double z, const occ_nums_array &g){
 			return z - v_total(g) / (2. * a(g));
 		}
 
-		double e_0th(double z,const std::vector<std::array<int,4>> &g){
+		double e_0th(double z,const occ_nums_array &g){
 			double z_star = z_star_0th(z,g);
 			return -a(g) * z_star * z_star;
 		}
 
-		double z_star_0th_par(
-				double z, const std::vector<std::array<int,4>> &g){
+		double z_star_0th_par(double z, const occ_nums_array &g){
 			return z - v_total_par(g) / (2. * a(g));
 		}
 
-		double e_0th_par(double z,
-				const std::vector<std::array<int,4>> &g){
+		double e_0th_par(double z, const occ_nums_array &g){
 			double z_star = z_star_0th_par(z,g);
 			return -a(g) * z_star * z_star;
 		}
