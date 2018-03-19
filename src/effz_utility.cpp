@@ -1,6 +1,33 @@
 #include "effz_utility.h"
 namespace eff_z{
 
+	void print_occ_nums(std::ostream &stream, const occ_nums_array &g){
+		stream << "{\n";
+		stream << "  ";
+		int i = 0;
+		int k = g.size() - 1;
+		for(const auto &g_i: g){
+			if(i == 4){
+				i = 0;
+				stream << "\n  ";
+			}
+			stream << "{";
+			int j = 0;
+			for(const auto &g_ij: g_i){
+				stream << g_ij;
+				if(j != 3){stream << ",";}
+				++j;
+			}
+			stream << "}";
+			if(k != 0){
+				stream << ",";
+			} else {stream << "\n";}
+			++i;
+			--k;
+		}
+		stream << "}\n";
+	}
+
 	void print_gsl_matrix_int(gsl_matrix_int *m){
 		int size1 = m->size1;
 		int size2 = m->size2;

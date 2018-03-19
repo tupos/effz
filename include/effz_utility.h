@@ -1,6 +1,9 @@
 #ifndef EFFZ_UTILITY_H
 #define EFFZ_UTILITY_H
 
+#include "effz_typedefs.h"
+
+#include <iostream>
 #include <array>
 #include <type_traits>
 #include <vector>
@@ -25,6 +28,8 @@ namespace eff_z{
 		{
 			return { std::forward<Ts>(ts)... };
 		}
+
+	void print_occ_nums(std::ostream &stream, const occ_nums_array &g);
 
 	void print_gsl_matrix_int(gsl_matrix_int *m);
 	void print_gsl_vector_int(gsl_vector_int *v);

@@ -86,38 +86,6 @@ namespace eff_z{
 			base_menu_ptr get_next_menu(char choice) final;
 	};
 
-	class menus{
-		public:
-			void print_main() const;
-			void print_select_order() const;
-			void print_zeroth_order_energy() const;
-		private:
-			static const std::string main;
-			static const std::string select_order;
-			static const std::string zeroth_order_energy;
-	};
-
-	class help{
-		public:
-			void print_format_occ_nums() const;
-			void print_format_string() const;
-		private:
-			static const std::string format_occ_nums;
-			static const std::string format_string;
-	};
-
-
-	int main_menu1(char user_input);
-
-	int zeroth_order_energy_loop();
-
-	int density_symbolic_loop();
-
-	int asf_symbolic_loop();
-
-	int zeroth_order_energy_menu1(char user_input);
-
-	int zeroth_order_energy_enter_parameters_loop();
 } /* end namespace eff_z */
 
 #endif /* EFFZ_MAIN_LOOP_FUNCTIONS_H */

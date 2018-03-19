@@ -38,7 +38,7 @@ SOURCES = main.cpp grid.cpp integrate_nd.cpp effz_utility.cpp\
 		  effz_atomic_data.cpp effz_zeroth_order_python.cpp\
 		  monte_complex.cpp effz_exceptions.cpp\
 		  effz_python_utility.cpp effz_main_loop_functions.cpp\
-		  effz_user_input.cpp
+		  effz_user_input.cpp effz_result.cpp
 HEADERS =
 
 

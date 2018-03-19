@@ -11,6 +11,8 @@
 #include "effz_python_utility.h"
 #include "effz_zeroth_order_python.h"
 #include "effz_user_input.h"
+#include "effz_utility.h"
+#include "effz_result.h"
 
 
 using namespace eff_z;
@@ -28,18 +30,18 @@ int main(int argc, char *argv[]) try {
 		//if(!main_menu1(user_input))
 			//break;
 	//}
-	char user_input;
-	base_menu_ptr current_menu = std::make_shared<main_menu>();
-	while(!current_menu->is_quit_selected()){
-		if(current_menu->is_show_menu()){
-			current_menu->print_menu();
-		}
-		std::cin >> user_input;
-		base_menu_ptr new_menu = current_menu->get_next_menu(user_input);
-		if(new_menu){
-			current_menu.swap(new_menu);
-		}
-	}
+	//char user_input;
+	//base_menu_ptr current_menu = std::make_shared<main_menu>();
+	//while(!current_menu->is_quit_selected()){
+		//if(current_menu->is_show_menu()){
+			//current_menu->print_menu();
+		//}
+		//std::cin >> user_input;
+		//base_menu_ptr new_menu = current_menu->get_next_menu(user_input);
+		//if(new_menu){
+			//current_menu.swap(new_menu);
+		//}
+	//}
 	//std::vector<int> nums = parse_z_format("1,2,3,4,5");
 	//for(auto &num: nums){
 		//std::cout << num << " ";
@@ -71,21 +73,18 @@ int main(int argc, char *argv[]) try {
 		auto nums = dat.on_ast;
 
 		for(auto &num: charges){
-			std::cout << num << " ";
-		}
-		std::cout << "\n";
-		for(auto &occ_nums: nums.named_occ_nums){
-			std::cout << "\"" << std::get<0>(occ_nums) << "\" ";
-			std::cout << "{";
-			for(auto &g_i: std::get<1>(occ_nums)){
-				std::cout << "{";
-				for(auto &g_ij: g_i){
-					std::cout << g_ij << ",";
-				}
-				std::cout << "},";
+			for(auto &occ_nums: nums.named_occ_nums){
+				energy_result res(std::get<0>(occ_nums),
+						num, std::get<1>(occ_nums));
+				res.print_result();
 			}
-			std::cout << "}\n";
+
 		}
+		//std::cout << "\n";
+		//for(auto &occ_nums: nums.named_occ_nums){
+			//std::cout << "\"" << std::get<0>(occ_nums) << "\"\n";
+			//print_occ_nums(std::cout, std::get<1>(occ_nums));
+		//}
 
 	}
 	//std::cout << eff_z::zeroth_order::z_star_0th(2., occ_nums_data::g_He)
@@ -130,29 +129,29 @@ int main(int argc, char *argv[]) try {
 		//<< eff_z::zeroth_order::e_0th
 		//(20., atomic_data::occ_nums_data::g[19]) << "\n";
 
-	putenv((char*)"PYTHONDONTWRITEBYTECODE=1");
-	Py_Initialize();
-	PyRun_SimpleString("import sys\n" "import os");
-	PyRun_SimpleString("sys.path.append(os.getcwd() + \"/src\")");
-	//PyRun_SimpleString("print(sys.path)");
-	zeroth_order::print_rho_h_l(occ_nums_data::g_He);
-	PyObject *real = get_sympy_Symbol("r", "real", "positive");
-	PyObject *symb = get_sympy_Symbol("symb");
-	print_PyObject(get_assumptions0_sympy_Symbol(real), get_assumptions0_sympy_Symbol(symb));
-	PyObject *rho_he = zeroth_order::computed_rho_h_l(occ_nums_data::g_He);
-	std::wcout << sympy_Object_to_latex(rho_he) << "\n";
-	PyObject *rho_be_fourier
-		= zeroth_order::computed_rho_h_l_fourier(occ_nums_data::g_Be);
-	std::wcout << sympy_Object_to_latex(rho_be_fourier) << "\n";
-	pprint_sympy_Object(rho_be_fourier);
-	PyObject *asf_be
-		= zeroth_order::computed_asf_h_l(occ_nums_data::g_Be);
-	std::wcout << sympy_Object_to_latex(asf_be) << "\n";
-	pprint_sympy_Object(asf_be);
+	//putenv((char*)"PYTHONDONTWRITEBYTECODE=1");
+	//Py_Initialize();
+	//PyRun_SimpleString("import sys\n" "import os");
+	//PyRun_SimpleString("sys.path.append(os.getcwd() + \"/src\")");
+	////PyRun_SimpleString("print(sys.path)");
+	//zeroth_order::print_rho_h_l(occ_nums_data::g_He);
+	//PyObject *real = get_sympy_Symbol("r", "real", "positive");
+	//PyObject *symb = get_sympy_Symbol("symb");
+	//print_PyObject(get_assumptions0_sympy_Symbol(real), get_assumptions0_sympy_Symbol(symb));
+	//PyObject *rho_he = zeroth_order::computed_rho_h_l(occ_nums_data::g_He);
+	//std::wcout << sympy_Object_to_latex(rho_he) << "\n";
+	//PyObject *rho_be_fourier
+		//= zeroth_order::computed_rho_h_l_fourier(occ_nums_data::g_Be);
+	//std::wcout << sympy_Object_to_latex(rho_be_fourier) << "\n";
+	//pprint_sympy_Object(rho_be_fourier);
+	//PyObject *asf_be
+		//= zeroth_order::computed_asf_h_l(occ_nums_data::g_Be);
+	//std::wcout << sympy_Object_to_latex(asf_be) << "\n";
+	//pprint_sympy_Object(asf_be);
 
-	if(Py_FinalizeEx() < 0){
-		return 120;
-	}
+	//if(Py_FinalizeEx() < 0){
+		//return 120;
+	//}
 
 
 
