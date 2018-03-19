@@ -1,5 +1,8 @@
 #include "effz_main_loop_functions.h"
 
+#include "effz_user_input.h"
+#include "effz_result.h"
+
 #include <iostream>
 
 namespace eff_z{
@@ -89,12 +92,12 @@ namespace eff_z{
 
 	void base_menu_with_help::help_action_handler(char choice){
 		switch(choice){
-			case '0':{
+			case '9':{
 						 this->not_show_menu();
 						 std::cout << format_string;
 						 break;
 					 }
-			case '9':{
+			case '0':{
 						 this->not_show_menu();
 						 std::cout << format_occ_nums;
 						 break;
@@ -137,7 +140,7 @@ namespace eff_z{
 		switch(choice){
 			case '1':{
 						 new_menu = std::make_shared<main_menu>();
-						 std::shared_ptr<base_menu> ptr
+						 base_menu_ptr ptr
 							 = std::make_shared<zeroth_order_energy_menu>(
 									 new_menu);
 						 new_menu.swap(ptr);
@@ -145,7 +148,7 @@ namespace eff_z{
 					 }
 			case '2':{
 						 new_menu = std::make_shared<main_menu>();
-						 std::shared_ptr<base_menu> ptr
+						 base_menu_ptr ptr
 							 = std::make_shared<zeroth_order_density_menu>(
 									 new_menu);
 						 new_menu.swap(ptr);
@@ -153,7 +156,7 @@ namespace eff_z{
 					 }
 			case '3':{
 						 new_menu = std::make_shared<main_menu>();
-						 std::shared_ptr<base_menu> ptr
+						 base_menu_ptr ptr
 							 = std::make_shared<zeroth_order_asf_menu>(
 									 new_menu);
 						 new_menu.swap(ptr);
@@ -182,8 +185,46 @@ namespace eff_z{
 		base_menu_ptr new_menu;
 		switch(choice){
 			case '1':{
-						 //new_menu = std::make_unique<
-							 //zeroth_order_energy_menu>();
+						 std::cin.ignore(
+								 std::numeric_limits<
+								 std::streamsize>::max(), '\n');
+						 for(;;){
+							 try{
+								 std::cout <<
+									 "Please enter parameter string:\n";
+								 std::string parameter_str;
+								 std::getline(std::cin,parameter_str);
+								 //std::cout << parameter_str << "\n";
+								 f_strings_parser parser(parameter_str);
+								 auto data = parser.get_parsed_data();
+
+								 for(const auto &dat:data){
+									 auto charges = dat.z;
+									 auto nums = dat.on_ast;
+
+									 for(auto &num: charges){
+										 for(auto &occ_nums:
+												 nums.named_occ_nums){
+											 zeroth_order::energy_result
+												 res(std::get<0>(occ_nums),
+														 num,
+														 std::get<1>(
+															 occ_nums));
+											 res.print_result();
+										 }
+									 }
+								 }
+								 break;
+							 } catch (const parsing_exception &e){
+								 std::cout << e.what() << "\n";
+							 }
+						 }
+						 new_menu
+							 = std::make_shared<zeroth_order_energy_menu>(
+									 prev_menu);
+						 base_menu_ptr ptr = std::make_shared<
+							 result_menu_with_prev>(new_menu);
+						 new_menu.swap(ptr);
 						 break;
 					 }
 			default:{
@@ -251,4 +292,21 @@ namespace eff_z{
 		return new_menu;
 	}
 
+	result_menu_with_prev::result_menu_with_prev(base_menu_ptr prev_menu)
+		: base_menu_with_previous(prev_menu)
+	{
+		std::string result_menu_str
+			= "The calculation results have been printed.\n"
+			"What do you want to do next?\n";
+		result_menu_str += menu_text;
+		menu_text.swap(result_menu_str);
+	}
+
+	base_menu_ptr result_menu_with_prev::get_next_menu(char choice)
+	{ 
+		base_menu_ptr next_menu;
+		if(!(next_menu = prev_action_handler(choice)))
+			base_action_handler(choice);
+		return next_menu;
+	}
 } /* end namespace eff_z */

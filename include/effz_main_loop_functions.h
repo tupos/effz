@@ -8,14 +8,14 @@
 namespace eff_z{
 	class base_menu{
 		public:
+			typedef std::shared_ptr<base_menu> base_menu_ptr;
 			base_menu() : menu_text(
 					"p. Print this menu.\n"
 					"q. Exit the effective charge program.\n\n"
 					"Please enter your choice...\n"),
 			is_quit(false), show_menu(true) {}
 			virtual ~base_menu() = default;
-			virtual std::shared_ptr<base_menu>
-				get_next_menu(char choice) = 0;
+			virtual base_menu_ptr get_next_menu(char choice) = 0;
 			virtual void print_menu(){
 				std::cout << menu_text << "\n";
 			};
@@ -37,7 +37,7 @@ namespace eff_z{
 			}
 			void base_action_handler(char choice);
 	};
-	typedef std::shared_ptr<base_menu> base_menu_ptr;
+	typedef base_menu::base_menu_ptr base_menu_ptr;
 
 	class base_menu_with_help : virtual public base_menu{
 		public:
@@ -86,6 +86,11 @@ namespace eff_z{
 			base_menu_ptr get_next_menu(char choice) final;
 	};
 
+	class result_menu_with_prev : public base_menu_with_previous{
+		public:
+			explicit result_menu_with_prev(base_menu_ptr prev_menu);
+			base_menu_ptr get_next_menu(char choice) final;
+	};
 } /* end namespace eff_z */
 
 #endif /* EFFZ_MAIN_LOOP_FUNCTIONS_H */
