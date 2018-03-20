@@ -4,6 +4,7 @@
 #include "effz_python_utility.h"
 
 #include <iostream>
+#include <functional>
 
 
 namespace eff_z{
@@ -330,6 +331,34 @@ namespace eff_z{
 				PyErr_Print();
 				std::cerr << e.what() << "\n";
 			}
+		}
+
+		symbolic_density::symbolic_density(const occ_nums_array &g)
+			: g(g), density_ptr(computed_rho_h_l(g), Py_DecRef),
+			density_latex_str(sympy_Object_to_latex(density_ptr.get())),
+			density_pretty_str(
+					sympy_Object_to_string(density_ptr.get(),"pretty")) { }
+
+		std::string symbolic_density::get_density_latex_str(){
+			return eff_z::wstr_to_str(density_latex_str);
+		}
+
+		std::string symbolic_density::get_density_pretty_str(){
+			return eff_z::wstr_to_str(density_pretty_str);
+		}
+
+		symbolic_asf::symbolic_asf(const occ_nums_array &g)
+			: g(g), asf_ptr(computed_asf_h_l(g), Py_DecRef),
+			asf_latex_str(sympy_Object_to_latex(asf_ptr.get())),
+			asf_pretty_str(
+					sympy_Object_to_string(asf_ptr.get(),"pretty")) { }
+
+		std::string symbolic_asf::get_asf_latex_str(){
+			return eff_z::wstr_to_str(asf_latex_str);
+		}
+
+		std::string symbolic_asf::get_asf_pretty_str(){
+			return eff_z::wstr_to_str(asf_pretty_str);
 		}
 	} /* end namespace zeroth_order */
 } /* end namespace eff_z */

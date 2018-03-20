@@ -114,7 +114,48 @@ namespace eff_z{
 			std::cerr << e.what() << "\n";
 			return std::wstring();
 		}
+	}
 
+	std::wstring sympy_Object_to_string(
+			PyObject *obj, const std::string &printer)
+	{
+		PyObject *sympy, *pprint, *arg, *string;
+		try{
+			if(!obj){
+				throw python_exception("obj to print is NULL");
+			}
+			sympy = PyImport_ImportModule("sympy");
+			if(!sympy){
+				throw python_exception("python alloc error");
+			}
+
+			pprint = PyObject_GetAttrString(sympy, printer.c_str());
+			Py_DECREF(sympy);
+			if(!pprint){
+				throw python_exception("python alloc error");
+			}
+
+			arg = Py_BuildValue("(O)", obj);
+			if(!arg){
+				throw python_exception("python alloc error");
+			}
+
+			string = PyObject_CallObject(pprint, arg);
+			Py_DECREF(arg);
+			Py_DECREF(pprint);
+
+			if(!string){
+				throw python_exception("python call error");
+			}
+
+			Py_UNICODE* c_str = PyUnicode_AS_UNICODE(string);
+			std::wstring res(c_str);
+			return res;
+		} catch(const python_exception& e){
+			PyErr_Print();
+			std::cerr << e.what() << "\n";
+			return std::wstring();
+		}
 	}
 
 	PyObject *

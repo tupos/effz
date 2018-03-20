@@ -1,4 +1,8 @@
 #include "effz_utility.h"
+
+#include <locale>
+#include <codecvt>
+
 namespace eff_z{
 
 	void print_occ_nums(std::ostream &stream, const occ_nums_array &g){
@@ -26,6 +30,13 @@ namespace eff_z{
 			--k;
 		}
 		stream << "}\n";
+	}
+
+	std::string wstr_to_str(const std::wstring &wstr){
+		using convert_typeX = std::codecvt_utf8<wchar_t>;
+		std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+		return converterX.to_bytes(wstr);
 	}
 
 	void print_gsl_matrix_int(gsl_matrix_int *m){

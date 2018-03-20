@@ -9,6 +9,7 @@
 #include <array>
 #include <string>
 #include <memory>
+#include <functional>
 
 
 namespace eff_z{
@@ -24,12 +25,28 @@ namespace eff_z{
 		class symbolic_density{
 			public:
 				symbolic_density(const occ_nums_array &g);
+				std::string get_density_latex_str();
+				std::string get_density_pretty_str();
 			private:
-				std::string density_latex;
-				std::shared_ptr<PyObject> density_ptr;
-
+				const occ_nums_array g;
+				std::unique_ptr<PyObject,std::function<void(PyObject*)>>
+					density_ptr;
+				std::wstring density_latex_str;
+				std::wstring density_pretty_str;
 		};
 
+		class symbolic_asf{
+			public:
+				symbolic_asf(const occ_nums_array &g);
+				std::string get_asf_latex_str();
+				std::string get_asf_pretty_str();
+			private:
+				const occ_nums_array g;
+				std::unique_ptr<PyObject,std::function<void(PyObject*)>>
+					asf_ptr;
+				std::wstring asf_latex_str;
+				std::wstring asf_pretty_str;
+		};
 
 	} /* end namespace zeroth_order */
 } /* end namespace eff_z */

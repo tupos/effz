@@ -31,5 +31,110 @@ namespace eff_z{
 			result_string += ss.str();
 		}
 
+		density_result::density_result(const std::string &name, int z,
+				const occ_nums_array &g)
+			: name(name), z(z), g(g), density(g)
+		{
+			std::string density_latex = density.get_density_latex_str();
+			std::string density_pretty = density.get_density_pretty_str();
+			std::stringstream ss;
+			ss << "*** " << "\"" << name << "\"" << " ***\n";
+			ss << "*** z = " << z << " ***\n";
+			ss << "*** density pretty start ************\n";
+			ss << density_pretty << "\n";
+			ss << "*** density pretty end **************\n";
+			ss << "*** density latex start *************\n";
+			ss << density_latex << "\n";
+			ss << "*** density latex end ***************\n";
+			ss << "*** occupation numbers start ********\n";
+			print_occ_nums(ss, g);
+			ss << "*** occupation numbers end **********\n";
+			ss << "*************************************\n";
+			result_string += ss.str();
+		}
+
+		asf_result::asf_result(const std::string &name, int z,
+				const occ_nums_array &g)
+			: name(name), z(z), g(g), asf(g)
+		{
+			std::string asf_latex = asf.get_asf_latex_str();
+			std::string asf_pretty = asf.get_asf_pretty_str();
+			std::stringstream ss;
+			ss << "*** " << "\"" << name << "\"" << " ***\n";
+			ss << "*** z = " << z << " ***\n";
+			ss << "*** asf pretty start ************\n";
+			ss << asf_pretty << "\n";
+			ss << "*** asf pretty end **************\n";
+			ss << "*** asf latex start *************\n";
+			ss << asf_latex << "\n";
+			ss << "*** asf latex end ***************\n";
+			ss << "*** occupation numbers start ********\n";
+			print_occ_nums(ss, g);
+			ss << "*** occupation numbers end **********\n";
+			ss << "*************************************\n";
+			result_string += ss.str();
+		}
+
+		void parse_calc_and_print_0th_results_energy(
+				std::ostream &stream, const std::string &s)
+		{
+			f_strings_parser parser(s);
+			auto data = parser.get_parsed_data();
+
+			for(const auto &dat:data){
+				auto charges = dat.z;
+				auto nums = dat.on_ast;
+
+				for(auto &num: charges){
+					for(auto &occ_nums: nums.named_occ_nums){
+						zeroth_order::energy_result
+							res(std::get<0>(occ_nums), num,
+									std::get<1>(occ_nums));
+						res.print_result(stream);
+					}
+				}
+			}
+		}
+		void parse_calc_and_print_0th_results_density(
+				std::ostream &stream, const std::string &s)
+		{
+			f_strings_parser parser(s);
+			auto data = parser.get_parsed_data();
+
+			for(const auto &dat:data){
+				auto charges = dat.z;
+				auto nums = dat.on_ast;
+
+				for(auto &num: charges){
+					for(auto &occ_nums: nums.named_occ_nums){
+						zeroth_order::density_result
+							res(std::get<0>(occ_nums), num,
+									std::get<1>(occ_nums));
+						res.print_result(stream);
+					}
+				}
+			}
+		}
+
+		void parse_calc_and_print_0th_results_asf(
+				std::ostream &stream, const std::string &s)
+		{
+			f_strings_parser parser(s);
+			auto data = parser.get_parsed_data();
+
+			for(const auto &dat:data){
+				auto charges = dat.z;
+				auto nums = dat.on_ast;
+
+				for(auto &num: charges){
+					for(auto &occ_nums: nums.named_occ_nums){
+						zeroth_order::asf_result
+							res(std::get<0>(occ_nums), num,
+									std::get<1>(occ_nums));
+						res.print_result(stream);
+					}
+				}
+			}
+		}
 	} /* end namespace zeroth_order */
 } /* end namespace eff_z */

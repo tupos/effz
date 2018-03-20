@@ -59,8 +59,8 @@ namespace eff_z{
 			"The format string looks like:\n\n"
 			"   -z Z1, Z2, ... -f OCC_NUMS_FORMAT "
 			"-v OCC_NUMS1, OCC_NUMS2, ...; REPEAT_FORMAT_STRING\n\n"
-			"EXPLANATION.\n \"-z\" specifies the charges "
-			"all arguments except of Z1 are optional. "
+			"EXPLANATION.\n \"-z\" specifies the charges. "
+			"All arguments except of Z1 are optional. "
 			"Z1, Z2, ... are numbers.\n"
 			"\"-f\" specifies the format of the occupation numbers "
 			"and can be one of the following "
@@ -194,26 +194,9 @@ namespace eff_z{
 									 "Please enter parameter string:\n";
 								 std::string parameter_str;
 								 std::getline(std::cin,parameter_str);
+								 zeroth_order::
+									 parse_calc_and_print_0th_results_energy(std::cout,parameter_str);
 
-								 f_strings_parser parser(parameter_str);
-								 auto data = parser.get_parsed_data();
-
-								 for(const auto &dat:data){
-									 auto charges = dat.z;
-									 auto nums = dat.on_ast;
-
-									 for(auto &num: charges){
-										 for(auto &occ_nums:
-												 nums.named_occ_nums){
-											 zeroth_order::energy_result
-												 res(std::get<0>(occ_nums),
-														 num,
-														 std::get<1>(
-															 occ_nums));
-											 res.print_result();
-										 }
-									 }
-								 }
 								 break;
 							 } catch (const parsing_exception &e){
 								 std::cout << e.what() << "\n";
@@ -251,8 +234,29 @@ namespace eff_z{
 		base_menu_ptr new_menu;
 		switch(choice){
 			case '1':{
-						 //new_menu = std::make_unique<
-							 //zeroth_order_energy_menu>();
+						 std::cin.ignore(
+								 std::numeric_limits<
+								 std::streamsize>::max(), '\n');
+						 for(;;){
+							 try{
+								 std::cout <<
+									 "Please enter parameter string:\n";
+								 std::string parameter_str;
+								 std::getline(std::cin,parameter_str);
+								 zeroth_order::
+									 parse_calc_and_print_0th_results_density(std::cout,parameter_str);
+
+								 break;
+							 } catch (const parsing_exception &e){
+								 std::cout << e.what() << "\n";
+							 }
+						 }
+						 new_menu
+							 = std::make_shared<zeroth_order_density_menu>(
+									 prev_menu);
+						 base_menu_ptr ptr = std::make_shared<
+							 result_menu_with_prev>(new_menu);
+						 new_menu.swap(ptr);
 						 break;
 					 }
 			default:{
@@ -279,8 +283,30 @@ namespace eff_z{
 		base_menu_ptr new_menu;
 		switch(choice){
 			case '1':{
-						 //new_menu = std::make_unique<
-							 //zeroth_order_energy_menu>();
+						 std::cin.ignore(
+								 std::numeric_limits<
+								 std::streamsize>::max(), '\n');
+						 for(;;){
+							 try{
+								 std::cout <<
+									 "Please enter parameter string:\n";
+								 std::string parameter_str;
+								 std::getline(std::cin,parameter_str);
+								 zeroth_order::
+									 parse_calc_and_print_0th_results_asf(
+											 std::cout,parameter_str);
+
+								 break;
+							 } catch (const parsing_exception &e){
+								 std::cout << e.what() << "\n";
+							 }
+						 }
+						 new_menu
+							 = std::make_shared<zeroth_order_asf_menu>(
+									 prev_menu);
+						 base_menu_ptr ptr = std::make_shared<
+							 result_menu_with_prev>(new_menu);
+						 new_menu.swap(ptr);
 						 break;
 					 }
 			default:{
@@ -297,7 +323,8 @@ namespace eff_z{
 	{
 		std::string result_menu_str
 			= "The calculation results have been printed.\n"
-			"What do you want to do next?\n";
+			"What do you want to do next?\n"
+			"m. Go tho the main menu.\n";
 		result_menu_str += menu_text;
 		menu_text.swap(result_menu_str);
 	}
@@ -305,6 +332,10 @@ namespace eff_z{
 	base_menu_ptr result_menu_with_prev::get_next_menu(char choice)
 	{
 		base_menu_ptr next_menu;
+		if(choice == 'm'){
+			next_menu = std::make_shared<main_menu>();
+			return next_menu;
+		}
 		if(!(next_menu = prev_action_handler(choice)))
 			base_action_handler(choice);
 		return next_menu;

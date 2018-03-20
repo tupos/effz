@@ -35,6 +35,9 @@ namespace eff_z{
 					sympy_Object_to_latex(std::forward<Args>(args))...};
 		}
 
+	std::wstring sympy_Object_to_string(
+			PyObject *obj, const std::string &printer);
+
 	PyObject *
 		occ_nums_to_PyObject(const std::vector<std::array<int,4>> &g);
 

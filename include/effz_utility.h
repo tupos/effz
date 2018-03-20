@@ -30,6 +30,7 @@ namespace eff_z{
 		}
 
 	void print_occ_nums(std::ostream &stream, const occ_nums_array &g);
+	std::string wstr_to_str(const std::wstring &wstr);
 
 	void print_gsl_matrix_int(gsl_matrix_int *m);
 	void print_gsl_vector_int(gsl_vector_int *v);
