@@ -35,39 +35,39 @@ namespace eff_z {
 	};
 	double h_l_rnl_gsl(double r, void *h_l_rnl_params_);
 
-	std::complex<double> green_coulomb_h_rad(
-			const std::complex<double> E,
-			const int l,
-			const std::array<double, 2> &r
-			);
+	//std::complex<double> green_coulomb_h_rad(
+			//const std::complex<double> E,
+			//const int l,
+			//const std::array<double, 2> &r
+			//);
 
-	struct gf_h_params{
-		std::complex<double> E;
-		int l;
-	};
-	std::complex<double> green_coulomb_h_rad_gsl(
-			double *r,
-			size_t dim,
-			void *gf_h_params_
-			);
+	//struct gf_h_params{
+		//std::complex<double> E;
+		//int l;
+	//};
+	//std::complex<double> green_coulomb_h_rad_gsl(
+			//double *r,
+			//size_t dim,
+			//void *gf_h_params_
+			//);
 
-	std::complex<double> green_coulomb_rad(
-			const double z,
-			const std::complex<double> E,
-			const int l,
-			const std::array<double, 2> &r
-			);
+	//std::complex<double> green_coulomb_rad(
+			//const double z,
+			//const std::complex<double> E,
+			//const int l,
+			//const std::array<double, 2> &r
+			//);
 
-	struct gf_h_l_params{
-		double z;
-		std::complex<double> E;
-		int l;
-	};
-	std::complex<double> green_coulomb_rad_gsl(
-			double *r,
-			size_t dim,
-			void *gf_h_l_params_
-			);
+	//struct gf_h_l_params{
+		//double z;
+		//std::complex<double> E;
+		//int l;
+	//};
+	//std::complex<double> green_coulomb_rad_gsl(
+			//double *r,
+			//size_t dim,
+			//void *gf_h_l_params_
+			//);
 
 	inline double h_E(int n){
 		double nn = (double)n;

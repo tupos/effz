@@ -14,6 +14,8 @@ dnl Switch to a C++ compiler and check if it works.
 AC_LANG([C++])
 AC_PROG_CXX
 AC_PROG_CXXCPP
+m4_include([m4/m4_ax_cxx_compile_stdcxx.m4])
+AX_CXX_COMPILE_STDCXX(14)
 
 dnl c++ standard lib headers
 AC_CHECK_HEADERS(m4_normalize(iostream vector array string cmath memory
