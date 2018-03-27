@@ -162,5 +162,6 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM(
 CPPFLAGS=$ac_save_CPPFLAGS
 LDFLAGS=$ac_save_LDFLAGS
 LIBS=$ac_save_LIBS
-dnl linking to python
+dnl define zeroth order
+AC_DEFINE([EFFZ_ZEROTH_ORDER],[1])
 AC_OUTPUT
