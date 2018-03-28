@@ -163,5 +163,5 @@ CPPFLAGS=$ac_save_CPPFLAGS
 LDFLAGS=$ac_save_LDFLAGS
 LIBS=$ac_save_LIBS
 dnl define zeroth order
-AC_DEFINE([EFFZ_ZEROTH_ORDER],[1])
+AC_DEFINE([EFFZ_ZEROTH_ORDER],[1],[define zeroth order])
 AC_OUTPUT
