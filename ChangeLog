@@ -1,0 +1,260 @@
+2018-03-28 09:58:28 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * changed gitignore to be compatible with autotools. fixes in configure 
+
+2018-03-27 17:39:47 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * defined ZEROTH_ORDER to avoid dependency on sp_func 
+
+2018-03-27 17:11:53 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added m4 macro for c++14 
+
+2018-03-27 16:29:18 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * code reorganization. migrated to autotools 
+
+2018-03-20 18:01:37 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented all menus, calculation of all results. 
+
+2018-03-19 19:07:23 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * code cleanup 
+
+2018-03-19 19:03:12 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented zeroth_order energy calculation 
+
+2018-03-19 15:46:31 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * code cleaup. implemented energy_result 
+
+2018-03-19 13:47:45 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added z_star_and_e0th 
+
+2018-03-19 13:38:35 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * code reorganization 0th_order, added effz_result 
+
+2018-03-14 10:03:31 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixed from -Wall gcc 
+
+2018-03-10 13:47:00 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented menus. fixed paths in ycm_config 
+
+2018-03-10 12:56:54 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * adjusted paths in makefile 
+
+2018-03-09 18:12:06 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implementing menu_classes 
+
+2018-03-08 23:11:19 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implement main_loop classes 
+
+2018-03-08 14:53:28 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented parser classes 
+
+2018-03-08 08:54:58 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * removed commented code in user_input 
+
+2018-03-07 14:09:43 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * continue refactoring user_input 
+
+2018-03-03 23:04:03 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * removed commented code 
+
+2018-03-03 22:55:38 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixes paths in makefile 
+
+2018-03-03 19:28:51 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented occ_nums_parser and occ_nums_ast 
+
+2018-03-02 18:33:14 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * start implementing classes 
+
+2018-03-02 17:29:57 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented named occ nums return types 
+
+2018-03-02 15:42:45 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented parser 
+
+2018-03-02 11:12:50 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * moved functions into anonymous namespace parse_user_input 
+
+2018-03-01 18:00:17 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * continue implementing parse 
+
+2018-03-01 12:42:18 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * removed unused functions in user_input 
+
+2018-02-27 18:00:41 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * start implementing the parse_format_string 
+
+2018-02-27 16:06:09 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented parsing of occ_nums formats 
+
+2018-02-27 13:59:54 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented parse_z_format 
+
+2018-02-26 21:24:35 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented roman_to_arabic 
+
+2018-02-26 14:07:55 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * start implementing parsing of ionization format. 
+
+2018-02-26 11:53:38 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented parsing of O format. 
+
+2018-02-23 19:05:25 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * continue implementing parsing 
+
+2018-02-23 12:09:22 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented parsing of occ_nums 
+
+2018-02-22 19:14:30 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * start implementing parsing format strings 
+
+2018-02-21 18:24:54 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * started implementation of the main loop 
+
+2018-02-21 12:33:45 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added typedefs. added atomic data. 
+
+2018-02-21 09:43:20 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * merged utility and helper_func. minor changes in main. 
+
+2018-02-20 17:41:41 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * cleaned up python_test. Added tests into main. 
+
+2018-02-20 17:26:31 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented printing. Implemented python zeroth order. Many other fixes. 
+
+2018-02-19 19:27:13 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * working on implementation of python zeroth order 
+
+2018-02-15 18:38:56 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * Embedded python interpreter. Updated makefiles. Added zeroth_order.py 
+
+2018-02-12 11:41:07 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * code cleanup in main.cpp 
+
+2018-02-10 21:50:18 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented symbolic calculation in python and jupyter. 
+
+2018-02-07 18:22:47 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * change values in main 
+
+2018-02-07 17:06:25 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented databases. fixes in integration change the first residue calculation. 
+
+2018-02-07 13:20:55 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * continue implementing databases 
+
+2018-02-06 18:07:55 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added cereal library for serialization. Start to implement databases for integrals. 
+
+2018-02-05 20:16:04 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented parallel table 
+
+2018-01-31 18:24:57 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * removed spaces 
+
+2018-01-30 18:21:10 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented density 0th order 
+
+2018-01-30 16:41:26 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * minor fixes 
+
+2018-01-30 16:20:54 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented parallel_sum 
+
+2018-01-30 12:05:51 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * start implementig parallel version 
+
+2018-01-29 16:23:28 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixed int_0_inf and inf_r_inf --- introduced log increase. 
+
+2018-01-29 14:18:43 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented integration from 0 to inf. Added ocupation numbers array. 
+
+2018-01-23 20:14:54 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixed indentation 
+
+2018-01-23 20:13:34 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented zeroth order approximation 
+
+2018-01-22 19:01:49 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * start implementation of zeroth order, impemented gsl_integration wrapper 
+
+2018-01-03 16:05:34 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixes with inlines. few minor fixes 
+
+2018-01-02 00:47:37 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implementing definitions of special functions 
+
+2017-12-31 12:14:07 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixed HOME path in ycm, fixed includes in main.cpp 
+
+2017-12-10 15:34:15 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * clean main. Start implementation spec_func 
+
+2017-12-10 15:09:25 +0100  Oleg Skoromnik <olegskor@gmail.com>
+
+    * initial commit 
+
