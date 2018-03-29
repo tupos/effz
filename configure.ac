@@ -164,4 +164,6 @@ LDFLAGS=$ac_save_LDFLAGS
 LIBS=$ac_save_LIBS
 dnl define zeroth order
 AC_DEFINE([EFFZ_ZEROTH_ORDER],[1],[define zeroth order])
+dnl define home user directory
+AC_DEFINE_UNQUOTED([EFFZ_USER_HOME_DIRECTORY],["$HOME"],[define home folder])
 AC_OUTPUT
