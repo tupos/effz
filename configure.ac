@@ -8,7 +8,7 @@ AC_CONFIG_SRCDIR([src/effz_zeroth_order.cpp])
 AC_CONFIG_FILES([
 				 Makefile
 				 src/Makefile
-				 ])
+				 man/Makefile])
 
 dnl Switch to a C++ compiler and check if it works.
 AC_LANG([C++])
