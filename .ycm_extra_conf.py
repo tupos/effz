@@ -42,7 +42,7 @@ flags = [
     '-I.',
     '-I..',
     local_include,
-    '-I/usr/local/Cellar/python3/3.6.4_4/Frameworks/Python.framework/Versions/3.6/include/python3.6m',
+    '-I/usr/local/Cellar/python3/3.6.5/Frameworks/Python.framework/Versions/3.6/include/python3.6m',
     '-I/usr/local/include',
     '-std=gnu++14',
 ]
