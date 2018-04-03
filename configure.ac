@@ -20,9 +20,10 @@ AX_CXX_COMPILE_STDCXX(14)
 dnl c++ standard lib headers
 AC_CHECK_HEADERS(m4_normalize(iostream vector array string cmath memory
 				 functional utility unordered_map complex
-				 cmath cstdlib type_traits numeric algorithm
+				 cstdlib type_traits numeric algorithm
 				 stdexcept locale codecvt regex tuple unordered_set
-				 iterator sstream exception fstream), [],
+				 iterator sstream exception fstream system_error
+				 cerrno), [],
 				 [AC_MSG_ERROR([standard library headers are not found])])
 
 dnl check for gsl
@@ -165,5 +166,19 @@ LIBS=$ac_save_LIBS
 dnl define zeroth order
 AC_DEFINE([EFFZ_ZEROTH_ORDER],[1],[define zeroth order])
 dnl define home user directory
-AC_DEFINE_UNQUOTED([EFFZ_USER_HOME_DIRECTORY],["$HOME"],[define home folder])
+AC_ARG_WITH([effz-home],
+			[AS_HELP_STRING([--with-effz-home=prefix],
+							[dir to store program data [$HOME/.config]])],
+							[effz_home_set=yes],
+							[effz_home_set=no])
+
+AS_IF([test "x$effz_home_set" = xyes],
+	  [
+	   AC_DEFINE_UNQUOTED([EFFZ_HOME_DIRECTORY],["$with_effz_home"],
+						  [define home folder])
+	   ],
+	   [
+		AC_DEFINE_UNQUOTED([EFFZ_HOME_DIRECTORY],["$HOME/.config"],
+						   [define home folder])
+		])
 AC_OUTPUT

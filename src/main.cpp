@@ -6,6 +6,7 @@
 #include <tuple>
 
 #include "effz_main_loop_functions.h"
+#include "effz_config.h"
 #include "effz_atomic_data.h"
 #include "effz_zeroth_order.h"
 #include "effz_python_utility.h"
@@ -22,6 +23,7 @@ using namespace atomic_data;
 
 int main(int argc, char *argv[]) try {
 
+	config::shared_config().check_dirs();
 	putenv((char*)"PYTHONDONTWRITEBYTECODE=1");
 	Py_Initialize();
 	PyRun_SimpleString("import sys\n" "import os");

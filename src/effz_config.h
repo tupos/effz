@@ -7,6 +7,7 @@
 
 namespace eff_z{
 
+
 	class config{
 		public:
 			static config& shared_config();
@@ -14,17 +15,22 @@ namespace eff_z{
 			config(const config&) = delete;
 			void operator=(const config&) = delete;
 
+			const std::string& get_checked_python_src_dir() const;
+			const std::string& get_checked_database_dir() const;
+
 			const std::string& get_python_src_dir() const;
-			const std::string& get_database_src_dir() const;
+			const std::string& get_database_dir() const;
+
+			void check_dirs() const;
+
 		private:
 			config();
 
-			static const std::string home_dir;
-			static const std::string python_src_dir;
-			static const std::string database_dir;
-
-			bool is_program_folder_exist() const;
-			void mkdir_program_folder() const;
+			const std::string home_dir;
+			const std::string python_src_dir;
+			const std::string database_dir;
+			const std::string&
+				get_checked_dir(const std::string &dir_name) const;
 	};
 
 } /* end namespace eff_z */
