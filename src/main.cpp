@@ -9,6 +9,16 @@
 
 #include <cstdlib>
 
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+
+void my_handler(int s){
+           printf("Caught signal %d\n",s);
+           exit(1);
+
+}
 
 using namespace eff_z;
 
@@ -26,6 +36,11 @@ int main(int argc, char *argv[]) try {
 #ifdef DEBUG
 	PyRun_SimpleString("print(sys.path)");
 #endif
+struct sigaction sigIntHandler;
+
+   sigIntHandler.sa_handler = my_handler;
+   sigemptyset(&sigIntHandler.sa_mask);
+   sigIntHandler.sa_flags = 0;
 
 	char user_input;
 	base_menu_ptr current_menu = std::make_shared<main_menu>();
@@ -36,6 +51,7 @@ int main(int argc, char *argv[]) try {
 		std::cin >> user_input;
 		base_menu_ptr new_menu
 			= current_menu->get_next_menu(user_input);
+sigaction(SIGINT, &sigIntHandler, NULL);
 		if(new_menu){
 			current_menu.swap(new_menu);
 		}

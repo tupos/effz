@@ -4,6 +4,7 @@
 #include "effz_result.h"
 
 #include <iostream>
+#include <limits>
 
 namespace eff_z{
 	void base_menu::base_action_handler(char choice){
@@ -18,6 +19,8 @@ namespace eff_z{
 					 }
 			default:{
 						this->not_show_menu();
+						std::cin.clear();
+						std::cin.ignore();
 						std::cout << "Wrong input. Please repeat.\n";
 						break;
 					}

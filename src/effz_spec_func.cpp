@@ -115,7 +115,8 @@ namespace eff_z {
 	{
 		using namespace std::complex_literals;
 		const double x = cos(theta);
-		std::complex<double> e = exp(1i * static_cast<double>(m) * phi);
+		std::complex<double> e = exp(
+				std::complex<double>(1i * static_cast<double>(m) * phi));
 		const int ll = (l <= -1) ? -(l+1) : l;
 		int mm = m;
 		int prefactor = 1;
