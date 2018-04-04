@@ -7,10 +7,10 @@ Contents
 --------
 	
 - [Intro](#intro)
+- [Quick Feature Summary](#quick-feature-summary)
 - [Installation](#installation)
     - [Linux system](#linuxInstall)
     - [Mac OS](#install)
-- [Quick Feature Summary](#quick-feature-summary)
 - [User Guide](#user-guide)
     - [Format string help](#formatString)
     - [Occupation numbers help](#occNumsString)
@@ -33,6 +33,17 @@ regular perturbation theory. The **fully** analytical zeroth-order
 approximation provides a good accuracy of about 5% for observable
 characteristics for the whole periodic table. Thus it can completely
 substitute the [Thomas-Fermi][wikiThomasFermi] model.
+
+Quick Feature Summary
+-----
+
+The effective charge program can compute energies, densities and
+scattering factors from a set of occupation numbers and a charge. As
+of version 0.1 only the zeroth-order approximation is supported.
+
+In the zeroth-order approximation densities and scattering factors are
+computed analytically through sympy. The energies are computed
+numerically.
 
 Installation
 ------------
@@ -151,10 +162,10 @@ tar -xzf effz-0.1.tar.gz
 cd effz-0.1
 ```
 
-and issue the standard unix triple
+and issue the standard unix triple. However, it is recommended not to install under the root. Consequently, it is better to provide the prefix option for configure like `$HOME/local` for example.
 
 ```
-./configure
+./configure --prefix=`$HOME/local`
 ```
 
 ```
@@ -165,7 +176,11 @@ make
 make install
 ```
 
-the additional installation options are available through `configure -h`.
+Then the program will be available under the path `$HOME/local/bin/effz`.
+
+Another usefull option is to specify the `--with-effz-home` variable in `configure`. During the first launch the program generates some databases and by default they are stored under `$HOME/.config/effz`. So the option `--with-effz-home=prefix` overrides the standard path `$HOME/.config` to the one provided by `prefix`.
+
+The additional installation options are available through `configure -h`.
 
 ### Mac OS
 
@@ -191,17 +206,6 @@ and follow the instructions from [Install effz](#installeffz) above.
 ### Windows
 
 TODO the support for Windows system is shifted to the 0.1.x version.
-
-Quick Feature Summary
------
-
-The effective charge program can compute energies, densities and
-scattering factors from a set of occupation numbers and a charge. As
-of version 0.1 only the zeroth-order approximation is supported.
-
-In the zeroth-order approximation densities and scattering factors are
-computed analytically through sympy. The energies are computed
-numerically.
 
 User Guide
 ----------
