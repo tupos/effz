@@ -41,6 +41,7 @@ flags = [
     '-I./include',
     '-I.',
     '-I..',
+    '-I./src',
     local_include,
     '-I/usr/local/Cellar/python3/3.6.5/Frameworks/Python.framework/Versions/3.6/include/python3.6m',
     '-I/usr/local/include',
