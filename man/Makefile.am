@@ -1,1 +1,1 @@
-man_MANS = effz.1
+dist_man1_MANS = effz.1
