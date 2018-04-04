@@ -2,7 +2,6 @@
 *~
 *.exe
 .DS_Store
-eff_z
 ._.DS_Store
 *.swp
 /**.txt*/
@@ -24,3 +23,4 @@ src/Makefile
 src/Makefile.in
 src/effz
 stamp-h1
+effz

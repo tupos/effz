@@ -2,6 +2,7 @@
 #define EFFZ_ZEROTH_ORDER_H
 
 #include "effz_typedefs.h"
+#include "effz_config.h"
 
 #include <gsl/gsl_sf_coupling.h>
 #include <array>
@@ -44,7 +45,8 @@ namespace eff_z{
 
 			public:
 				i_direct_database(const std::string &path_to_data
-						= "./data/i_direct_database.txt");
+						= config::shared_config().get_database_dir()
+						+ "/i_direct_database.txt");
 
 				double get_i_direct(
 						const int n,
@@ -89,7 +91,8 @@ namespace eff_z{
 
 			public:
 				i_exchange_database(const std::string &path_to_data
-						= "./data/i_exchange_database.txt");
+						= config::shared_config().get_database_dir()
+						+ "/i_exchange_database.txt");
 
 				double get_i_exchange(
 						const int n,
