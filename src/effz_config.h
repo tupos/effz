@@ -22,6 +22,7 @@ namespace eff_z{
 			const std::string& get_database_dir() const;
 
 			void check_dirs() const;
+			const std::string& get_python_path_cmd() const;
 
 		private:
 			config();
@@ -29,6 +30,7 @@ namespace eff_z{
 			const std::string home_dir;
 			const std::string python_src_dir;
 			const std::string database_dir;
+			const std::string python_path_cmd;
 			const std::string&
 				get_checked_dir(const std::string &dir_name) const;
 	};

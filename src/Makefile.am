@@ -18,11 +18,17 @@ effz_SOURCES = effz_atomic_data.cpp effz_exceptions.cpp\
 			   gsl_monte_complex.h integrate_nd.h
 
 effz_CPPFLAGS = -I$(top_srcdir)/src -I@PYTHONINCLUDE@\
-				@GSLCPPFLAGS@ @TBBCPPFLAGS@
+				@GSLCPPFLAGS@ @TBBCPPFLAGS@\
+				-DEFFZ_PYTHON_SRC_DIR='"$(effzpythondir)"'
 
 effz_LDFLAGS = -L@PYTHONLDFLAGS@ @GSLLDFLAGS@ @TBBLDFLAGS@
 
 effz_LDADD = @PYTHONLIBS@
+
+effzpythondir=$(pkgdatadir)/python_src_dir
+dist_effzpython_DATA = effz_zeroth_order_symbolic.py
+uninstall-hook:
+	rm -rf $(pkgdatadir)
 
 noinst_HEADERS = cereal/access.hpp\
 				 cereal/types/base_class.hpp\

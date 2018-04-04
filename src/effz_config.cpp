@@ -125,9 +125,14 @@ namespace eff_z{
 		return instance;
 	}
 
-	config::config() : home_dir(EFFZ_HOME_DIRECTORY),
-	python_src_dir(home_dir + "/effz/python_src_dir"),
-	database_dir(home_dir + "/effz/database_dir") {}
+	config::config() : home_dir(EFFZ_HOME_DIRECTORY), /* exported from
+														 configure.ac	*/
+	python_src_dir(
+			std::string(EFFZ_PYTHON_SRC_DIR)), /* exported from
+												  src/Makefile.am */
+	database_dir(home_dir + "/effz/database_dir"),
+	python_path_cmd(
+			std::string("sys.path.append(\"") + python_src_dir + "\")") {}
 
 	const std::string& config::get_checked_dir(
 			const std::string &dir_name) const
@@ -180,7 +185,11 @@ namespace eff_z{
 	}
 
 	void config::check_dirs() const{
-		get_checked_python_src_dir();
+		//get_checked_python_src_dir();
 		get_checked_database_dir();
+	}
+	const std::string& config::get_python_path_cmd() const
+	{
+		return python_path_cmd;
 	}
 } /* end namespace eff_z */
