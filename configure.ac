@@ -17,9 +17,6 @@ AC_PROG_CXXCPP
 m4_include([m4/m4_ax_cxx_compile_stdcxx.m4])
 AX_CXX_COMPILE_STDCXX(14)
 
-dnl check for python
-AM_PATH_PYTHON([3.5])
-
 dnl c++ standard lib headers
 AC_CHECK_HEADERS(m4_normalize(iostream vector array string cmath memory
 				 functional utility unordered_map complex
@@ -118,6 +115,24 @@ dnl restore ldflags
 LDFLAGS=$ac_save_LDFLAGS
 
 dnl python
+dnl check for python
+AM_PATH_PYTHON([3.4])
+AS_IF([test "x$PYTHON_VERSION" = "x3.4"],
+	  [AC_DEFINE_UNQUOTED([EFFZ_PYTHON_VERSION_FOUR],[$PYTHON_VERSION],
+						  [define python version 3.4]
+						  )
+	  ],
+	  [test "x$PYTHON_VERSION" = "x3.5"],
+	  [AC_DEFINE_UNQUOTED([EFFZ_PYTHON_VERSION_FIVE],[$PYTHON_VERSION],
+						  [define python version 3.5])
+	  ],
+	  [test "x$PYTHON_VERSION" = "x3.6"],
+	  [AC_DEFINE_UNQUOTED([EFFZ_PYTHON_VERSION_SIX],[$PYTHON_VERSION],
+						  [define python version 3.6])
+	  ],
+	  [AC_DEFINE_UNQUOTED([EFFZ_PYTHON_VERSION_OTHER],[$PYTHON_VERSION],
+						  [define python version other])
+	  ])
 dnl export shell variables to build and link with python
 dnl python prefix
 AC_ARG_VAR(PYTHONPREFIX, [python prefix path. The default value is obtained from `python3-config --prefix`])
@@ -158,7 +173,14 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM(
 				 [[Py_Initialize();
 				  if(PyRun_SimpleString("import sys\nsys.hexversion")!=0){
 					  return 1;
+				  } else {return -1;}
+				  #ifdef EFFZ_PYTHON_VERSION_SIX
+				  if(Py_FinalizeEx() < 0){
+					  return 120;
 				  }
+				  #elif defined(EFFZ_PYTHON_VERSION_FIVE) || defined(EFFZ_PYTHON_VERSION_FOUR)
+				  Py_Finalize();
+				  #endif
 				  if(Py_FinalizeEx() < 0){
 					  return -1;
 				  }]])], [],

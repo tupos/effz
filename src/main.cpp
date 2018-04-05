@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 #include <Python.h>
+#include <config.h>
 
 #include "effz_main_loop_functions.h"
 #include "effz_config.h"
@@ -59,10 +60,14 @@ int main(int argc, char *argv[]) try {
 			current_menu.swap(new_menu);
 		}
 	}
-
+#ifdef EFFZ_PYTHON_VERSION_SIX
 	if(Py_FinalizeEx() < 0){
 		return 120;
 	}
+#elif defined(EFFZ_PYTHON_VERSION_FIVE)\
+	|| defined(EFFZ_PYTHON_VERSION_FOUR)
+	Py_Finalize();
+#endif
 
 	return EXIT_SUCCESS;
 
