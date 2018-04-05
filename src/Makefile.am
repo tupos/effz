@@ -15,11 +15,11 @@ effz_SOURCES = effz_atomic_data.cpp effz_config.cpp effz_exceptions.cpp\
 			   effz_zeroth_order_python.h
 
 
-effz_CPPFLAGS = -I$(top_srcdir)/src -I@PYTHONINCLUDE@\
+effz_CPPFLAGS = -I$(top_srcdir)/src @PYTHONINCLUDE@\
 				@GSLCPPFLAGS@ @TBBCPPFLAGS@\
 				-DEFFZ_PYTHON_SRC_DIR='"$(effzpythondir)"'
 
-effz_LDFLAGS = -L@PYTHONLDFLAGS@ @GSLLDFLAGS@ @TBBLDFLAGS@
+effz_LDFLAGS = @PYTHONLDFLAGS@ @GSLLDFLAGS@ @TBBLDFLAGS@
 
 effz_LDADD = @PYTHONLIBS@
 

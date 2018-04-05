@@ -17,6 +17,9 @@ AC_PROG_CXXCPP
 m4_include([m4/m4_ax_cxx_compile_stdcxx.m4])
 AX_CXX_COMPILE_STDCXX(14)
 
+dnl check for python
+AM_PATH_PYTHON([3.5])
+
 dnl c++ standard lib headers
 AC_CHECK_HEADERS(m4_normalize(iostream vector array string cmath memory
 				 functional utility unordered_map complex
@@ -117,34 +120,34 @@ LDFLAGS=$ac_save_LDFLAGS
 dnl python
 dnl export shell variables to build and link with python
 dnl python prefix
-AC_ARG_VAR(PYTHONPREFIX, [python prefix path. The default value is obtained from python3-config --prefix])
+AC_ARG_VAR(PYTHONPREFIX, [python prefix path. The default value is obtained from `python3-config --prefix`])
 dnl python include
-AC_ARG_VAR(PYTHONINCLUDE, [python include path, i.e. -I<path to Python.h>. The default value is $PYTHONPREFIX/Headers])
+AC_ARG_VAR(PYTHONINCLUDE, [python include path, i.e. -I<path to Python.h>. The default value is `python3-config --includes`])
 dnl python ldflags
-AC_ARG_VAR(PYTHONLDFLAGS, [python lib path, i.e. -L<path to python libs>. The default value is $PYTHONPREFIX/lib])
+AC_ARG_VAR(PYTHONLDFLAGS, [python lib path, i.e. -L<path to python libs>. The default value is `python3-config --ldflags`])
 dnl python libs
-AC_ARG_VAR(PYTHONLIBS, [python libs to link with, i.e. -l<python libs>. The default value is python3-config --libs])
+AC_ARG_VAR(PYTHONLIBS, [python libs to link with, i.e. -l<python libs>. The default value is `python3-config --libs`])
 dnl check if python3-config is present and define PYTHONPREFIX
 AC_CHECK_PROG(py3_config_exists, python3-config, yes, [no])
 AS_IF([test "x$py3_config_exists" != xno],
 	  [AC_SUBST(PYTHONPREFIX,["`python3-config --prefix`"])],
 	  [AC_MSG_ERROR(python3-config is not found in PATH. Please read ./configure -h and specify python shell variables manually)])
 dnl define PYTHONINCLUDE
-AC_SUBST(PYTHONINCLUDE,["$PYTHONPREFIX/Headers"])
+AC_SUBST(PYTHONINCLUDE,["`python3-config --includes`"])
 dnl define PYTHONLDFLAGS
-AC_SUBST(PYTHONLDFLAGS,["$PYTHONPREFIX/lib"])
+AC_SUBST(PYTHONLDFLAGS,["`python3-config --ldflags`"])
 dnl define PYTHONLIBS
 AC_SUBST(PYTHONLIBS,["`python3-config --libs`"])
 dnl check if python.h is present
 ac_save_CPPFLAGS=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -I$PYTHONINCLUDE"
+CPPFLAGS="$CPPFLAGS $PYTHONINCLUDE"
 AC_CHECK_HEADERS([Python.h], [], AC_MSG_ERROR([not found Python.h]))
 CPPFLAGS=$ac_save_CPPFLAGS
 dnl python program test
 ac_save_CPPFLAGS=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -I$PYTHONINCLUDE"
+CPPFLAGS="$CPPFLAGS $PYTHONINCLUDE"
 ac_save_LDFLAGS=$LDFLAGS
-LDFLAGS="$LDFLAGS -L$PYTHONLDFLAGS"
+LDFLAGS="$LDFLAGS $PYTHONLDFLAGS"
 ac_save_LIBS=$LIBS
 LIBS="$LIBS $PYTHONLIBS"
 AC_LINK_IFELSE([AC_LANG_PROGRAM(
