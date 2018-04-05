@@ -3,29 +3,20 @@
 #include "effz_main_loop_functions.h"
 #include "effz_config.h"
 
-#ifdef DEBUG
-#include "effz_debug.h"
-#endif
-
 #include <cstdlib>
-#include <signal.h>
+#include <csignal>
 
 using namespace eff_z;
 
-void effz_sigint(int s){
-	std::cout << "exited with ctrl-c: " << s << "\n";
-	exit(1);
+
+void effz_sigint(int signal){
+	std::cout << "exited with ctrl-c: " << signal << "\n";
+	std::_Exit(EXIT_FAILURE);
 }
 
-
-
 int main(int argc, char *argv[]) try {
-	struct sigaction sigint_handler;
 
-	sigint_handler.sa_handler = effz_sigint;
-	sigemptyset(&sigint_handler.sa_mask);
-	sigint_handler.sa_flags = 0;
-	sigaction(SIGINT, &sigint_handler, NULL);
+	std::signal(SIGINT,effz_sigint);
 
 	config::shared_config().check_dirs();
 
@@ -56,10 +47,6 @@ int main(int argc, char *argv[]) try {
 	if(Py_FinalizeEx() < 0){
 		return 120;
 	}
-
-#ifdef DEBUG
-	test_output();
-#endif
 
 	return EXIT_SUCCESS;
 
