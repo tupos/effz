@@ -181,9 +181,7 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM(
 				  #elif defined(EFFZ_PYTHON_VERSION_FIVE) || defined(EFFZ_PYTHON_VERSION_FOUR)
 				  Py_Finalize();
 				  #endif
-				  if(Py_FinalizeEx() < 0){
-					  return -1;
-				  }]])], [],
+				  ]])], [],
 				  [AC_MSG_FAILURE([fail link with python])])
 CPPFLAGS=$ac_save_CPPFLAGS
 LDFLAGS=$ac_save_LDFLAGS
