@@ -165,7 +165,7 @@ cd effz-0.1
 and issue the standard unix triple. However, it is recommended not to install under the root. Consequently, it is better to provide the prefix option for configure like `$HOME/local` for example.
 
 ```
-./configure --prefix=`$HOME/local`
+./configure --prefix="$HOME/local"
 ```
 
 ```
