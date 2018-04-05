@@ -1,3 +1,88 @@
+
+2018-04-05 16:16:19 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixes in configure 
+
+2018-04-05 14:45:07 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added conditional compilation for python. fixes in configure 
+
+2018-04-05 12:04:41 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixed paths in configure and Makefile.am for python 
+
+2018-04-05 11:47:59 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * removed unused files in src/Makefile.am. fixed comments in python 
+
+2018-04-05 11:36:34 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added license 
+
+2018-04-05 11:29:39 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added license to sources 
+
+2018-04-05 10:30:24 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented sigint_handler. source cleanup 
+
+2018-04-05 10:01:58 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * enable debug. initial impl of sigint 
+
+2018-04-04 22:56:34 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixes for compilation on debian, without fix for python 3.5 
+
+2018-04-04 18:48:43 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixes in README 
+
+2018-04-04 18:31:41 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added uninstall-hook for pkgdatadir fixed paths in effz_config added effz_debug code cleanup in main 
+
+2018-04-04 15:10:25 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added missing headers to Makefile.am 
+
+2018-04-04 13:42:48 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added paths for database from effz_config 
+
+2018-04-04 11:54:10 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixed paths in .ycm_config 
+
+2018-04-03 18:59:30 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented effz_config changes in configure 
+
+2018-04-03 10:57:13 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixed path in .ycm_config 
+
+2018-03-29 16:05:54 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * started implementaion of effz_config 
+
+2018-03-29 10:32:07 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added man files into configure script 
+
+2018-03-29 09:10:41 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added license in man 
+
+2018-03-28 19:25:20 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * Added man page 
+
+2018-03-28 17:43:02 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * implemented AUTHORS, ChangeLog, README 
+
 2018-03-28 09:58:28 +0200  Oleg Skoromnik <olegskor@gmail.com>
 
     * changed gitignore to be compatible with autotools. fixes in configure 
