@@ -24,3 +24,4 @@ src/Makefile.in
 src/effz
 stamp-h1
 effz
+*.tar.gz
