@@ -19,8 +19,6 @@ namespace eff_z{
 					 }
 			default:{
 						this->not_show_menu();
-						std::cin.clear();
-						std::cin.ignore();
 						std::cout << "Wrong input. Please repeat.\n";
 						break;
 					}

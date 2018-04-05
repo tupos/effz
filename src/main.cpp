@@ -8,22 +8,24 @@
 #endif
 
 #include <cstdlib>
-
 #include <signal.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-
-void my_handler(int s){
-           printf("Caught signal %d\n",s);
-           exit(1);
-
-}
 
 using namespace eff_z;
 
+void effz_sigint(int s){
+	std::cout << "exited with ctrl-c: " << s << "\n";
+	exit(1);
+}
+
+
 
 int main(int argc, char *argv[]) try {
+	struct sigaction sigint_handler;
+
+	sigint_handler.sa_handler = effz_sigint;
+	sigemptyset(&sigint_handler.sa_mask);
+	sigint_handler.sa_flags = 0;
+	sigaction(SIGINT, &sigint_handler, NULL);
 
 	config::shared_config().check_dirs();
 
@@ -36,11 +38,6 @@ int main(int argc, char *argv[]) try {
 #ifdef DEBUG
 	PyRun_SimpleString("print(sys.path)");
 #endif
-struct sigaction sigIntHandler;
-
-   sigIntHandler.sa_handler = my_handler;
-   sigemptyset(&sigIntHandler.sa_mask);
-   sigIntHandler.sa_flags = 0;
 
 	char user_input;
 	base_menu_ptr current_menu = std::make_shared<main_menu>();
@@ -51,7 +48,6 @@ struct sigaction sigIntHandler;
 		std::cin >> user_input;
 		base_menu_ptr new_menu
 			= current_menu->get_next_menu(user_input);
-sigaction(SIGINT, &sigIntHandler, NULL);
 		if(new_menu){
 			current_menu.swap(new_menu);
 		}

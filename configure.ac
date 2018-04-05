@@ -181,4 +181,17 @@ AS_IF([test "x$effz_home_set" = xyes],
 		AC_DEFINE_UNQUOTED([EFFZ_HOME_DIRECTORY],["$HOME/.config"],
 						   [define home folder])
 		])
+dnl enable debug mainteriner option only
+AC_MSG_CHECKING([whether to build with debug output])
+AC_ARG_ENABLE([debug],
+			  [AS_HELP_STRING([--enable-debug],
+							  [enable debug outputs (def=no)])
+			  ],
+			  [effz_debug="$enable_debug"],
+			  [effz_debug=no])
+AC_MSG_RESULT([$effz_debug])
+AS_IF([test "x$effz_debug" = xyes],
+	  [AC_DEFINE([DEBUG],[],[debug mode])],
+	  [test "x$effz_debug" = xno],
+	  [AC_DEFINE([NDEBUG],[],[no-debug mode])])
 AC_OUTPUT

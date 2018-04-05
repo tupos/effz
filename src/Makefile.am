@@ -15,7 +15,10 @@ effz_SOURCES = effz_atomic_data.cpp effz_exceptions.cpp\
 			   effz_python_utility.h effz_result.h effz_spec_func.h\
 			   effz_typedefs.h effz_user_input.h effz_utility.h\
 			   effz_zeroth_order.h effz_zeroth_order_python.h grid.h\
-			   gsl_monte_complex.h integrate_nd.h
+			   gsl_monte_complex.h integrate_nd.h\
+			   \
+			   effz_debug.cpp effz_debug.h
+
 
 effz_CPPFLAGS = -I$(top_srcdir)/src -I@PYTHONINCLUDE@\
 				@GSLCPPFLAGS@ @TBBCPPFLAGS@\

@@ -15,7 +15,7 @@ using namespace zeroth_order;
 using namespace atomic_data;
 
 namespace eff_z{
-
+#ifdef DEBUG
 	void test_output()
 	{
 		std::string format_string
@@ -115,5 +115,5 @@ namespace eff_z{
 		pprint_sympy_Object(asf_be);
 
 	}
-
+#endif
 } /* end namespace eff_z */
