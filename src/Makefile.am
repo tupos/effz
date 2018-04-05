@@ -1,23 +1,18 @@
 
 bin_PROGRAMS = effz
 
-effz_SOURCES = effz_atomic_data.cpp effz_exceptions.cpp\
+effz_SOURCES = effz_atomic_data.cpp effz_config.cpp effz_exceptions.cpp\
 			   effz_main_loop_functions.cpp effz_python_utility.cpp\
 			   effz_result.cpp effz_spec_func.cpp effz_user_input.cpp\
 			   effz_utility.cpp effz_zeroth_order.cpp\
-			   effz_zeroth_order_python.cpp grid.cpp\
-			   integrate_nd.cpp main.cpp monte_complex.cpp\
-			   effz_config.cpp\
+			   effz_zeroth_order_python.cpp main.cpp\
 			   \
-			   arb_whittaker.h effz_atomic_data.h effz_config.h\
-			   effz_exceptions.h effz_integration.h\
-			   effz_main_loop_functions.h effz_parallel_func.h\
-			   effz_python_utility.h effz_result.h effz_spec_func.h\
-			   effz_typedefs.h effz_user_input.h effz_utility.h\
-			   effz_zeroth_order.h effz_zeroth_order_python.h grid.h\
-			   gsl_monte_complex.h integrate_nd.h\
-			   \
-			   effz_debug.cpp effz_debug.h
+			   effz_atomic_data.h effz_config.h effz_exceptions.h\
+			   effz_integration.h effz_main_loop_functions.h\
+			   effz_parallel_func.h effz_python_utility.h effz_result.h\
+			   effz_spec_func.h effz_typedefs.h effz_user_input.h\
+			   effz_utility.h effz_zeroth_order.h\
+			   effz_zeroth_order_python.h
 
 
 effz_CPPFLAGS = -I$(top_srcdir)/src -I@PYTHONINCLUDE@\
