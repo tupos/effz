@@ -152,7 +152,8 @@ emerge --ask dev-cpp/tbb
 
 #### [Install effz](#installeffz)
 
-After all dependencies have been installed extract the program
+After all dependencies have been installed download from
+[releases][effztar] and extract the program
 
 ```
 tar -xzf effz-0.1.tar.gz
@@ -346,3 +347,4 @@ A PARTICULAR PURPOSE.
 [sympy]: http://www.sympy.org/de/index.html
 [matplotlib]: https://matplotlib.org/index.html
 [homebrew]: https://brew.sh/
+[effztar]: https://github.com/tupos/effz/releases
