@@ -1,4 +1,56 @@
 
+2018-08-23 19:30:12 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * synchronized effz_lib 
+
+2018-08-23 19:21:47 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * Updated list of AUTHORS 
+
+2018-08-23 19:18:45 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * version bump and description in readme 
+
+2018-08-23 19:05:15 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixed headers in effz. correct compilation. adjusted .gitignore to libtool 
+
+2018-08-23 17:18:54 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * changed namespace eff_z to effz 
+
+2018-08-23 17:14:41 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * Removed files that belong to effz_li.b Fixed configurea and makefiles 
+
+2018-08-23 16:11:31 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added effz_lib submodule 
+
+2018-04-17 09:12:12 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * added download link to README 
+
+2018-04-09 14:28:29 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * cleanup 
+
+2018-04-05 23:33:47 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixed typos in README.md 
+
+2018-04-05 16:49:31 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * renamed README 
+
+2018-04-05 16:38:22 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * fixes in .gitignore 
+
+2018-04-05 16:33:20 +0200  Oleg Skoromnik <olegskor@gmail.com>
+
+    * update ChangeLog 
+
 2018-04-05 16:16:19 +0200  Oleg Skoromnik <olegskor@gmail.com>
 
     * fixes in configure 
