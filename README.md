@@ -5,7 +5,7 @@ observable characteristics of many electron atoms.
 
 Contents
 --------
-	
+
 - [Intro](#intro)
 - [Quick Feature Summary](#quick-feature-summary)
 - [Installation](#installation)
@@ -14,6 +14,7 @@ Contents
 - [User Guide](#user-guide)
     - [Format string help](#formatString)
     - [Occupation numbers help](#occNumsString)
+- [Changelog](#changelog)
 - [Roadmap](#roadmap)
 - [Contact](#contact)
 - [License](#license)
@@ -57,7 +58,7 @@ Intel [*tbb*][tbb] and python [*SciPy*][scipy] stack (in particular
 #### Python
 
 The program is tested under **python3** and was not tested against
-**python2**. 
+**python2**.
 
 The program relies on `python3-config` for obtaining information about
 python3 environment available on the system. If `python3-config` is
@@ -107,7 +108,7 @@ sudo apt-get install gsl-bin libgsl-dev
 Fedora/Cent Os
 
 ```
-yum install gsl gsl-devel
+dnf install gsl gsl-devel
 ```
 
 Arch
@@ -156,11 +157,11 @@ After all dependencies have been installed download from
 [releases][effztar] and extract the program
 
 ```
-tar -xzf effz-0.1.tar.gz
+tar -xzf effz-0.1.1.tar.gz
 ```
 
 ```
-cd effz-0.1
+cd effz-0.1.1
 ```
 
 and issue the standard unix triple. However, it is recommended not to install under the root. Consequently, it is better to provide the prefix option for configure like `$HOME/local` for example.
@@ -253,7 +254,7 @@ file path, i.e.,
 
 
 	-z Z1, Z2, ...  -f OCC_NUMS_FORMAT -v OCC_NUMS1, OCC_NUMS2, ...  -o PATH_TO_OUTPUT_FILE;
-	
+
 
 then the output is saved into the file.
 
@@ -288,15 +289,19 @@ energy is equal to zero.
 increasing n, l, m, ms.  This means that we fill m form -l to l and ms
 from -1 to 1
 
+Changelog
+----------
+
+v0.1.1 Separation of the program into the library and the program. The library is located at [github effz_lib][effzlib]
 
 Roadmap
 ----------
 
-v0.1 The first release contains only the zeroth-order approximation and not all functions of the planned v0.1 release have been implemented. This includes reading format strings from the command line and from file. 
-   
-Initial design of the program consists of separation of the code for the utility functions and the scientific part. However, in this release the actual separation for the program and the library is not performed and is planned for the 0.1.x release. Consequently, the scientific part can be easily incorporated into third party PIC codes for simulating ionization.
-	
-* v0.1.x will contain the implementation of the above described functions from v0.1 and the separation of the code into the library and the program.
+v0.1.1 The first release contains only the zeroth-order approximation and not all functions of the planned v0.1 release have been implemented. This includes reading format strings from the command line and from file.
+
+As of v0.1.1 the code has been separated into the library and the program, such that the scientific part can be easily incorporated into third party PIC codes for simulation of the ionization processes.
+
+* v0.1.x will contain the implementation of the above described functions.
 
 * v0.2 will contain the implementation of the second-order single-electron excitation correction. In addition, the dependence on *gsl* is planned to be dropped.
 
@@ -348,3 +353,4 @@ A PARTICULAR PURPOSE.
 [matplotlib]: https://matplotlib.org/index.html
 [homebrew]: https://brew.sh/
 [effztar]: https://github.com/tupos/effz/releases
+[effzlib]: https://github.com/tupos/effz_lib
