@@ -1,3 +1,6 @@
 Oleg Skoromnik (olegskor@gmail.com) -
 	overall design, initial implementation, zeroth-order approximation,
 	integration with autotools build systems
+
+Heiko Bauke (https://github.com/rabauke)
+	Code review
