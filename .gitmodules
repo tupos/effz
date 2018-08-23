@@ -1,0 +1,3 @@
+[submodule "effz_lib"]
+	path = effz_lib
+	url = https://github.com/tupos/effz_lib.git
