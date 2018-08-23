@@ -22,7 +22,7 @@ limitations under the License.
 #include <iostream>
 #include <limits>
 
-namespace eff_z{
+namespace effz{
 	void base_menu::base_action_handler(char choice){
 		switch(choice){
 			case 'q':{
@@ -357,4 +357,4 @@ namespace eff_z{
 			base_action_handler(choice);
 		return next_menu;
 	}
-} /* end namespace eff_z */
+} /* end namespace effz */

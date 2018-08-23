@@ -23,7 +23,7 @@ limitations under the License.
 #include <cstdlib>
 #include <csignal>
 
-using namespace eff_z;
+using namespace effz;
 
 
 void effz_sigint(int signal){

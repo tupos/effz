@@ -26,7 +26,7 @@ limitations under the License.
 #include <functional>
 
 
-namespace eff_z{
+namespace effz{
 
 	struct occ_nums_ast{
 		typedef std::tuple<std::string,occ_nums_array> named_occ_nums_t;
@@ -132,6 +132,6 @@ namespace eff_z{
 			static const std::string format_string_token;
 			void parse_strings();
 	};
-} /* end namespace eff_z */
+} /* end namespace effz */
 
 #endif /* EFFZ_USER_INPUT_H */

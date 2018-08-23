@@ -24,7 +24,7 @@ limitations under the License.
 #include <string>
 #include <iostream>
 
-namespace eff_z{
+namespace effz{
 	namespace zeroth_order{
 		class base_result{
 			public:
@@ -77,7 +77,7 @@ namespace eff_z{
 				std::ostream &stream, const std::string &s);
 
 	} /* end namespace zeroth_order */
-} /* end namespace eff_z */
+} /* end namespace effz */
 
 
 #endif /* EFFZ_RESULT_H */

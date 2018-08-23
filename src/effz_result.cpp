@@ -21,7 +21,7 @@ limitations under the License.
 
 #include <sstream>
 
-namespace eff_z{
+namespace effz{
 	namespace zeroth_order{
 		base_result::base_result()
 			: result_string(
@@ -153,4 +153,4 @@ namespace eff_z{
 			}
 		}
 	} /* end namespace zeroth_order */
-} /* end namespace eff_z */
+} /* end namespace effz */

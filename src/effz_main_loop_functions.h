@@ -21,7 +21,7 @@ limitations under the License.
 #include <iostream>
 #include <memory>
 
-namespace eff_z{
+namespace effz{
 	class base_menu{
 		public:
 			typedef std::shared_ptr<base_menu> base_menu_ptr;
@@ -107,6 +107,6 @@ namespace eff_z{
 			explicit result_menu_with_prev(base_menu_ptr prev_menu);
 			base_menu_ptr get_next_menu(char choice) final;
 	};
-} /* end namespace eff_z */
+} /* end namespace effz */
 
 #endif /* EFFZ_MAIN_LOOP_FUNCTIONS_H */
