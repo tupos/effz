@@ -17,9 +17,10 @@ limitations under the License.
 #ifndef EFFZ_RESULT_H
 #define EFFZ_RESULT_H
 
-#include "effz_zeroth_order.h"
 #include "effz_user_input.h"
-#include "effz_zeroth_order_python.h"
+
+#include <effz_lib/effz_zeroth_order.h>
+#include <effz_lib/effz_zeroth_order_python.h>
 
 #include <string>
 #include <iostream>

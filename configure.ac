@@ -6,6 +6,7 @@ AM_INIT_AUTOMAKE([foreign])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/main.cpp])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_FILES([
 				 Makefile
 				 src/Makefile
@@ -18,6 +19,10 @@ AC_PROG_CXX
 AC_PROG_CXXCPP
 m4_include([m4/m4_ax_cxx_compile_stdcxx.m4])
 AX_CXX_COMPILE_STDCXX(14)
+
+dnl check libtool and ar
+AM_PROG_AR()
+LT_INIT
 
 dnl c++ standard lib headers
 AC_CHECK_HEADERS(m4_normalize(iostream vector array string cmath memory

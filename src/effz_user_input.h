@@ -17,8 +17,8 @@ limitations under the License.
 #ifndef EFFZ_USER_INPUT_H
 #define EFFZ_USER_INPUT_H
 
-#include "effz_typedefs.h"
-#include "effz_exceptions.h"
+#include <effz_lib/effz_typedefs.h>
+#include <effz_lib/effz_exceptions.h>
 
 #include <vector>
 #include <string>

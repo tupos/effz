@@ -18,7 +18,8 @@ limitations under the License.
 #include <config.h>
 
 #include "effz_main_loop_functions.h"
-#include "effz_config.h"
+
+#include <effz_lib/effz_config.h>
 
 #include <cstdlib>
 #include <csignal>

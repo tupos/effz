@@ -42,8 +42,9 @@ flags = [
     '-I.',
     '-I..',
     '-I./src',
+    '-I./effz_lib',
     local_include,
-    '-I/usr/local/Cellar/python3/3.6.5/Frameworks/Python.framework/Versions/3.6/include/python3.6m',
+    '-I/usr/local/Cellar/python3/3.7.0/Frameworks/Python.framework/Versions/3.7/include/python3.7m',
     '-I/usr/local/include',
     '-std=gnu++14',
 ]

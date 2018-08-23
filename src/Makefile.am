@@ -8,7 +8,7 @@ effz_SOURCES = effz_main_loop_functions.cpp\
 			   effz_main_loop_functions.h effz_result.h\
 			   effz_user_input.h
 
-effz_CPPFLAGS = -I$(top_srcdir)/effz_lib\
+effz_CPPFLAGS = -I$(top_builddir)/effz_lib\
 				-I$(top_srcdir)/src\
 				@PYTHONINCLUDE@\
 				@GSLCPPFLAGS@ @TBBCPPFLAGS@#\
@@ -16,4 +16,5 @@ effz_CPPFLAGS = -I$(top_srcdir)/effz_lib\
 
 effz_LDFLAGS = @PYTHONLDFLAGS@ @GSLLDFLAGS@ @TBBLDFLAGS@
 
-effz_LDADD = effz_lib/libeffzlib.a @PYTHONLIBS@
+effz_LDADD = $(top_builddir)/effz_lib/src/libeffzlib.la\
+			 @PYTHONLIBS@

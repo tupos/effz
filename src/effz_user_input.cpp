@@ -16,9 +16,9 @@ limitations under the License.
 
 #include "effz_user_input.h"
 
-#include "effz_exceptions.h"
-#include "effz_utility.h"
-#include "effz_atomic_data.h"
+#include <effz_lib/effz_exceptions.h>
+#include <effz_lib/effz_utility.h>
+#include <effz_lib/effz_atomic_data.h>
 
 #include <regex>
 #include <tuple>
@@ -28,7 +28,7 @@ limitations under the License.
 #include <iostream>
 #include <sstream>
 
-namespace eff_z{
+namespace effz{
 
 	namespace{
 		occ_nums_array string_to_occ_nums_array(const std::string &s);
@@ -637,4 +637,4 @@ namespace eff_z{
 			}
 		}
 	} /* end anonymous namespace */
-} /* end namespace eff_z */
+} /* end namespace effz */
