@@ -1,14 +1,16 @@
 dnl Process this file with autoconf to produce configure script
 
-AC_INIT([effz], [0.1], [olegskor@gmail.com])
+AC_INIT([effz], [0.1.1], [olegskor@gmail.com])
+AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE([foreign])
 
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SRCDIR([src/effz_zeroth_order.cpp])
+AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_FILES([
 				 Makefile
 				 src/Makefile
 				 man/Makefile])
+AC_CONFIG_SUBDIRS([effz_lib])
 
 dnl Switch to a C++ compiler and check if it works.
 AC_LANG([C++])
